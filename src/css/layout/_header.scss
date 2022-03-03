@@ -32,22 +32,26 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-.header {
+ .header {
   width: 100%;
   background-color: $color-primary;
   box-shadow: $box-shadow;
-  // position: fixed;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1999;
   height: $header-height;
-  // padding: 0 4.5rem;
+  padding: 0 4.5rem;
+
+  @include respond(tab-port) {
+    padding: 0 1.5rem;
+  }
 
   &__container {
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: center;
     max-width: $grid-width;
     width: 100%;
     height: auto;
@@ -78,8 +82,16 @@
     position: relative;
     z-index: 10;
 
-    &--mobile {
-      display: none;
+    @include respond(screen-870) {
+      height: 100vh;
+      position: fixed;
+      right: -50%;
+      z-index: 1500000;
+      opacity: 0;
+      width: 0;
+      transition: all 0.8s;
+      top: $header-height;
+      background-color: $color-primary;
     }
   }
 
@@ -91,16 +103,39 @@
     font-size: 1.4rem;
     text-transform: capitalize;
     height: 100%;
+    width: 100%;
     margin: 0;
+    padding: 0;
+
+    @include respond(screen-870) {
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+      list-style: none;
+      text-align: center;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 0 2rem;
+    }
   }
 
   &__item {
-    width: 18rem;
+    padding: 0;
     list-style-type: none;
     height: auto;
     display: flex;
-    &__right {
-      margin-left: 5rem;
+    padding: 0 1.5rem;
+
+    @include respond(screen-870) {
+      border-top: 1px solid $color-table-head-border;
+      background-color: $color-primary;
+      height: calc((100vh - 5rem) / 7 );
+      max-height: 8rem;
+
+      &:last-child {
+        border-bottom: 1px solid $color-table-head-border;
+      }
     }
   }
 
@@ -114,9 +149,12 @@
     color: $color-white;
     text-decoration: none;
 
+    @include respond(screen-870) {
+      font-size: 1.8rem;
+    }
+
     @include respond(phone-lg) {
       padding-right: 4.5rem;
-      justify-content: flex-end;
     }
 
     &:hover {
@@ -126,3 +164,4 @@
     }
   }
 }
+
