@@ -41,11 +41,28 @@ class EventSearchBox extends React.Component {
         this.textInput = React.createRef();
     }
 
+    componentDidMount() {
+        this.textInput.current.addEventListener("input", this._handleInputChange);
+      }
+    
+      componentWillUnmount() {
+        this.textInput.current.removeEventListener(
+          "input",
+          this._handleInputChange
+        );
+      }
+
     _handleKeyPress = (event) => {
-        if (event.key === "Enter") {
-            this._handleSearch()
+        if (event.key === "Enter" || !this.textInput.current.value) {
+            this._handleSearch();
         }
     };
+
+    _handleInputChange = (event) => {
+        if (!this.textInput.current.value) {
+          this._handleSearch();
+        }
+      };
 
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
     RE_TAG = /^!?[a-zA-Z\-]+$/;
