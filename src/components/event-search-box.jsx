@@ -33,12 +33,14 @@
  */
 
 import React from 'react';
+import debounce from 'lodash/debounce';
 
 class EventSearchBox extends React.Component {
 
     constructor(props){
         super(props);
         this.textInput = React.createRef();
+        this.debouncedSearch = debounce(this._handleSearch, 300);
     }
 
     componentDidMount() {
@@ -59,9 +61,7 @@ class EventSearchBox extends React.Component {
     };
 
     _handleInputChange = (event) => {
-        if (!this.textInput.current.value) {
-          this._handleSearch();
-        }
+        this.debouncedSearch();
       };
 
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
