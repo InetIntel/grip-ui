@@ -33,19 +33,36 @@
  */
 
 import React from 'react';
+import debounce from 'lodash/debounce';
 
 class EventSearchBox extends React.Component {
 
     constructor(props){
         super(props);
         this.textInput = React.createRef();
+        this.debouncedSearch = debounce(this._handleSearch, 300);
     }
 
+    componentDidMount() {
+        this.textInput.current.addEventListener("input", this._handleInputChange);
+      }
+    
+      componentWillUnmount() {
+        this.textInput.current.removeEventListener(
+          "input",
+          this._handleInputChange
+        );
+      }
+
     _handleKeyPress = (event) => {
-        if (event.key === "Enter") {
-            this._handleSearch()
+        if (event.key === "Enter" || !this.textInput.current.value) {
+            this._handleSearch();
         }
     };
+
+    _handleInputChange = (event) => {
+        this.debouncedSearch();
+      };
 
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
     RE_TAG = /^!?[a-zA-Z\-]+$/;
