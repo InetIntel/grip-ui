@@ -34,7 +34,7 @@
 
 import React from "react";
 import EventsList from "./pages/events_list";
-import {BrowserRouter, Route, Switch, useHistory} from 'react-router-dom';
+import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import EventDetails from "./pages/event_details";
 import PfxEventDetails from "./pages/pfx_event_details";
@@ -53,28 +53,28 @@ const App = () => {
     //     return <div>Loading...</div>;
     // }
 
-    return <React.Fragment>
-        <Nav/>
+    return <div className="app">
+        <Nav />
         <Switch>
             {/* page routes */}
-            <Route path='/events/:eventType/:eventId/:pfxEventId' component={PfxEventDetails}/>
-            <Route path='/events/:eventType/:eventId' component={EventDetails}/>
-            <Route path='/method' component={Methodology}/>
-            <Route path='/repos' component={CodeRepos}/>
-            <Route path='/ack' component={Acknowledgement}/>
-            <Route path='/contacts' component={Contacts}/>
-            <Route path='/tags' component={EventTags}/>
-            <Route path='/' component={EventsList}/>
+            <Route path='/events/:eventType/:eventId/:pfxEventId' component={PfxEventDetails} />
+            <Route path='/events/:eventType/:eventId' component={EventDetails} />
+            <Route path='/method' component={Methodology} />
+            <Route path='/repos' component={CodeRepos} />
+            <Route path='/ack' component={Acknowledgement} />
+            <Route path='/contacts' component={Contacts} />
+            <Route path='/tags' component={EventTags} />
+            <Route path='/' component={EventsList} />
         </Switch>
-        <Footer/>
-    </React.Fragment>
+        <Footer />
+    </div>
 }
 
 class HijacksApp extends React.Component {
 
     render() {
         return <BrowserRouter>
-                <App/>
+            <App />
         </BrowserRouter>;
     }
 }

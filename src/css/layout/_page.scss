@@ -34,6 +34,7 @@
 
 body {
   width: 100%;
+  box-sizing: border-box;
 }
 
 #hijacks {
@@ -51,5 +52,15 @@ body {
     margin-top: 2rem;
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+.app {
+  display: flex;
+  flex-direction:column;
+  min-height: 100vh;
+
+  & > div:nth-child(2) {
+    flex-grow: 1;
   }
 }
