@@ -42,7 +42,7 @@ class CodeRepos extends React.Component {
             {
                 "name": "GRIP-API",
                 "desc": "GRIP REST API framework and companion commandline tool written in Rust",
-                "link": "https://github.com/InetIntel/grip-api",
+                "link": "https://github.com/InetIntel/grip-api-v2",
             },
             {
                 "name": "GRIP-UI",

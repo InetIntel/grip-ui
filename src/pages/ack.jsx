@@ -43,6 +43,9 @@ import nsfLogo from '../images/logos/nsf.svg';
 import isocLogo from '../images/logos/isoc.svg';
 import ripeLogo from '../images/logos/ripencc.svg';
 import gatechcocLogo from '../images/logos/gatech_coc.svg';
+import manrsLogo from '../images/logos/manrs.png';
+import amazonLogo from '../images/logos/amazon.png';
+import googleLogo from '../images/logos/google.png';
 
 class Card extends React.Component {
     orgs = {
@@ -86,6 +89,21 @@ class Card extends React.Component {
             "image": <img src={gatechcocLogo} className="card__logo-icon card__logo-icon--gatech"/>,
             "link": "https://support.cc.gatech.edu",
             "desc": "The Technology Services Organization (TSO) at Georgia Tech's College of Computing provides and manages computing infrastructure for this project."
+        },
+        "manrs":{
+            "image": <img src={manrsLogo} className="card__logo-icon card__logo-icon--gatech"/>,
+            "link": "https://manrs.org",
+            "desc": "The MANRS project at the Global Cyber Alliance."
+        },
+        "amazon":{
+            "image": <img src={amazonLogo} className="card__logo-icon card__logo-icon--gatech"/>,
+            "link": "https://www.amazon.science/",
+            "desc": "The platform is supported by Amazon Science."
+        },
+        "google":{
+            "image": <img src={googleLogo} className="card__logo-icon card__logo-icon--gatech"/>,
+            "link": "https://research.google/",
+            "desc": "The platform is supported by Google Research."
         }
     }
 
@@ -94,7 +112,7 @@ class Card extends React.Component {
         const text = "home." +  org;
         let image = null;
         return (
-            <a className="card__link" href={this.orgs[org].link}>
+            <a className="card__link" target='_blank' href={this.orgs[org].link}>
                 <div className="card" >
                     <div className="card__logo">
                         { this.orgs[org].image }
@@ -147,6 +165,17 @@ class Acknowledgement extends React.Component {
                 </div>
                 <div className="col-1-of-3">
                     <Card org="gatechcoc"/>
+                </div>
+            </div>
+            <div className="row partners">
+                <div className="col-1-of-3">
+                    <Card org="manrs"/>
+                </div>
+                <div className="col-1-of-3">
+                    <Card org="amazon"/>
+                </div>
+                <div className="col-1-of-3">
+                    <Card org="google"/>
                 </div>
             </div>
         </div>
