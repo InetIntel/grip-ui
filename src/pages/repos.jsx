@@ -50,9 +50,9 @@ class CodeRepos extends React.Component {
                 "link": "https://github.com/InetIntel/grip-ui",
             },
             {
-                "name": "GRIP-Core",
-                "desc": "GRIP core backend logic components written in Python",
-                "link": "https://github.com/InetIntel/grip-core",
+                "name": "GRIP-Project",
+                "desc": "GRIP backend logic components written in Python",
+                "link": "https://github.com/InetIntel/grip-project",
             },
             {
                 "name": "GRIP-Tools",
