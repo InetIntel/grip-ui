@@ -32,97 +32,68 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-.header {
+ .header {
   width: 100%;
   background-color: $color-primary;
   box-shadow: $box-shadow;
-  // position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   height: $header-height;
-  // padding: 0 4.5rem;
 
   &__container {
     display: flex;
-    flex-direction: row;
-    justify-content: left;
+    justify-content: space-between;
     max-width: $grid-width;
     width: 100%;
     height: auto;
-
+    padding: 0; 
+    
     @include respond(phone-lg) {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-
-  &__logo {
-    display: flex;
-    align-items: center;
-    position: relative;
-    z-index: 10;
-    overflow: hidden;
-
-    & a {
-      display: block;
-
-      & img {
-        height: 3.5rem;
-      }
+      flex-direction: column;
+      align-items: center;
     }
   }
 
   &__nav {
-    position: relative;
-    z-index: 10;
-
-    &--mobile {
-      display: none;
-    }
+    flex: 1; 
+    display: flex;
+    align-items: center;
   }
 
   &__list {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
+    flex: 1;
+    width: 100%;
     color: $color-white;
     font-family: $font-lato;
     font-size: 1.4rem;
     text-transform: capitalize;
-    height: 100%;
     margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   &__item {
-    width: 18rem;
-    list-style-type: none;
-    height: auto;
-    display: flex;
-    &__right {
-      margin-left: 5rem;
-    }
-  }
-
-  &__link:link,
-  &__link:visited {
+    flex: 1; 
     display: flex;
     justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: auto;
+    text-align: center; 
+    padding: 1rem 0; 
+  }
+
+  &__link {
     color: $color-white;
     text-decoration: none;
-
-    @include respond(phone-lg) {
-      padding-right: 4.5rem;
-      justify-content: flex-end;
-    }
+    display: block;
+    width: 100%; 
+    text-align: center;
 
     &:hover {
-      text-decoration: none;
       color: $color-white;
-      background-color: $color-primary;
+      background-color: $color-secondary;
     }
   }
 }

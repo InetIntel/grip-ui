@@ -58,19 +58,24 @@ class Nav extends Component {
                                     Events
                                 </a>
                             </li>
-                            <li className="header__item">
+                            {/* <li className="header__item">
                                 <a href="/repos" className="header__link">
                                     Code Repos
                                 </a>
-                            </li>
+                            </li> */}
                             <li className="header__item">
                                 <a href="/ack" className="header__link">
                                     Acknowledgements
                                 </a>
                             </li>
-                            <li className="header__item">
+                            {/* <li className="header__item">
                                 <a href="/method" className="header__link">
                                     Methodology
+                                </a>
+                            </li> */}
+                            <li className="header__item">
+                                <a href="/about" className="header__link">
+                                    About
                                 </a>
                             </li>
                             <li className="header__item">
