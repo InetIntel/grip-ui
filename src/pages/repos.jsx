@@ -122,7 +122,7 @@ class CodeRepos extends React.Component {
         return <div id='hijacks' className='container-fluid subpage'>
             <div className="repos">
 
-                <div className="row partners">
+                <div >
                     <div className="col-1-of-1">
                         <h2 className="section-header">
                             Code Repositories
@@ -145,7 +145,7 @@ class CodeRepos extends React.Component {
                     </ul>
                 </div>
 
-                <div className="row partners">
+                <div >
                     <div className="col-1-of-1">
                         <h2 className="section-header">
                             Third-party Software

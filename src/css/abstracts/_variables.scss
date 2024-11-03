@@ -88,10 +88,4 @@ $linear-gradient-secondary-reverse: linear-gradient(2deg, $color-secondary-light
 
 $box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 
-@mixin textLink {
-  color: $color-black;
-  text-decoration: none;
-  &:hover {
-    color: $color-dark-grey;
-  }
-}
+
