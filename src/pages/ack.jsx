@@ -152,8 +152,6 @@ class Acknowledgement extends React.Component {
                 <div className="col-1-of-3">
                     <Card org="ucsd"/>
                 </div>
-            </div>
-            <div className="row partners">
                 <div className="col-1-of-3">
                     <Card org="isoc"/>
                 </div>
@@ -166,8 +164,6 @@ class Acknowledgement extends React.Component {
                 <div className="col-1-of-3">
                     <Card org="gatechcoc"/>
                 </div>
-            </div>
-            <div className="row partners">
                 <div className="col-1-of-3">
                     <Card org="manrs"/>
                 </div>

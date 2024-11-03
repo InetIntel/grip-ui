@@ -1,38 +1,4 @@
-/*!
- * This software is Copyright (c) 2015 The Regents of the University of
- * California. All Rights Reserved. Permission to copy, modify, and distribute this
- * software and its documentation for academic research and education purposes,
- * without fee, and without a written agreement is hereby granted, provided that
- * the above copyright notice, this paragraph and the following three paragraphs
- * appear in all copies. Permission to make use of this software for other than
- * academic research and education purposes may be obtained by contacting:
- *
- * Office of Innovation and Commercialization
- * 9500 Gilman Drive, Mail Code 0910
- * University of California
- * La Jolla, CA 92093-0910
- * (858) 534-5815
- * invent@ucsd.edu
- *
- * This software program and documentation are copyrighted by The Regents of the
- * University of California. The software program and documentation are supplied
- * "as is", without any accompanying services from The Regents. The Regents does
- * not warrant that the operation of the program will be uninterrupted or
- * error-free. The end-user understands that the program was developed for research
- * purposes and is advised not to rely exclusively on the program for any reason.
- *
- * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
- * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST
- * PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- * THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
- * DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS
- * IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE
- * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- */
-
- .header {
+.header {
   width: 100%;
   background-color: $color-primary;
   box-shadow: $box-shadow;
@@ -41,59 +7,133 @@
   align-items: center;
   z-index: 1000;
   height: $header-height;
+  position: relative;
+}
 
-  &__container {
-    display: flex;
-    justify-content: space-between;
-    max-width: $grid-width;
-    width: 100%;
-    height: auto;
-    padding: 0; 
-    
-    @include respond(phone-lg) {
+.header__container {
+  display: flex;
+  justify-content: space-between;
+  max-width: $grid-width;
+  width: 100%;
+  padding: 0 20px;
+  align-items: center;
+}
+
+.header__logo a {
+  font-size: 1.8rem;
+  color: $color-white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.header__burger {
+  display: none;
+  font-size: 2rem;
+  color: $color-white;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.header__nav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+}
+
+.header__nav--mobile-open {
+  transform: translateX(0);
+}
+
+.header__list {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  width: 100%;
+  color: $color-white;
+  font-size: 1.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header__item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.header__link {
+  color: $color-white;
+  text-decoration: none;
+  padding: 0.5rem;
+  transition: color 0.3s;
+  // border-bottom: 2px solid transparent;
+}
+
+.header__link--active {
+  text-decoration: underline;
+  color: $color-secondary;
+}
+
+.header__link:hover {
+  color: $color-secondary;
+  // border-bottom: 2px solid $color-secondary;
+}
+
+@media (max-width: 768px) {
+  .header__burger {
+      display: block;
+  }
+
+  .header__nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $color-primary;
       flex-direction: column;
       align-items: center;
-    }
+      justify-content: center;
+      transform: translateX(-100%);
   }
 
-  &__nav {
-    flex: 1; 
-    display: flex;
-    align-items: center;
+  .header__nav--mobile-open {
+      transform: translateX(0);
   }
 
-  &__list {
-    display: flex;
-    justify-content: space-between; 
-    flex: 1;
-    width: 100%;
-    color: $color-white;
-    font-family: $font-lato;
-    font-size: 1.4rem;
-    text-transform: capitalize;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .header__list {
+      flex-direction: column;
+      align-items: center;
   }
+}
 
-  &__item {
-    flex: 1; 
-    display: flex;
-    justify-content: center;
-    text-align: center; 
-    padding: 1rem 0; 
-  }
+.header__logo {
+  display: flex;
+  align-items: center;
+}
 
-  &__link {
-    color: $color-white;
-    text-decoration: none;
-    display: block;
-    width: 100%; 
-    text-align: center;
+.header__logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
 
-    &:hover {
-      color: $color-white;
-      // background-color: $color-secondary;
-    }
-  }
+.header__logo-image {
+  height: 60px; 
+  width: auto;
+  margin-right: 10px; 
+  border-radius: 4px;
+  border: 1px solid gray;
+}
+
+.header__logo-text {
+  font-size: 0.9rem;
+  color: $color-white;
+  margin: 0;
+  white-space: pre-line;
 }

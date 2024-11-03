@@ -51,6 +51,7 @@ $control-panel-input-calendar-icon-background: #ECF0F1;
 // COLORS
 $color-white: #fff;
 $color-black: #000;
+$color-dark-grey: #333333;
 $color-background-white: #fbfbfb;
 $color-primary: #2c3e50;
 $color-primary-light: #617486;
@@ -83,3 +84,14 @@ $box-shadow: 0 1px 2px #9F9D9D;
 $linear-gradient-primary: linear-gradient(2deg, $color-primary, $color-primary-light);
 $linear-gradient-secondary: linear-gradient(2deg, $color-secondary-dark, $color-secondary-light);
 $linear-gradient-secondary-reverse: linear-gradient(2deg, $color-secondary-light, $color-secondary-dark);
+
+
+$box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+@mixin textLink {
+  color: $color-black;
+  text-decoration: none;
+  &:hover {
+    color: $color-dark-grey;
+  }
+}

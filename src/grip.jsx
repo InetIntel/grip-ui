@@ -55,7 +55,9 @@ const App = () => {
     // }
 
     return <React.Fragment>
+           <div className="app-container">
         <Nav/>
+        <div className="content-wrapper">
         <Switch>
             {/* page routes */}
             <Route path='/events/:eventType/:eventId/:pfxEventId' component={PfxEventDetails}/>
@@ -69,7 +71,9 @@ const App = () => {
             <Route path='/' component={EventsList}/>
             
         </Switch>
+        </div>
         <Footer/>
+        </div>
     </React.Fragment>
 }
 
