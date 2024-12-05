@@ -34,6 +34,9 @@
 
 import React from 'react';
 import DateRangePicker from "react-bootstrap-daterangepicker";
+
+import DateTimeRangeContainer from 'react-advanced-datetimerange-picker'
+
 import moment from "moment";
 // you will need the css that comes with bootstrap@3. if you are using
 // a tool like webpack, you can do the following:
@@ -46,9 +49,15 @@ import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 class RangePicker extends React.Component {
-
+    
     constructor(props){
         super(props);
+        this.local = {
+            "format":"DD-MM-YYYY HH:mm",
+            "sundayFirst" : false
+        }
+        this.maxDate = moment(moment.utc()).add(24, "hour");
+
         this.ranges = {
             'Today': [
                 moment().startOf('day').utc(true),
@@ -79,6 +88,7 @@ class RangePicker extends React.Component {
 
     render() {
         let timeRangeStr = `${this.props.startDate.utc().format("lll")} - ${this.props.endDate.utc().format("lll")}`;
+        // console.log(props)
         return (
             <div className="search-bar__component">
                 <label className="search-bar__label">
@@ -86,7 +96,21 @@ class RangePicker extends React.Component {
                 </label>
                 <div className="search-bar__flex">
                     <FontAwesomeIcon icon={faCalendarAlt}  className={"calendar-icon"}/>
-                    <DateRangePicker
+                    <DateTimeRangeContainer 
+                        ranges={this.ranges}
+                        start={this.props.startDate}
+                        end={this.props.endDate}
+                        local={this.local}
+                        maxDate={this.maxDate}
+                        applyCallback={this.props.onApply}
+                    >    
+                        <input
+                            readOnly={true}
+                            className="form-control search-bar__time-input"
+                            value={timeRangeStr}
+                        />
+                    </DateTimeRangeContainer>
+                    {/* <DateRangePicker
                         initialSettings={{
                             startDate: this.props.startDate,
                             endDate: this.props.endDate,
@@ -105,7 +129,7 @@ class RangePicker extends React.Component {
                             className="form-control search-bar__time-input"
                             value={timeRangeStr}
                         />
-                    </DateRangePicker>
+                    </DateRangePicker> */}
                 </div>
             </div>
         );

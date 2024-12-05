@@ -318,6 +318,18 @@ class EventsTable extends React.Component {
         this._loadEventsData();
     };
 
+    _handleSearchTimeChange2 = (startDate, endDate) => {
+        console.log("Apply Callback");
+        console.log(startDate.format("DD-MM-YYYY HH:mm"));
+        console.log(endDate.format("DD-MM-YYYY HH:mm"));
+        
+        this.query.curPage = 0;
+        this.query.startTime = moment.utc(startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        this.query.endTime = moment.utc(endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+
+        this._loadEventsData();
+    }
+
     _handleSearchEventTypeChange = (eventType) => {
         this.query.curPage = 0;
         this.query.eventType =  eventType;
@@ -416,7 +428,7 @@ class EventsTable extends React.Component {
             <React.Fragment>
                 <SearchBar
                     query={this.query}
-                    onTimeChange={this._handleSearchTimeChange}
+                    onTimeChange={this._handleSearchTimeChange2}
                     onEventTypeChange={this._handleSearchEventTypeChange}
                     onEventSuspicionChange={this._handleSearchSuspicionChange}
                     onSearch={this._handleSearchSearch}
