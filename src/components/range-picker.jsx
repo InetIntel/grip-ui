@@ -33,7 +33,6 @@
  */
 
 import React from 'react';
-import DateRangePicker from "react-bootstrap-daterangepicker";
 
 import DateTimeRangeContainer from 'react-advanced-datetimerange-picker'
 
@@ -56,7 +55,9 @@ class RangePicker extends React.Component {
             "format":"DD-MM-YYYY HH:mm",
             "sundayFirst" : false
         }
+
         this.maxDate = moment(moment.utc()).add(24, "hour");
+        console.log('rerender')
 
         this.ranges = {
             'Today': [
@@ -88,7 +89,7 @@ class RangePicker extends React.Component {
 
     render() {
         let timeRangeStr = `${this.props.startDate.utc().format("lll")} - ${this.props.endDate.utc().format("lll")}`;
-        // console.log(props)
+        console.log(this.props)
         return (
             <div className="search-bar__component">
                 <label className="search-bar__label">
@@ -110,26 +111,6 @@ class RangePicker extends React.Component {
                             value={timeRangeStr}
                         />
                     </DateTimeRangeContainer>
-                    {/* <DateRangePicker
-                        initialSettings={{
-                            startDate: this.props.startDate,
-                            endDate: this.props.endDate,
-                            minYear: 2018,
-                            ranges: this.ranges,
-                            autoApply: true,
-                            alwaysShowCalendar: true,
-                            timePicker: true,
-                            timePicker24Hour: true,
-                            timePickerIncrement: 5,
-                        }}
-                        onApply={this.props.onApply}
-                    >
-                        <input
-                            readOnly={true}
-                            className="form-control search-bar__time-input"
-                            value={timeRangeStr}
-                        />
-                    </DateRangePicker> */}
                 </div>
             </div>
         );
