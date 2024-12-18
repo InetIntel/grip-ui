@@ -48,12 +48,12 @@ import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 class RangePicker extends React.Component {
-    
-    constructor(props){
+
+    constructor(props) {
         super(props);
         this.local = {
-            "format":"DD-MM-YYYY HH:mm",
-            "sundayFirst" : false
+            "format": "DD-MM-YYYY HH:mm",
+            "sundayFirst": false
         }
 
         this.maxDate = moment(moment.utc()).add(24, "hour");
@@ -95,16 +95,16 @@ class RangePicker extends React.Component {
                 <label className="search-bar__label">
                     Select time period (UTC now: {moment().utc().format("lll")})
                 </label>
-                <div className="search-bar__flex">
-                    <FontAwesomeIcon icon={faCalendarAlt}  className={"calendar-icon"}/>
-                    <DateTimeRangeContainer 
+                <div>
+                    <FontAwesomeIcon icon={faCalendarAlt} className={"calendar-icon"} />
+                    <DateTimeRangeContainer
                         ranges={this.ranges}
                         start={this.props.startDate}
                         end={this.props.endDate}
                         local={this.local}
                         maxDate={this.maxDate}
                         applyCallback={this.props.onApply}
-                    >    
+                    >
                         <input
                             readOnly={true}
                             className="form-control search-bar__time-input"

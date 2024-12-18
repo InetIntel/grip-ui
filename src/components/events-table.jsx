@@ -236,12 +236,13 @@ class EventsTable extends React.Component {
         })
     };
 
-    _loadEventsData = async () => {
+    _loadEventsData = () => {
         let [min_susp, max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
         console.log(min_susp, max_susp);
 
         let baseUrl = `${BASE_URL}/events?`;
         let params = new URLSearchParams();
+
         params.append("length", this.query.perPage);
         params.append("start", this.query.perPage * this.query.curPage);
         params.append("ts_start", this.query.startTime.format("YYYY-MM-DDTHH:mm"));
@@ -272,14 +273,32 @@ class EventsTable extends React.Component {
         let url = baseUrl + params.toString();
         this.history.push(this.history.location.pathname + `?${params.toString()}`);
 
-        const response = await axios.get(url);
-        let events = response.data.data;
+        // const response = await axios.get(url);
+        // let events = response.data.data;
 
-        this.setState({
-            events: events,
-            loadingEvents: false,
-            totalRows: response.data.recordsTotal,
+        // this.setState({
+        //     events: events,
+        //     loadingEvents: false,
+        //     totalRows: response.data.recordsTotal,
+        // });
+
+        axios.get(url).then((response) => {
+            let events = response.data.data;
+
+            this.setState({
+                events: events,
+                loadingEvents: false,
+                totalRows: response.data.recordsTotal,
+            });
+        }).catch((error) => {
+            console.error("Error fetching events:", error);
+            this.setState({
+                events: [], //* Check this once you get a chance to get a successful API call through
+                loadingEvents: false,
+                totalRows: 0
+            });
         });
+
     };
 
     /*
