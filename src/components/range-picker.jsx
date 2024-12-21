@@ -34,15 +34,13 @@
 
 import React from 'react';
 
-import DateTimeRangeContainer from 'react-advanced-datetimerange-picker'
-
 import moment from "moment";
 // you will need the css that comes with bootstrap@3. if you are using
 // a tool like webpack, you can do the following:
 import 'bootstrap/dist/css/bootstrap.css';
 // you will also need the css that comes with bootstrap-daterangepicker
 import 'bootstrap-daterangepicker/daterangepicker.css';
-
+import DatePickerNew from './datepicker_new';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 
@@ -95,22 +93,15 @@ class RangePicker extends React.Component {
                 <label className="search-bar__label">
                     Select time period (UTC now: {moment().utc().format("lll")})
                 </label>
-                <div>
+                <div className="search-bar__flex">
                     <FontAwesomeIcon icon={faCalendarAlt} className={"calendar-icon"} />
-                    <DateTimeRangeContainer
-                        ranges={this.ranges}
-                        start={this.props.startDate}
-                        end={this.props.endDate}
-                        local={this.local}
+                    <DatePickerNew 
+                        onApply={this.props.onApply}
+                        start={this.props.startDate.utc()}
+                        end={this.props.endDate.utc()}
                         maxDate={this.maxDate}
-                        applyCallback={this.props.onApply}
-                    >
-                        <input
-                            readOnly={true}
-                            className="form-control search-bar__time-input"
-                            value={timeRangeStr}
-                        />
-                    </DateTimeRangeContainer>
+                        ranges={this.ranges}
+                    />
                 </div>
             </div>
         );
