@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import moment from "moment";
 import DatePicker from 'react-date-picker';
 import Popup from 'reactjs-popup';
-import Select from 'react-dropdown-select';
 
 import 'reactjs-popup/dist/index.css';
 import 'react-date-picker/dist/DatePicker.css';
@@ -31,28 +30,52 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 	  };
 	
 	  const range = (start, end) => {
-		let arr = [];
-		for(let i = start; i <= end; i+=1) {
-			arr.push({value:i, label:i});
-		}
-		return arr;
+		// let arr = [];
+		// for(let i = start; i <= end; i+=1) {
+		// 	arr.push({value:i, label:i});
+		// }
+		// return arr;
+		return Array.from({ length: end - start }, (_, i) => i + start);
 	  };
 
 	  return (
-		  <div className="search-bar__component">
-			<label className="search-bar__label">{dateLabel}</label>
+		  <div className="search-bar__component" style={{"display": "inline-block"}}>
 			<Popup trigger=
 					{<input
 						className="form-control search-bar__time-input"
 						readOnly={true}
-						value={moment(date).utc().format("lll")}
+						value={dateLabel + ' ' + moment(date).utc().format("lll")}
 					/>}
 					position="right center">
 					<div className="search-bar__component">
 						<DatePicker value={date} onChange={setDate_DateOnly}/>
 						<div className="search-bar__flex">
-							<Select placeholder={date.getHours()} options={range(0, 23)} onChange={setHour}/>
-							<Select placeholder={date.getMinutes()} options={range(0, 59)} onChange={setMinute}/>
+							<select
+								onChange={(e) => setHour(e.target.value)}
+								value={date.getHours()}
+								>
+								<option value="" disabled>
+									Hour
+								</option>
+								{Object.keys(range(0, 23)).map((val) => (
+									<option key={val} value={val}>
+									{val}
+									</option>
+								))}
+							</select>
+							<select
+								onChange={(e) => setMinute(e.target.value)}
+								value={date.getHours()}
+								>
+								<option value="" disabled>
+									Hour
+								</option>
+								{Object.keys(range(0, 59)).map((val) => (
+									<option key={val} value={val}>
+									{val}
+									</option>
+								))}
+							</select>
 						</div>
 					</div>
 			</Popup>
@@ -82,16 +105,15 @@ const DatePickerNew = ({ onApply, ranges, start, end}) => {
 
   return (
 	<div className="search-bar__flex">
-		<SingleDatePicker date={startDate} changeDate={setStartDate} dateLabel="Start Date:"/>
-		<SingleDatePicker date={endDate} changeDate={setEndDate} dateLabel="End Date:"/>
+		<SingleDatePicker date={startDate} changeDate={setStartDate} dateLabel="From:"/>
+		<SingleDatePicker date={endDate} changeDate={setEndDate} dateLabel="To:"/>
 		<div className="search-bar__component">
-		<label className="search-bar__label">Predefined Ranges: </label>
 			<select
 			onChange={(e) => handleRangeSelect(e.target.value)}
 			value={""}
 			>
 			<option value="" disabled>
-				Select Range
+				Predefined ranges
 			</option>
 			{Object.keys(predefinedRanges).map((range) => (
 				<option key={range} value={range}>
@@ -99,7 +121,6 @@ const DatePickerNew = ({ onApply, ranges, start, end}) => {
 				</option>
 			))}
 			</select>
-
 		</div>
 		<button className="btn btn-success" type="button" onClick={handleApply}>Apply</button>
     </div>
