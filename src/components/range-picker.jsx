@@ -93,7 +93,9 @@ class RangePicker extends React.Component {
                     Select time period (UTC now: {moment().utc().format("lll")})
                 </label>
                 <div className="search-bar__flex">
-                    <FontAwesomeIcon icon={faCalendarAlt} className={"calendar-icon"} />
+                    <div style={{'paddingTop': '10px'}}>
+                        <FontAwesomeIcon icon={faCalendarAlt} className={"calendar-icon"} />
+                    </div>
                     <DatePickerNew 
                         onApply={this.props.onApply}
                         start={this.props.startDate.utc()}

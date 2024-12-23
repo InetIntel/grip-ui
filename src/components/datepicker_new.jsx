@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import moment from "moment";
 import DatePicker from 'react-date-picker';
 import Popup from 'reactjs-popup';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClock } from '@fortawesome/free-solid-svg-icons'
 
 import 'reactjs-popup/dist/index.css';
 import 'react-date-picker/dist/DatePicker.css';
@@ -30,11 +32,6 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 	  };
 	
 	  const range = (start, end) => {
-		// let arr = [];
-		// for(let i = start; i <= end; i+=1) {
-		// 	arr.push({value:i, label:i});
-		// }
-		// return arr;
 		return Array.from({ length: end - start }, (_, i) => i + start);
 	  };
 
@@ -47,10 +44,12 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 						value={dateLabel + ' ' + moment(date).utc().format("lll")}
 					/>}
 					position="right center">
-					<div className="search-bar__component">
-						<DatePicker value={date} onChange={setDate_DateOnly}/>
-						<div className="search-bar__flex">
-							<select
+					<div style={{'align': 'center'}}>
+						<div style={{'margin': '10px'}}>
+							<DatePicker value={date} onChange={setDate_DateOnly}/>
+						</div>
+						<div style={{'margin': '10px'}}>
+							<select style={{'margin': '5px'}}
 								onChange={(e) => setHour(e.target.value)}
 								value={date.getHours()}
 								>
@@ -66,6 +65,7 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 							<select
 								onChange={(e) => setMinute(e.target.value)}
 								value={date.getHours()}
+								style={{'marginRight': '5px'}}
 								>
 								<option value="" disabled>
 									Hour
@@ -76,6 +76,7 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 									</option>
 								))}
 							</select>
+							<FontAwesomeIcon icon={faClock} />
 						</div>
 					</div>
 			</Popup>
@@ -101,16 +102,15 @@ const DatePickerNew = ({ onApply, ranges, start, end}) => {
       onApply(moment(startDate), moment(endDate));
   };
   
-  let timeRangeStr = `${moment(startDate).utc().format("lll")} - ${moment(endDate).utc().format("lll")}`;
 
   return (
-	<div className="search-bar__flex">
+	<div>
 		<SingleDatePicker date={startDate} changeDate={setStartDate} dateLabel="From:"/>
 		<SingleDatePicker date={endDate} changeDate={setEndDate} dateLabel="To:"/>
 		<div className="search-bar__component">
 			<select
 			onChange={(e) => handleRangeSelect(e.target.value)}
-			value={""}
+			value={customRange}
 			>
 			<option value="" disabled>
 				Predefined ranges
