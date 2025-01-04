@@ -50,7 +50,6 @@ class EventSearchBox extends React.Component {
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
     RE_TAG = /^!?[a-zA-Z0-9\-]+$/;
     RE_CODE = /^!?code:[a-zA-Z\-]+$/;
-    // irr-LEVEL3-all-newcomer-no-record
     RE_ASN = /^!?(AS|as)?[0-9]+$/;
 
     _parseSearchInput = (search_text) => {
