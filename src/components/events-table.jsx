@@ -338,9 +338,6 @@ class EventsTable extends React.Component {
     };
 
     _handleSearchTimeChange2 = (startDate, endDate) => {
-        console.log("Apply Callback");
-        console.log(startDate.format("DD-MM-YYYY HH:mm"));
-        console.log(endDate.format("DD-MM-YYYY HH:mm"));
         
         this.query.curPage = 0;
         this.query.startTime = moment.utc(startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");

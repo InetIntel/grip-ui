@@ -55,7 +55,6 @@ class RangePicker extends React.Component {
         }
 
         this.maxDate = moment(moment.utc()).add(24, "hour");
-        console.log('rerender')
 
         this.ranges = {
             'Today': [
