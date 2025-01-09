@@ -85,7 +85,6 @@ class RangePicker extends React.Component {
     }
 
     render() {
-        let timeRangeStr = `${this.props.startDate.utc().format("lll")} - ${this.props.endDate.utc().format("lll")}`;
         return (
             <div className="search-bar__component">
                 <label className="search-bar__label">
@@ -97,8 +96,8 @@ class RangePicker extends React.Component {
                     </div>
                     <DatePickerNew 
                         onApply={this.props.onApply}
-                        start={this.props.startDate.utc()}
-                        end={this.props.endDate.utc()}
+                        start={this.props.startDate}
+                        end={this.props.endDate}
                         maxDate={this.maxDate}
                         ranges={this.ranges}
                     />

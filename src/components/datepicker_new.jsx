@@ -12,22 +12,28 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 
 const SingleDatePicker = ({date, changeDate, dateLabel}) => {
+	const [dt, setDt] = useState(date);
+	const [hr, setHr] = useState(date.getHours());
+	const [min, setMin] = useState(date.getMinutes());
+
 	const setDate_DateOnly = (newDate) => {
 		let hours = date.getHours();
 		let minutes = date.getMinutes();
-	
+		setDt(newDate);
 		changeDate(new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), hours, minutes));
 	  };
 	
 	  const setHour = (hour) => {
 		let newDate = date;
-		newDate.setHours(hour[0].value);
+		newDate.setHours(hour);
+		setHr(hour);
 		changeDate(newDate);
 	  };
 
-	  const setMinute = (min) => {
+	  const setMinute = (minute) => {
 		let newDate = date;
-		newDate.setMinutes(min[0].value);
+		newDate.setMinutes(minute);
+		setMin(minute);
 		changeDate(newDate);
 	  };
 	
@@ -41,38 +47,45 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 					{<input
 						className="form-control search-bar__time-input"
 						readOnly={true}
-						value={dateLabel + ' ' + moment(date).utc().format("lll")}
+						value={dateLabel + ' ' + moment(date).format("lll")}
 					/>}
 					position="right center">
 					<div style={{'align': 'center'}}>
 						<div style={{'margin': '10px'}}>
-							<DatePicker value={date} onChange={setDate_DateOnly}/>
+							<DatePicker 
+								value={dt} 
+								onChange={setDate_DateOnly}
+								closeCalendar="true"
+								format="MM/dd/yyyy"
+								required={true}
+								clearIcon={null}
+							/>
 						</div>
 						<div style={{'margin': '10px'}}>
 							<select style={{'margin': '5px'}}
 								onChange={(e) => setHour(e.target.value)}
-								value={date.getHours()}
+								value={hr}
 								>
 								<option value="" disabled>
 									Hour
 								</option>
-								{Object.keys(range(0, 23)).map((val) => (
+								{Object.keys(range(0, 24)).map((val) => (
 									<option key={val} value={val}>
-									{val}
+									{String(val).length == 1 ? '0' + String(val): String(val)}
 									</option>
 								))}
 							</select>
 							<select
 								onChange={(e) => setMinute(e.target.value)}
-								value={date.getHours()}
+								value={min}
 								style={{'marginRight': '5px'}}
 								>
 								<option value="" disabled>
-									Hour
+									Minute
 								</option>
-								{Object.keys(range(0, 59)).map((val) => (
+								{Object.keys(range(0, 60)).map((val) => (
 									<option key={val} value={val}>
-									{val}
+									{String(val).length == 1 ? '0' + String(val): String(val)}
 									</option>
 								))}
 							</select>

@@ -329,20 +329,11 @@ class EventsTable extends React.Component {
      ******************************
      */
 
-    _handleSearchTimeChange = (event, picker) => {
-        // NOTE: the rangepicker's time has not timezone information. we convert it to string and parse as utc time here.
-        this.query.curPage = 0;
-        this.query.startTime = moment.utc(picker.startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-        this.query.endTime = moment.utc(picker.endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-        this._loadEventsData();
-    };
-
-    _handleSearchTimeChange2 = (startDate, endDate) => {
+    _handleSearchTimeChange = (startDate, endDate) => {
         
         this.query.curPage = 0;
-        this.query.startTime = moment.utc(startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-        this.query.endTime = moment.utc(endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-
+        this.query.startTime = moment(startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        this.query.endTime = moment(endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
         this._loadEventsData();
     }
 
@@ -444,7 +435,7 @@ class EventsTable extends React.Component {
             <React.Fragment>
                 <SearchBar
                     query={this.query}
-                    onTimeChange={this._handleSearchTimeChange2}
+                    onTimeChange={this._handleSearchTimeChange}
                     onEventTypeChange={this._handleSearchEventTypeChange}
                     onEventSuspicionChange={this._handleSearchSuspicionChange}
                     onSearch={this._handleSearchSearch}
