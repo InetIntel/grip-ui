@@ -35,7 +35,7 @@
 import React, { Component } from 'react';
 
 import gatechLogo from '../images/logos/gatech_white.svg';
-
+import lab_logo from '../images/logos/iil_logo.png';
 
 
 class Footer extends Component {
@@ -45,19 +45,27 @@ class Footer extends Component {
 
     render() {
         return (
+            
             <div className="footer">
-                <div className="footer__content">
-                    <div className="row">
-                        <div className="col-1-of-1">
-                            <div className="footer__logos">
-                                <div className="footer__logos-item footer__logos-item--gatech">
-                                    <img src={gatechLogo} alt={`Georgia Tech logo`} />
-                                </div>
-                            </div>
-                        </div>
+            <div className="footer__content">
+                <div className="footer__logos">
+                    <div className="footer__logos-item footer__logos-item--lab">
+                        <a target="_blank" href="https://inetintel.notion.site/" className="footer__logo-link">
+                            <img src={lab_logo} alt="Lab Logo" className="footer__logo-image" />
+                            <p className="footer__logo-text">
+                                Internet<br />
+                                Intelligence<br />
+                                Lab
+                            </p>
+                        </a>
+                    </div>
+                    <div className="footer__logos-item footer__logos-item--gatech">
+                        <img src={gatechLogo} alt="Georgia Tech Logo" className="footer__gatech-logo" />
                     </div>
                 </div>
             </div>
+        </div>
+        
         );
     }
 }

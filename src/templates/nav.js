@@ -66,12 +66,12 @@ class Nav extends Component {
                     {/*        Home */}
                     {/*    </Link> */}
                     {/* </div> */}
-                    <div className="header__logo">
+                    {/* <div className="header__logo">
                         <a target='_blank' href="https://inetintel.notion.site/" className="header__logo-link">
                             <img src={lab_logo} alt="Logo" className="header__logo-image" />
                             <p className="header__logo-text">Internet{'\n'}Intelligence{'\n'}Lab</p>
                         </a>
-                    </div>
+                    </div> */}
                     <div
                         className="header__burger"
                         onClick={this.toggleMobileMenu}

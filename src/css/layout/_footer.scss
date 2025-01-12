@@ -32,25 +32,26 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-.footer {
+ .footer {
   filter: drop-shadow(.5rem .5rem .5rem #222);
   background-color: $color-primary;
   color: $color-white;
   height: auto;
   display: flex;
-  align-items: flex-end;
   justify-content: center;
+  align-items: center; /* Vertically aligns items */
+  padding: 2rem 0;
 
-  // .footer .row
   & .row {
     max-width: $grid-width;
   }
 
-  // .footer__logos
   &__logos {
-    padding: 3.5rem 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Space logos evenly */
+    align-items: center;
+    width: 100%;
+    padding: 1.5rem 1rem;
 
     @include respond(phone-md) {
       flex-direction: column;
@@ -58,38 +59,42 @@
     }
 
     &-item {
-      height: 3rem;
-      width: 15rem;
+      height: auto;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      width: auto;
 
-      &--gatech {
+      &--lab {
+        text-align: left; /* Align content to the left */
 
-        @include respond(phone-md) {
-          margin-bottom: 4rem!important;
+        /* Target the anchor to lay out its children horizontally */
+        a {
+          display: flex;
+          flex-direction: row;
+          align-items: center; /* Vertically center logo and text */
+          gap: 1rem; /* Space between image and text */
+        }
+
+        & .footer__logo-text {
+          font-size: 1.4rem;
+          line-height: 1.5;
+          color:white;
+          margin: 0; /* Remove default margins */
         }
 
         & img {
-          height: 6rem!important;
-          width: auto!important;
+          height: 6rem;
+          width: auto;
         }
       }
 
-      & img {
-        height: auto;
-        width: 100%;
-      }
-
-
-      &:not(:last-child) {
-        margin-right: 7rem;
-
-        @include respond(phone-md) {
-          margin-right: 0;
-          margin-bottom: 1.5rem;
-        }
+      &--gatech img {
+        height: 6rem;
+        width: auto;
+        margin-left: 40px;
       }
     }
   }
 }
+
