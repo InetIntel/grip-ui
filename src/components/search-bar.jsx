@@ -49,7 +49,7 @@ class SearchBar extends React.Component {
         let dates = this.datePicker.getDates();
         let [prefixes, tags, codes, asns] = this.searchInput._returnParsedSearch();
         return {
-            prefixes: prefixes,
+            pfxs: prefixes,
             tags: tags,
             codes: codes,
             asns: asns,

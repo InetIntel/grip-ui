@@ -117,7 +117,7 @@ class RangePicker extends React.Component {
                         onApply={this.props.onApply}
                         start={this.state.startDate}
                         end={this.state.endDate}
-                        onChange={this.onRangeChange}
+                        onRangeChange ={this.onRangeChange}
                         maxDate={this.maxDate}
                         ranges={this.ranges}
                     />

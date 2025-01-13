@@ -97,7 +97,7 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 		);
 }
 
-const DatePickerNew = ({ onChange, ranges, start, end}) => {
+const DatePickerNew = ({ onRangeChange, ranges, start, end}) => {
   const [startDate, setStartDate] = useState(start.toDate());
   const [endDate, setEndDate] = useState(end.toDate());
   const [customRange, setCustomRange] = useState("");
@@ -109,7 +109,7 @@ const DatePickerNew = ({ onChange, ranges, start, end}) => {
     setStartDate(start.toDate());
     setEndDate(end.toDate());
     setCustomRange(range);
-	onChange(moment(start), moment(end));
+	onRangeChange(moment(start), moment(end));
   };
 
   const handleApply = () => {
