@@ -53,8 +53,13 @@ class RangePicker extends React.Component {
             "format": "DD-MM-YYYY HH:mm",
             "sundayFirst": false
         }
-
+        
         this.maxDate = moment(moment.utc()).add(24, "hour");
+        
+        this.state = {
+            startDate: this.props.startDate,
+            endDate: this.props.endDate
+        }
 
         this.ranges = {
             'Today': [
@@ -84,6 +89,20 @@ class RangePicker extends React.Component {
         };
     }
 
+    onRangeChange = (start, end) => {
+        this.setState({
+            startDate: start,
+            endDate: end
+        });
+    }
+
+    getDates = () => {
+        return {
+            startDate: this.state.startDate,
+            endDate: this.state.endDate
+        }
+    }
+
     render() {
         return (
             <div className="search-bar__component">
@@ -96,8 +115,9 @@ class RangePicker extends React.Component {
                     </div>
                     <DatePickerNew 
                         onApply={this.props.onApply}
-                        start={this.props.startDate}
-                        end={this.props.endDate}
+                        start={this.state.startDate}
+                        end={this.state.endDate}
+                        onChange={this.onRangeChange}
                         maxDate={this.maxDate}
                         ranges={this.ranges}
                     />

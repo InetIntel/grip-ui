@@ -37,11 +37,25 @@ import EventTypeSelector from "./event-type-selector";
 import EventSuspicionSelector from "./event-suspicion-selector";
 import RangePicker from "./range-picker";
 import EventSearchBox from "./event-search-box";
-
 class SearchBar extends React.Component {
 
     constructor(props) {
         super(props);
+        this.datePicker = React.createRef();
+        this.searchInput = React.createRef();
+    }
+
+    createParameters = () => {
+        let dates = this.datePicker.getDates();
+        let [prefixes, tags, codes, asns] = this.searchInput._returnParsedSearch();
+        return {
+            prefixes: prefixes,
+            tags: tags,
+            codes: codes,
+            asns: asns,
+            startDate: dates.startDate,
+            endDate: dates.endDate
+        }
     }
 
     render() {
@@ -59,16 +73,21 @@ class SearchBar extends React.Component {
                     startDate={this.props.query.startTime}
                     endDate={this.props.query.endTime}
                     onApply={this.props.onTimeChange}
+                    ref={(r) => {this.datePicker = r}}
                 />
+                <div className="row search-bar col-lg-4">
 
-                <EventSearchBox
-                    pfxs={this.props.query.pfxs}
-                    asns={this.props.query.asns}
-                    tags={this.props.query.tags}
-                    codes={this.props.query.codes}
-                    onSearch={this.props.onSearch}
-                />
+                    <EventSearchBox
+                        pfxs={this.props.query.pfxs}
+                        asns={this.props.query.asns}
+                        tags={this.props.query.tags}
+                        codes={this.props.query.codes}
+                        ref={(r) => {this.searchInput = r}}
+                        onSearch={this.props.onSearch}
+                    />
 
+		            <button className="btn btn-success" type="button" onClick={() => {this.props.handleSearch(this.createParameters())}}>Search</button>
+                </div>
             </div>
         );
     }

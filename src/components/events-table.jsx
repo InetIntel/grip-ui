@@ -273,15 +273,6 @@ class EventsTable extends React.Component {
         let url = baseUrl + params.toString();
         this.history.push(this.history.location.pathname + `?${params.toString()}`);
 
-        // const response = await axios.get(url);
-        // let events = response.data.data;
-
-        // this.setState({
-        //     events: events,
-        //     loadingEvents: false,
-        //     totalRows: response.data.recordsTotal,
-        // });
-
         axios.get(url).then((response) => {
             let events = response.data.data;
 
@@ -329,12 +320,12 @@ class EventsTable extends React.Component {
      ******************************
      */
 
-    _handleSearchTimeChange = (startDate, endDate) => {
+     _handleSearchTimeChange = (startDate, endDate) => {
         
         this.query.curPage = 0;
         this.query.startTime = moment(startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
         this.query.endTime = moment(endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-        this._loadEventsData();
+        // this._loadEventsData();
     }
 
     _handleSearchEventTypeChange = (eventType) => {
@@ -358,6 +349,20 @@ class EventsTable extends React.Component {
         this.query.codes =  parameters.codes;
         this._loadEventsData();
     };
+
+    _handleOverallSearch = (parameters) => {
+        // Takes care of term search + date search functionalities
+        console.log(parameters)
+        this.query.curPage = 0;
+        this.query.pfxs =  parameters.pfxs;
+        this.query.asns =  parameters.asns;
+        this.query.tags =  parameters.tags;
+        this.query.codes =  parameters.codes;
+        this.query.startTime = moment(parameters.startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        this.query.endTime = moment(parameters.endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        
+        this._loadEventsData();
+    }
 
     _parseQueryString = () => {
         const parsed = queryString.parse(location.search);
@@ -439,6 +444,7 @@ class EventsTable extends React.Component {
                     onEventTypeChange={this._handleSearchEventTypeChange}
                     onEventSuspicionChange={this._handleSearchSuspicionChange}
                     onSearch={this._handleSearchSearch}
+                    handleSearch={this._handleOverallSearch}
                 />
 
                 <div className={"row"}>

@@ -97,7 +97,7 @@ const SingleDatePicker = ({date, changeDate, dateLabel}) => {
 		);
 }
 
-const DatePickerNew = ({ onApply, ranges, start, end}) => {
+const DatePickerNew = ({ onChange, ranges, start, end}) => {
   const [startDate, setStartDate] = useState(start.toDate());
   const [endDate, setEndDate] = useState(end.toDate());
   const [customRange, setCustomRange] = useState("");
@@ -109,6 +109,7 @@ const DatePickerNew = ({ onApply, ranges, start, end}) => {
     setStartDate(start.toDate());
     setEndDate(end.toDate());
     setCustomRange(range);
+	onChange(moment(start), moment(end));
   };
 
   const handleApply = () => {
@@ -135,7 +136,6 @@ const DatePickerNew = ({ onApply, ranges, start, end}) => {
 			))}
 			</select>
 		</div>
-		<button className="btn btn-success" type="button" onClick={handleApply}>Apply</button>
     </div>
   );
 };
