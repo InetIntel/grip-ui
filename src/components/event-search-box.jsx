@@ -98,6 +98,7 @@ class EventSearchBox extends React.Component {
     };
 
     _handleSearch = () => {
+        //! TODO: remove dead code
         let search_text = this.textInput.current.value;
         let [prefixes, tags, codes, asns] = this._parseSearchInput(search_text);
         this.props.onSearch({pfxs: prefixes, asns: asns, tags:tags, codes: codes});
@@ -115,7 +116,11 @@ class EventSearchBox extends React.Component {
 
     render() {
         return (
-               
+            <div className="input-group col-lg-3 search-bar__component">
+                <label className="search-bar__label">
+                    Search by prefix/ASN/tags
+                </label>
+                <div className="search-bar__flex">
                     <input type="text"
                            className="form-control search-bar__search-input"
                            placeholder="Search by prefix/ASN/tags"
@@ -123,6 +128,11 @@ class EventSearchBox extends React.Component {
                            onKeyPress={this._handleKeyPress}
                            defaultValue={this._queryToString()}
                     />
+                    <div style={{"paddingLeft":'5px', 'paddingTop':'2px'}}>
+                        <button className="btn btn-success" type="button" onClick={this.props.handleSearch}>Search</button>
+                    </div>
+                </div>
+            </div>
         )
     }
 }
