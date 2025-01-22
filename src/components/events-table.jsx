@@ -352,7 +352,6 @@ class EventsTable extends React.Component {
 
     _handleOverallSearch = (parameters) => {
         // Takes care of term search + date search functionalities
-        console.log(parameters)
         this.query.curPage = 0;
         this.query.pfxs =  parameters.pfxs;
         this.query.asns =  parameters.asns;

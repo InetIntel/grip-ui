@@ -112,15 +112,20 @@ const DatePickerNew = ({ onRangeChange, ranges, start, end}) => {
 	onRangeChange(moment(start), moment(end));
   };
 
-  const handleApply = () => {
-      onApply(moment(startDate), moment(endDate));
+  const changeStartDate = (date) => {
+	setStartDate(date);
+	onRangeChange(moment(date), moment(endDate));
   };
   
+  const changeEndDate = (date) => {
+	setEndDate(date);
+	onRangeChange(moment(startDate), moment(date));
+  };
 
   return (
 	<div>
-		<SingleDatePicker date={startDate} changeDate={setStartDate} dateLabel="From:"/>
-		<SingleDatePicker date={endDate} changeDate={setEndDate} dateLabel="To:"/>
+		<SingleDatePicker date={startDate} changeDate={changeStartDate} dateLabel="From:"/>
+		<SingleDatePicker date={endDate} changeDate={changeEndDate} dateLabel="To:"/>
 		<div className="search-bar__component">
 			<select
 			onChange={(e) => handleRangeSelect(e.target.value)}
