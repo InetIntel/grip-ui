@@ -98,7 +98,6 @@ class EventSearchBox extends React.Component {
     };
 
     _handleSearch = () => {
-        //! TODO: remove dead code
         let search_text = this.textInput.current.value;
         let [prefixes, tags, codes, asns] = this._parseSearchInput(search_text);
         this.props.onSearch({pfxs: prefixes, asns: asns, tags:tags, codes: codes});
