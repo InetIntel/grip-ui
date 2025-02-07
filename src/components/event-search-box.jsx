@@ -53,7 +53,7 @@ class EventSearchBox extends React.Component {
     }
 
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
-    RE_TAG = /^!?[a-zA-Z\-]+$/;
+    RE_TAG = /^!?[a-zA-Z0-9\-]+$/;
     RE_CODE = /^!?code:[a-zA-Z\-]+$/;
     RE_ASN = /^!?(AS|as)?[0-9]+$/;
 
@@ -68,29 +68,29 @@ class EventSearchBox extends React.Component {
 
         let ready = false;
         for(let v of fields){
-            v = v.trim().toLowerCase();
+            v = v.trim();
             if(this.RE_PFX.test(v)){
                 // if this is a prefix
                 prefixes.push(v);
                 ready = true;
             }
 
-            // check if it's a tag
-            if(this.RE_TAG.test(v)){
-                tags.push(v);
-                ready = true;
-            }
-
             // check if it's a code
-            if(this.RE_CODE.test(v)){
+            else if(this.RE_CODE.test(v)){
                 codes.push(v.split(":")[1]);
                 ready = true;
             }
 
             // check if it's an as number
-            if(this.RE_ASN.test(v)){
+            else if(this.RE_ASN.test(v)){
                 v = v.replace(/as/i,"");
                 asns.push(v);
+                ready = true;
+            }
+
+            // check if it's a tag
+            else if(this.RE_TAG.test(v)){
+                tags.push(v);
                 ready = true;
             }
         }
