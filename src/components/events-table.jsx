@@ -236,12 +236,13 @@ class EventsTable extends React.Component {
         })
     };
 
-    _loadEventsData = async () => {
+    _loadEventsData = () => {
         let [min_susp, max_susp] = translate_suspicion_str_to_values(this.query.suspicionLevel);
         console.log(min_susp, max_susp);
 
         let baseUrl = `${BASE_URL}/events?`;
         let params = new URLSearchParams();
+
         params.append("length", this.query.perPage);
         params.append("start", this.query.perPage * this.query.curPage);
         params.append("ts_start", this.query.startTime.format("YYYY-MM-DDTHH:mm"));
@@ -272,14 +273,23 @@ class EventsTable extends React.Component {
         let url = baseUrl + params.toString();
         this.history.push(this.history.location.pathname + `?${params.toString()}`);
 
-        const response = await axios.get(url);
-        let events = response.data.data;
+        axios.get(url).then((response) => {
+            let events = response.data.data;
 
-        this.setState({
-            events: events,
-            loadingEvents: false,
-            totalRows: response.data.recordsTotal,
+            this.setState({
+                events: events,
+                loadingEvents: false,
+                totalRows: response.data.recordsTotal,
+            });
+        }).catch((error) => {
+            console.error("Error fetching events:", error);
+            this.setState({
+                events: [], //* Check this once you get a chance to get a successful API call through
+                loadingEvents: false,
+                totalRows: 0
+            });
         });
+
     };
 
     /*
@@ -310,13 +320,13 @@ class EventsTable extends React.Component {
      ******************************
      */
 
-    _handleSearchTimeChange = (event, picker) => {
-        // NOTE: the rangepicker's time has not timezone information. we convert it to string and parse as utc time here.
+     _handleSearchTimeChange = (startDate, endDate) => {
+        
         this.query.curPage = 0;
-        this.query.startTime = moment.utc(picker.startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-        this.query.endTime = moment.utc(picker.endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-        this._loadEventsData();
-    };
+        this.query.startTime = moment(startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        this.query.endTime = moment(endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        // this._loadEventsData();
+    }
 
     _handleSearchEventTypeChange = (eventType) => {
         this.query.curPage = 0;
@@ -339,6 +349,19 @@ class EventsTable extends React.Component {
         this.query.codes =  parameters.codes;
         this._loadEventsData();
     };
+
+    _handleOverallSearch = (parameters) => {
+        // Takes care of term search + date search functionalities
+        this.query.curPage = 0;
+        this.query.pfxs =  parameters.pfxs;
+        this.query.asns =  parameters.asns;
+        this.query.tags =  parameters.tags;
+        this.query.codes =  parameters.codes;
+        this.query.startTime = moment(parameters.startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        this.query.endTime = moment(parameters.endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
+        
+        this._loadEventsData();
+    }
 
     _parseQueryString = () => {
         const parsed = queryString.parse(location.search);
@@ -420,6 +443,7 @@ class EventsTable extends React.Component {
                     onEventTypeChange={this._handleSearchEventTypeChange}
                     onEventSuspicionChange={this._handleSearchSuspicionChange}
                     onSearch={this._handleSearchSearch}
+                    handleSearch={this._handleOverallSearch}
                 />
 
                 <div className={"row"}>

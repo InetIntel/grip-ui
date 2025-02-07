@@ -37,39 +37,64 @@ import EventTypeSelector from "./event-type-selector";
 import EventSuspicionSelector from "./event-suspicion-selector";
 import RangePicker from "./range-picker";
 import EventSearchBox from "./event-search-box";
-
 class SearchBar extends React.Component {
 
     constructor(props) {
         super(props);
+        this.datePicker = React.createRef();
+        this.searchInput = React.createRef();
+    }
+
+    createParameters = () => {
+        let dates = this.datePicker.getDates();
+        let [prefixes, tags, codes, asns] = this.searchInput._returnParsedSearch();
+        return {
+            pfxs: prefixes,
+            tags: tags,
+            codes: codes,
+            asns: asns,
+            startDate: dates.startDate,
+            endDate: dates.endDate
+        }
     }
 
     render() {
         return (
-            <div className="row search-bar">
-                <EventTypeSelector eventType={this.props.query.eventType}
-                                   onChange={this.props.onEventTypeChange}
-                />
+            <div>
+                <div className="row search-bar">
+                    <EventTypeSelector eventType={this.props.query.eventType}
+                                    onChange={this.props.onEventTypeChange}
+                    />
 
-                <EventSuspicionSelector eventSuspicionLevel={this.props.query.suspicionLevel}
-                                   onChange={this.props.onEventSuspicionChange}
-                />
+                    <EventSuspicionSelector eventSuspicionLevel={this.props.query.suspicionLevel}
+                                    onChange={this.props.onEventSuspicionChange}
+                    />
+                </div>
+                <div className="row search-bar">
+                        <RangePicker
+                            startDate={this.props.query.startTime}
+                            endDate={this.props.query.endTime}
+                            onApply={this.props.onTimeChange}
+                            ref={(r) => {this.datePicker = r}}
+                        />
+                        <EventSearchBox
+                            pfxs={this.props.query.pfxs}
+                            asns={this.props.query.asns}
+                            tags={this.props.query.tags}
+                            codes={this.props.query.codes}
+                            ref={(r) => {this.searchInput = r}}
+                            onSearch={this.props.onSearch}
+                            handleSearch={() => {this.props.handleSearch(this.createParameters())}}
+                        />
+                        <div> 
+                        </div>
+                        <div>
 
-                <RangePicker
-                    startDate={this.props.query.startTime}
-                    endDate={this.props.query.endTime}
-                    onApply={this.props.onTimeChange}
-                />
+                        </div>
+                    </div>
+                    
 
-                <EventSearchBox
-                    pfxs={this.props.query.pfxs}
-                    asns={this.props.query.asns}
-                    tags={this.props.query.tags}
-                    codes={this.props.query.codes}
-                    onSearch={this.props.onSearch}
-                />
-
-            </div>
+                </div>
         );
     }
 }

@@ -33,22 +33,34 @@
  */
 
 import React from 'react';
-import DateRangePicker from "react-bootstrap-daterangepicker";
+
 import moment from "moment";
 // you will need the css that comes with bootstrap@3. if you are using
 // a tool like webpack, you can do the following:
 import 'bootstrap/dist/css/bootstrap.css';
 // you will also need the css that comes with bootstrap-daterangepicker
 import 'bootstrap-daterangepicker/daterangepicker.css';
-
+import DatePickerNew from './datepicker_new';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 class RangePicker extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
+        this.local = {
+            "format": "DD-MM-YYYY HH:mm",
+            "sundayFirst": false
+        }
+        
+        this.maxDate = moment(moment.utc()).add(24, "hour");
+        
+        this.state = {
+            startDate: this.props.startDate,
+            endDate: this.props.endDate
+        }
+
         this.ranges = {
             'Today': [
                 moment().startOf('day').utc(true),
@@ -77,35 +89,38 @@ class RangePicker extends React.Component {
         };
     }
 
+    onRangeChange = (start, end) => {
+        this.setState({
+            startDate: start,
+            endDate: end
+        });
+    }
+
+    getDates = () => {
+        return {
+            startDate: this.state.startDate,
+            endDate: this.state.endDate
+        }
+    }
+
     render() {
-        let timeRangeStr = `${this.props.startDate.utc().format("lll")} - ${this.props.endDate.utc().format("lll")}`;
         return (
             <div className="search-bar__component">
                 <label className="search-bar__label">
                     Select time period (UTC now: {moment().utc().format("lll")})
                 </label>
                 <div className="search-bar__flex">
-                    <FontAwesomeIcon icon={faCalendarAlt}  className={"calendar-icon"}/>
-                    <DateRangePicker
-                        initialSettings={{
-                            startDate: this.props.startDate,
-                            endDate: this.props.endDate,
-                            minYear: 2018,
-                            ranges: this.ranges,
-                            autoApply: true,
-                            alwaysShowCalendar: true,
-                            timePicker: true,
-                            timePicker24Hour: true,
-                            timePickerIncrement: 5,
-                        }}
+                    <div style={{'paddingTop': '10px'}}>
+                        <FontAwesomeIcon icon={faCalendarAlt} className={"calendar-icon"} />
+                    </div>
+                    <DatePickerNew 
                         onApply={this.props.onApply}
-                    >
-                        <input
-                            readOnly={true}
-                            className="form-control search-bar__time-input"
-                            value={timeRangeStr}
-                        />
-                    </DateRangePicker>
+                        start={this.state.startDate}
+                        end={this.state.endDate}
+                        onRangeChange ={this.onRangeChange}
+                        maxDate={this.maxDate}
+                        ranges={this.ranges}
+                    />
                 </div>
             </div>
         );

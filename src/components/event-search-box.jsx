@@ -47,6 +47,11 @@ class EventSearchBox extends React.Component {
         }
     };
 
+    _returnParsedSearch = () => {
+        let search_text = this.textInput.current.value;
+        return this._parseSearchInput(search_text);
+    }
+
     RE_PFX = /^!?[0-9]+[.:][0-9.:/]*$/;
     RE_TAG = /^!?[a-zA-Z\-]+$/;
     RE_CODE = /^!?code:[a-zA-Z\-]+$/;
@@ -112,7 +117,7 @@ class EventSearchBox extends React.Component {
         return (
             <div className="input-group col-lg-3 search-bar__component">
                 <label className="search-bar__label">
-                    Search for events by prefix/ASN/tags
+                    Search by prefix/ASN/tags
                 </label>
                 <div className="search-bar__flex">
                     <input type="text"
@@ -122,7 +127,9 @@ class EventSearchBox extends React.Component {
                            onKeyPress={this._handleKeyPress}
                            defaultValue={this._queryToString()}
                     />
-                    <button className="btn btn-success" type="button" onClick={this._handleSearch}>Search</button>
+                    <div style={{"paddingLeft":'5px', 'paddingTop':'2px'}}>
+                        <button className="btn btn-success" type="button" onClick={this.props.handleSearch}>Search</button>
+                    </div>
                 </div>
             </div>
         )
