@@ -14,11 +14,11 @@ const AboutPage = ()=>{
             <div className="image-container">
                 <div className="image-wrapper">
                     <img src={grip_concept} alt="Grip Conceptual Pipeline" className="responsive-image" />
-                    {/* <p className="image-label">Grip Conceptual Pipeline</p> */}
+                    <p className="image-label">GRIP Conceptual Pipeline</p>
                 </div>
                 <div className="image-wrapper">
                     <img src={data_flow} alt="Data Flow Diagram" className="responsive-image" />
-                    {/* <p className="image-label">Data Flow Diagram</p> */}
+                    <p className="image-label">Data Flow Diagram</p>
                 </div>
             </div>
             <Methodology />
