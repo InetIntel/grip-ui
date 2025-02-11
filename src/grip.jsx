@@ -45,6 +45,7 @@ import CodeRepos from "./pages/repos";
 import Acknowledgement from "./pages/ack";
 import Methodology from "./pages/method";
 import Contacts from "./pages/contacts";
+import AboutPage from "./pages/about";
 
 const App = () => {
     // const { isLoading } = useAuth0();
@@ -54,19 +55,25 @@ const App = () => {
     // }
 
     return <React.Fragment>
+           <div className="app-container">
         <Nav/>
+        <div className="content-wrapper">
         <Switch>
             {/* page routes */}
             <Route path='/events/:eventType/:eventId/:pfxEventId' component={PfxEventDetails}/>
             <Route path='/events/:eventType/:eventId' component={EventDetails}/>
-            <Route path='/method' component={Methodology}/>
-            <Route path='/repos' component={CodeRepos}/>
+            {/* <Route path='/method' component={Methodology}/> */}
+            {/* <Route path='/repos' component={CodeRepos}/> */}
             <Route path='/ack' component={Acknowledgement}/>
+            <Route path='/about' component={AboutPage}/>
             <Route path='/contacts' component={Contacts}/>
             <Route path='/tags' component={EventTags}/>
             <Route path='/' component={EventsList}/>
+            
         </Switch>
+        </div>
         <Footer/>
+        </div>
     </React.Fragment>
 }
 

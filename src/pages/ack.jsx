@@ -132,12 +132,10 @@ class Acknowledgement extends React.Component {
 
     render() {
         return <div id='hijacks' className='container-fluid subpage'>
-            <div className="row partners">
-                <div className="col-1-of-1">
-                    <h2 className="section-header">
+            <div className='row partners'>
+                    <h2 >
                         Acknowledgements
                     </h2>
-                </div>
             </div>
             <div className="row partners">
                 <div className="col-1-of-3">
@@ -152,8 +150,6 @@ class Acknowledgement extends React.Component {
                 <div className="col-1-of-3">
                     <Card org="ucsd"/>
                 </div>
-            </div>
-            <div className="row partners">
                 <div className="col-1-of-3">
                     <Card org="isoc"/>
                 </div>
@@ -166,8 +162,6 @@ class Acknowledgement extends React.Component {
                 <div className="col-1-of-3">
                     <Card org="gatechcoc"/>
                 </div>
-            </div>
-            <div className="row partners">
                 <div className="col-1-of-3">
                     <Card org="manrs"/>
                 </div>

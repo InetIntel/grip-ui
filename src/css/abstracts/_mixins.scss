@@ -269,3 +269,11 @@ $breakpoint Argument Choices:
   padding: $gutter-vertical-small;
   margin-bottom: $gutter-vertical-small;
 }
+
+@mixin textLink {
+  color: $color-black;
+  text-decoration: none;
+  &:hover {
+    color: $color-dark-grey;
+  }
+}
