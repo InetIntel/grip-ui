@@ -229,7 +229,6 @@ class PfxEventDetails extends React.Component {
             <div id='hijacks' className='container-fluid'>
                 <div className='row'>
                     <div className='col-md-12 page-header'>
-                        <h1><a href={`/events/${this.state.eventData.event_type}/${this.state.eventData.id}`}> 	&#128281; </a></h1>
                         <h1>Prefix Event Details</h1>
                     </div>
                 </div>

@@ -120,7 +120,6 @@ class EventDetails extends React.Component {
             <div id='hijacks' className='container-fluid'>
                 <div className='row'>
                     <div className='col-md-12 page-header'>
-                        <h1><a href={"/events"}> 	&#128281; </a></h1>
                         <h1> Event Details </h1>
                     </div>
                 </div>
