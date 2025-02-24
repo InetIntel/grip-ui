@@ -32,16 +32,16 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-@import "abstracts/functions";
-@import "abstracts/mixins";
-@import "abstracts/variables";
+@use "abstracts/functions"  as *;
+@use "abstracts/mixins" as *;
+@use "abstracts/variables" as *;
 
-@import "layout/footer";
-@import "layout/header";
-@import "layout/page";
+@use "layout/footer" as *;
+@use "layout/header" as *;
+@use "layout/page" as *;
 
-@import "pages/ack";
-@import "pages/about";
-@import "components/search_bar";
-@import "components/other";
-@import "components/sankey";
+@use "pages/ack" as *;
+@use "pages/about" as *;
+@use "components/search_bar" as *;
+@use "components/other" as *;
+@use "components/sankey" as *;

@@ -34,9 +34,9 @@
 
 import 'regenerator-runtime/runtime'
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import HijacksApp from "./grip";
 
-
-var mountNode = document.getElementById("app");
-ReactDOM.render(<HijacksApp />, mountNode);
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<HijacksApp />);

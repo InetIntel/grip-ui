@@ -35,9 +35,9 @@
 import React from 'react';
 import LinkA from "../utils/linka";
 
-class CodeRepos extends React.Component {
+const CodeRepos = ()=> {
 
-    render() {
+   
         let repos = [
             {
                 "name": "GRIP-API",
@@ -167,7 +167,7 @@ class CodeRepos extends React.Component {
                 </div>
             </div>
         </div>
-    }
+    
 }
 
 export default CodeRepos;

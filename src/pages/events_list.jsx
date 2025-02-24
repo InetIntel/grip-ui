@@ -32,59 +32,53 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import React from 'react';
-import {Link} from 'react-router-dom';
-
-import EventsTable from "../components/events-table";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import EventsTable from '../components/events-table';
 
 const HORIZONTAL_OFFSET = 480;
 
-class EventsList extends React.Component {
+function EventsList() {
+  // State variables replacing this.state
+  const [eventType, setEventType] = useState('moas');
+  const [vizType, setVizType] = useState('feed');
+  const [frameWidth, setFrameWidth] = useState(window.innerWidth - HORIZONTAL_OFFSET);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            eventType: 'moas',
-            vizType: 'feed',
-            frameWidth: window.innerWidth - HORIZONTAL_OFFSET
-        };
-
-    }
-
-    componentDidMount() {
-        window.addEventListener('resize', this._resize);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this._resize);
-    }
-
-    render() {
-
-        return <div id='hijacks' className='container-fluid subpage'>
-            <div className='row'>
-                <div className='col-md-12 page-header'>
-                    <h2>Global Routing Intelligence Platform</h2>
-                </div>
-            </div>
-
-            <EventsTable/>
-
-        </div>;
-    }
-
-    _resize = () => {
-        const newWidth = window.innerWidth - HORIZONTAL_OFFSET;
-        this.setState({frameWidth: newWidth});
+  // Equivalent of componentDidMount + componentWillUnmount
+  useEffect(() => {
+    console.log('inside events')
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
     };
+  }, []);
 
-    _changeVizType = (e) => {
-        this.setState({vizType: e.target.id});
-    };
+  // Handle window resizing
+  function handleResize() {
+    setFrameWidth(window.innerWidth - HORIZONTAL_OFFSET);
+  }
 
-    _typeChanged = (eventType) => {
-        this.setState({eventType});
-    };
+  // Handle changing the visualization type
+  function changeVizType(e) {
+    setVizType(e.target.id);
+  }
+
+  // Example for changing event type
+  function typeChanged(newEventType) {
+    setEventType(newEventType);
+  }
+
+  return (
+    <div id="hijacks" className="container-fluid subpage">
+      <div className="row">
+        <div className="col-md-12 page-header">
+          <h2>Global Routing Intelligence Platform</h2>
+        </div>
+      </div>
+
+      <EventsTable />
+    </div>
+  );
 }
 
 export default EventsList;

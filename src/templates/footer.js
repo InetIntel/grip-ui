@@ -38,14 +38,9 @@ import gatechLogo from '../images/logos/gatech_white.svg';
 import lab_logo from '../images/logos/iil_logo.png';
 
 
-class Footer extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
+const Footer = ()=> {
+   
         return (
-            
             <div className="footer">
             <div className="footer__content">
                 <div className="footer__logos">
@@ -65,9 +60,7 @@ class Footer extends Component {
                 </div>
             </div>
         </div>
-        
         );
-    }
 }
 
 export default Footer;

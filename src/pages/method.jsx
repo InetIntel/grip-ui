@@ -35,9 +35,8 @@
 import React from 'react';
 import LinkA from "../utils/linka";
 
-class Methodology extends React.Component {
+const Methodology = ()=>{
 
-    render() {
         let slides = [
             {
                 "name": "CAIDA'S BGP (Hijacking) Observatory",
@@ -81,7 +80,6 @@ class Methodology extends React.Component {
                 </div>
             </div>
         </div>
-    }
 }
 
 export default Methodology;
