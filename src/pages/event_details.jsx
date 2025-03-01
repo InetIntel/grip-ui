@@ -63,12 +63,20 @@ class EventDetails extends React.Component {
         this.loadTagsData();
     }
 
-    async loadEventData() {
-        const response = await axios.get(this.jsonUrl);
-        this.setState({
-            loading: false,
-            eventData: response.data,
-        })
+    loadEventData() {
+        axios.get(this.jsonUrl)
+            .then(response => {
+                this.setState({
+                    loading: false,
+                    eventData: response.data,
+                });
+            })
+            .catch(error => {
+                this.setState({
+                    loading: false,
+                    eventData: { error: true, error_msg: error.message },
+                });
+            });
     }
 
     async loadTagsData() {
@@ -88,6 +96,7 @@ class EventDetails extends React.Component {
                 </div>
             )
         }
+        
         if("error" in eventData){
             return (
                 <div>
@@ -95,7 +104,7 @@ class EventDetails extends React.Component {
                         Event details loading failed
                     </p>
                     <p>
-                        {error_msg}
+                        {eventData.error_msg} 
                     </p>
                 </div>
             )
