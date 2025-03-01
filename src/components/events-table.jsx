@@ -47,6 +47,9 @@ import {
     translate_suspicion_str_to_values,
     translate_suspicion_values_to_str
 } from "../utils/events";
+
+import { utcMoment } from '../utils/timeutils';
+
 import AsNumber from "./asn";
 import IPPrefix from "./ip-prefix";
 import {InferenceTagsList} from "./tags/inference-tag";
@@ -203,8 +206,8 @@ class EventsTable extends React.Component {
         this.query = {
             perPage: 10,
             curPage: 0,
-            startTime: moment().utc().subtract(1, "days"),
-            endTime: moment().utc(),
+            startTime: utcMoment().subtract(1, "days"),
+            endTime: utcMoment(),
             eventType: "moas",
             suspicionLevel: "suspicious",
             min_susp: 80,
@@ -325,7 +328,6 @@ class EventsTable extends React.Component {
         this.query.curPage = 0;
         this.query.startTime = moment(startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
         this.query.endTime = moment(endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
-        // this._loadEventsData();
     }
 
     _handleSearchEventTypeChange = (eventType) => {
@@ -357,6 +359,8 @@ class EventsTable extends React.Component {
         this.query.asns =  parameters.asns;
         this.query.tags =  parameters.tags;
         this.query.codes =  parameters.codes;
+
+        //! TZ: make sure the timezone doesn't mess up here
         this.query.startTime = moment(parameters.startDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
         this.query.endTime = moment(parameters.endDate.format("YYYY-MM-DDTHH:mm"), "YYYY-MM-DDTHH:mm");
         
@@ -410,13 +414,14 @@ class EventsTable extends React.Component {
     };
 
     parse_time(ts_str){
+        //! TZ: CHANGE THIS TO USE OFFSET UTC
         if(isNaN(ts_str)){
             // not a number
-            return moment.utc(ts_str, "YYYY-MM-DDTHH:mm");
+            return moment(ts_str, "YYYY-MM-DDTHH:mm");
         } else {
             // is a number
             let d = new Date(parseInt(ts_str));
-            return moment.utc(d.toUTCString())
+            return moment(d.toUTCString()) //! THIS CAN POTENTIALLY CAUSE ISSUES - d.toUTCSTring can mess with time
         }
     }
 
