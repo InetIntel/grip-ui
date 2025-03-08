@@ -34,7 +34,6 @@
 
 import React from 'react';
 
-import moment from "moment";
 // you will need the css that comes with bootstrap@3. if you are using
 // a tool like webpack, you can do the following:
 import 'bootstrap/dist/css/bootstrap.css';
@@ -43,6 +42,7 @@ import 'bootstrap-daterangepicker/daterangepicker.css';
 import DatePickerNew from './datepicker_new';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
+import { utcMoment } from '../utils/timeutils';
 
 
 class RangePicker extends React.Component {
@@ -54,7 +54,9 @@ class RangePicker extends React.Component {
             "sundayFirst": false
         }
         
-        this.maxDate = moment(moment.utc()).add(24, "hour");
+        this.maxDate = utcMoment().add(24, "hour");
+        console.log('startdate', this.props.startDate);
+        console.log('startdate', this.props.endDate);
         
         this.state = {
             startDate: this.props.startDate,
@@ -63,28 +65,28 @@ class RangePicker extends React.Component {
 
         this.ranges = {
             'Today': [
-                moment().startOf('day').utc(true),
-                moment.utc()
+                utcMoment().startOf('day').utc(true),
+                utcMoment()
             ],
             '-4 hours': [
-                moment.utc().subtract(4, 'hours'),
-                moment.utc()
+                utcMoment().subtract(4, 'hours'),
+                utcMoment()
             ],
             '-24 hours': [
-                moment.utc().subtract(1, 'days'),
-                moment.utc()
+                utcMoment().subtract(1, 'days'),
+                utcMoment()
             ],
             '-7 days': [
-                moment.utc().subtract(7, 'days'),
-                moment.utc()
+                utcMoment().subtract(7, 'days'),
+                utcMoment()
             ],
             '-1 month': [
-                moment.utc().subtract(1, 'months'),
-                moment.utc()
+                utcMoment().subtract(1, 'months'),
+                utcMoment()
             ],
             '-1 year': [
-                moment.utc().subtract(1, 'years'),
-                moment.utc()
+                utcMoment().subtract(1, 'years'),
+                utcMoment()
             ]
         };
     }
@@ -107,7 +109,7 @@ class RangePicker extends React.Component {
         return (
             <div className="search-bar__component">
                 <label className="search-bar__label">
-                    Select time period (UTC now: {moment().utc().format("lll")})
+                    Select time period (UTC now: {utcMoment().format("lll")})
                 </label>
                 <div className="search-bar__flex">
                     <div style={{'paddingTop': '10px'}}>
