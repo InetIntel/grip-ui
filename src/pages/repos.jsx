@@ -84,13 +84,13 @@ class CodeRepos extends React.Component {
                     In addition, we rely on the following third party services for the functioning of GRIP:
                 </div>
                 <div>
-                {ABOUT_CONSTANTS.datasets.map((dataSource) => {
-                return <div className="repos__description">
-                    <b>{dataSource.desc}</b>
-                    { this.renderList(dataSource.list) }
-                </div>
-                
-                })}
+                    { ABOUT_CONSTANTS.datasets.map((dataSource) => {
+                        return <div className="repos__description">
+                            <b>{dataSource.desc}</b>
+                            { this.renderList(dataSource.list) }
+                        </div>
+                    
+                    })}
                 </div>
             </div>
         </div>
