@@ -42,9 +42,9 @@ import ucsdLogo from '../images/logos/ucsd.svg';
 import nsfLogo from '../images/logos/nsf.svg';
 import isocLogo from '../images/logos/isoc.svg';
 import ripeLogo from '../images/logos/ripencc.svg';
-import gatechcocLogo from '../images/logos/gatech_coc.svg';
+import gatechcocLogo from '../images/logos/gatech_coc_cropped.svg';
 import manrsLogo from '../images/logos/manrs.png';
-import amazonLogo from '../images/logos/amazon.png';
+import amazonLogo from '../images/logos/amazon_cropped.png';
 import googleLogo from '../images/logos/google.png';
 
 class Card extends React.Component {
