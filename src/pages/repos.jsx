@@ -37,14 +37,19 @@ import LinkA from "../utils/linka";
 import ABOUT_CONSTANTS from "../constants/aboutPageConstants";
 
 class CodeRepos extends React.Component {
-    renderList = (obj) => {
+    renderList = (obj, desc='') => {
         return <div className="repos__list">
+            {desc && <div className="repos__description"> <b>{desc}</b> </div>}
             <ul>
                 {
                     obj.map((v, i) => {
+                        if(v.list){
+                            return <li>{this.renderList(v.list, v.desc)}</li>;
+                        }
+
                         return v.desc ? 
-                            <li key={i}> <LinkA to={v.link}>{v.name}</LinkA>: {v.desc}</li> 
-                            : <li key={i}> <LinkA to={v.link}>{v.name}</LinkA> </li>;
+                            <li key={i}> <LinkA to={v.link} forceA={true}>{v.name}</LinkA>: {v.desc}</li> 
+                            : <li key={i}> <LinkA to={v.link} forceA={true}>{v.name}</LinkA> </li>;
                     })
                 }
             </ul>
