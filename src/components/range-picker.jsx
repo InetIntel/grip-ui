@@ -55,8 +55,6 @@ class RangePicker extends React.Component {
         }
         
         this.maxDate = utcMoment().add(24, "hour");
-        console.log('startdate', this.props.startDate);
-        console.log('startdate', this.props.endDate);
         
         this.state = {
             startDate: this.props.startDate,
