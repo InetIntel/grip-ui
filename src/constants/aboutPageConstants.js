@@ -58,7 +58,7 @@ const ABOUT_CONSTANTS = {
 	],
 	datasets:[
 		{
-			desc: "Provider(s) for traceroute data",
+			desc: "Traceroute Tool",
 			list: [
 				{
 					"name": "RIPE Atlas",
@@ -67,7 +67,7 @@ const ABOUT_CONSTANTS = {
 			]
 		},
 		{
-			desc: "Providers for BGP-related data",
+			desc: "Routing Data Collection Platforms",
 			list: [
 				{
 					"name": "RIPE RIS",
@@ -80,22 +80,25 @@ const ABOUT_CONSTANTS = {
 			]
 		},
 		{
-			desc: "Providers for AS-related data",
+			desc: "Routing Information of Prefixes",
 			list: [
 				{
 					"name": "RIPEstat",
 					"link": "https://stat.ripe.net/",
-					"desc": "Provider for prefix-related data"
-				},
-				{
-					"name": "ASRank",
-					"link": "https://asrank.caida.org/",
-					"desc": "Provider for ASN data"
 				}
 			]
 		},
 		{
-			desc: "Data sources used for GRIP tagging",
+			desc: "ASN Information",
+			list: [
+				{
+					"name": "ASRank",
+					"link": "https://asrank.caida.org/",
+				}
+			]
+		},
+		{
+			desc: "External Datasets",
 			list: [
 				{
 					"name": "AS to Organization mapping",
@@ -116,87 +119,87 @@ const ABOUT_CONSTANTS = {
 				{
 					"name": "AS Hegemony (Internet Health Report from Internet Initiative Japan)",
 					"link": "https://www.ihr.live/en"
-				}
-			]
-		},
-		{
-			desc: "Internet routing Registries (FTP Archives) (Used for GRIP tagging)",
-			list: [
-				{
-					"name": "RADB",
-					"link": "ftp://ftp.radb.net/radb/dbase/radb.db.gz"
 				},
 				{
-					"name": "AFRINIC",
-					"link": "ftp://ftp.afrinic.net/pub/dbase/"
-				},
-				{
-					"name": "ALTDB",
-					"link": "ftp://ftp.altdb.net/pub/altdb/"
-				},
-				{
-					"name": "APNIC",
-					"link": "ftp://ftp.apnic.net/pub/apnic/whois/"
-				},
-				{
-					"name": "ARIN",
-					"link": "ftp://ftp.arin.net/pub/rr/"
-				},
-				{
-					"name": "BELL",
-					"link": "ftp://whois.in.bell.ca/bell.db.gz"
-				},
-				{
-					"name": "BBOI",
-					"link": "ftp://irr.bboi.net/bboi.db.gz"
-				},
-				{
-					"name": "CANARIE",
-					"link": "https://whois.canarie.ca/dbase/canarie.db.gz"
-				},
-				{
-					"name": "IDNIC",
-					"link": "ftp://irr-mirror.idnic.net/idnic.db.gz"
-				},
-				{
-					"name": "JPIRR",
-					"link": "ftp://ftp.nic.ad.jp/jpirr/"
-				},
-				{
-					"name": "LACNIC",
-					"link": "ftp://ftp.lacnic.net/lacnic.db.gz"
-				},
-				{
-					"name": "LEVEL3",
-					"link": "ftp://rr.Level3.net/level3.db.gz"
-				},
-				{
-					"name": "NESTEGG",
-					"link": "ftp://ftp.nestegg.net/irr"
-				},
-				{
-					"name": "NTTCOM",
-					"link": "ftp://rr1.ntt.net/nttcomRR/"
-				},
-				{
-					"name": "PANIX",
-					"link": "ftp://ftp.panix.com/pub/rrdb"
-				},
-				{
-					"name": "REACH",
-					"link": "ftp://ftp.radb.net/radb/dbase/reach.db.gz"
-				},
-				{
-					"name": "RIPE / RIPE-NONAUTH",
-					"link": "ftp://ftp.ripe.net/ripe/dbase/"
-				},
-				{
-					"name": "TC",
-					"link": "ftp://ftp.bgp.net.br/"
-				},
-				{
-					"name": "NESTEGG",
-					"link": "ftp://ftp.nestegg.net"
+					desc: "Internet Routing Registries (FTP Archives)",
+					list: [
+						{
+							"name": "RADB",
+							"link": "ftp://ftp.radb.net/radb/dbase/radb.db.gz"
+						},
+						{
+							"name": "AFRINIC",
+							"link": "ftp://ftp.afrinic.net/pub/dbase/"
+						},
+						{
+							"name": "ALTDB",
+							"link": "ftp://ftp.altdb.net/pub/altdb/"
+						},
+						{
+							"name": "APNIC",
+							"link": "ftp://ftp.apnic.net/pub/apnic/whois/"
+						},
+						{
+							"name": "ARIN",
+							"link": "ftp://ftp.arin.net/pub/rr/"
+						},
+						{
+							"name": "BELL",
+							"link": "ftp://whois.in.bell.ca/bell.db.gz"
+						},
+						{
+							"name": "BBOI",
+							"link": "ftp://irr.bboi.net/bboi.db.gz"
+						},
+						{
+							"name": "CANARIE",
+							"link": "https://whois.canarie.ca/dbase/canarie.db.gz"
+						},
+						{
+							"name": "IDNIC",
+							"link": "ftp://irr-mirror.idnic.net/idnic.db.gz"
+						},
+						{
+							"name": "JPIRR",
+							"link": "ftp://ftp.nic.ad.jp/jpirr/"
+						},
+						{
+							"name": "LACNIC",
+							"link": "ftp://ftp.lacnic.net/lacnic.db.gz"
+						},
+						{
+							"name": "LEVEL3",
+							"link": "ftp://rr.Level3.net/level3.db.gz"
+						},
+						{
+							"name": "NESTEGG",
+							"link": "ftp://ftp.nestegg.net/irr"
+						},
+						{
+							"name": "NTTCOM",
+							"link": "ftp://rr1.ntt.net/nttcomRR/"
+						},
+						{
+							"name": "PANIX",
+							"link": "ftp://ftp.panix.com/pub/rrdb"
+						},
+						{
+							"name": "REACH",
+							"link": "ftp://ftp.radb.net/radb/dbase/reach.db.gz"
+						},
+						{
+							"name": "RIPE / RIPE-NONAUTH",
+							"link": "ftp://ftp.ripe.net/ripe/dbase/"
+						},
+						{
+							"name": "TC",
+							"link": "ftp://ftp.bgp.net.br/"
+						},
+						{
+							"name": "NESTEGG",
+							"link": "ftp://ftp.nestegg.net"
+						}
+					]
 				}
 			]
 		}
