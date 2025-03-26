@@ -34,30 +34,10 @@
 
 import React from 'react';
 import LinkA from "../utils/linka";
-
+import METHODODLOGY_PRESENTATIONS from '../constants/methodologyConstants';
 class Methodology extends React.Component {
 
     render() {
-        let slides = [
-            {
-                "name": "CAIDA'S BGP (Hijacking) Observatory",
-                "date": "2020-03",
-                "venue": "Workshop On Active Internet Measurements: Knowledge Of Internet Structure: Measurement, Epistemology, And Technology (AIMS-KISMET)",
-                "link": "https://catalog.caida.org/details/media/2020_caidas_bgp_hijacking_observatory_kismet",
-            },
-            {
-                "name": "CAIDA'S BGP (Hijacking) Observatory",
-                "date": "2019-08",
-                "venue": "DHS IMPACT PI Meeting",
-                "link": "https://catalog.caida.org/details/media/2019_hijacks_impact_pi_aug",
-            },
-            {
-                "name": "CAIDA's BGP Observatory",
-                "date": "2019-04",
-                "venue": "Workshop On Active Internet Measurements (AIMS)",
-                "link": "https://catalog.caida.org/details/media/2019_caidas_bgp_observatory_aims",
-            },
-        ];
         return <div id='hijacks' className='container-fluid subpage'>
             <div className="methodology">
 
@@ -73,7 +53,7 @@ class Methodology extends React.Component {
                     Please check out the following research presentations:
                     <ul>
                         {
-                            slides.map((v, i) => {
+                            METHODODLOGY_PRESENTATIONS.map((v, i) => {
                                 return <li key={i}> <LinkA to={v.link}>{v.name}, {v.venue}, {v.date}</LinkA></li>
                             })
                         }

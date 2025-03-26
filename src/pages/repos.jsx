@@ -34,91 +34,29 @@
 
 import React from 'react';
 import LinkA from "../utils/linka";
+import ABOUT_CONSTANTS from "../constants/aboutPageConstants";
 
 class CodeRepos extends React.Component {
+    renderList = (obj, desc='') => {
+        return <div className="repos__list">
+            {desc && <div className="repos__description"> <b>{desc}</b> </div>}
+            <ul>
+                {
+                    obj.map((v, i) => {
+                        if(v.list){
+                            return <li>{this.renderList(v.list, v.desc)}</li>;
+                        }
+
+                        return v.desc ? 
+                            <li key={i}> <LinkA to={v.link} forceA={true}>{v.name}</LinkA>: {v.desc}</li> 
+                            : <li key={i}> <LinkA to={v.link} forceA={true}>{v.name}</LinkA> </li>;
+                    })
+                }
+            </ul>
+        </div>
+    }
 
     render() {
-        let repos = [
-            {
-                "name": "GRIP-API",
-                "desc": "GRIP REST API framework and companion commandline tool written in Rust",
-                "link": "https://github.com/InetIntel/grip-api-v2",
-            },
-            {
-                "name": "GRIP-UI",
-                "desc": "GRIP front-end user interface using React",
-                "link": "https://github.com/InetIntel/grip-ui",
-            },
-            {
-                "name": "GRIP-Project",
-                "desc": "GRIP backend logic components written in Python",
-                "link": "https://github.com/InetIntel/grip-project",
-            },
-            {
-                "name": "GRIP-Tools",
-                "desc": "GRIP deployment and auxiliary scripts",
-                "link": "https://github.com/InetIntel/grip-tools",
-            },
-            {
-                "name": "ROA-Collector",
-                "desc": "RPKI data collection tool used in GRIP",
-                "link": "https://github.com/CAIDA/roa-collector",
-            },
-            {
-                "name": "BGPView",
-                "desc": "Library for efficient (re-)construction, transport and analysis of BGP 'routing tables'",
-                "link": "https://github.com/CAIDA/bgpview",
-            },
-            {
-                "name": "BGPView Sync Server",
-                "desc": "Implements BGPView IO support for Kafka",
-                "link": "https://github.com/CAIDA/pybgpview-io-kafka",
-            },
-            {
-                "name": "BGPStream",
-                "desc": "The CAIDA BGPStream software framework",
-                "link": "https://bgpstream.caida.org",
-            },
-            {
-                "name": "LibIPMeta",
-                "desc": "IP metadata lookup library",
-                "link": "https://github.com/CAIDA/libipmeta",
-            },
-            {
-                "name": "Python bindings for LibIPMeta",
-                "desc": "Python bindings for libipmeta",
-                "link": "https://github.com/CAIDA/pyipmeta",
-            },
-            {
-                "name": "PyWandio",
-                "desc": "Generic data IO library in Python",
-                "link": "https://github.com/CAIDA/pywandio",
-            },
-        ];
-
-        let tools = [
-            {
-                "name": "Apache Kafka",
-                "link": "https://kafka.apache.org",
-            },
-            {
-                "name": "ElasticSearch",
-                "link": "https://www.elastic.co",
-            },
-            {
-                "name": "RIPE Atlas",
-                "link": "https://atlas.ripe.net",
-            },
-            {
-                "name": "Redis",
-                "link": "https://redis.io",
-            },
-            {
-                "name": "OpenStack Swift",
-                "link": "https://wiki.openstack.org/wiki/Swift"
-            },
-        ]
-
         return <div id='hijacks' className='container-fluid subpage'>
             <div className="repos">
 
@@ -136,34 +74,28 @@ class CodeRepos extends React.Component {
                 </div>
 
                 <div className="repos__list">
-                    <ul>
-                        {
-                            repos.map((v, i) => {
-                                return <li key={i}> <LinkA to={v.link}>{v.name}</LinkA>: {v.desc}</li>
-                            })
-                        }
-                    </ul>
+                    { this.renderList(ABOUT_CONSTANTS.repos) }
                 </div>
 
                 <div >
                     <div className="col-1-of-1">
                         <h2 className="section-header">
-                            Third-party Software
+                            Third-party services and datasets
                         </h2>
                     </div>
                 </div>
 
                 <div className="repos__description">
-                    In addition, we also relies on the following software tools and libraries in GRIP:
+                    In addition, we rely on the following third party services for the functioning of GRIP:
                 </div>
-                <div className="repos__list">
-                    <ul>
-                        {
-                            tools.map((v, i) => {
-                                return <li key={i}> <LinkA to={v.link}>{v.name}</LinkA></li>
-                            })
-                        }
-                    </ul>
+                <div>
+                    { ABOUT_CONSTANTS.datasets.map((dataSource) => {
+                        return <div className="repos__description">
+                            <b>{dataSource.desc}</b>
+                            { this.renderList(dataSource.list) }
+                        </div>
+                    
+                    })}
                 </div>
             </div>
         </div>
