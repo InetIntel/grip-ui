@@ -15,7 +15,6 @@ module.exports = {
         exclude: /node_modules/,
         use: 'babel-loader'
       },
-      // Rule for our Sass/SCSS files (exclude node_modules)
       {
         test: /\.s[ac]ss$/i,
         exclude: /node_modules/,
@@ -25,7 +24,6 @@ module.exports = {
           'sass-loader'   // Compiles Sass to CSS
         ]
       },
-      // Rule for plain CSS files (including those from node_modules)
       {
         test: /\.css$/i,
         use: [
@@ -33,7 +31,6 @@ module.exports = {
           'css-loader'    // Translates CSS into CommonJS
         ]
       },
-      // Rule for image assets
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
         type: 'asset/resource'
@@ -53,8 +50,9 @@ module.exports = {
       directory: path.join(__dirname, 'dist')
     },
     compress: true,
-    port: 9000,
+    port: 1234,
+    allowedHosts:"all",
     historyApiFallback: true
   },
-  mode: 'development'
+  mode: 'production'
 };
