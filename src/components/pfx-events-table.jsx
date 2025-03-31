@@ -107,16 +107,19 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Inferences',
                 selector: 'inferences',
+                cell: ()=><></>
             },
             {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
                 width: "150px",
+                cell : (row)=><>{row.tr_worthy}</>
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
                 width: "150px",
+                cell : (row)=><>{row.tr_available}</>
             },
             {
                 name: '',
@@ -197,16 +200,19 @@ class PfxEventsTable extends React.Component {
                 name: 'Inferences',
                 selector: 'inferences',
                 // width: "150px",
+                cell : ()=><></>
             },
             {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
                 width: "150px",
+                cell : (row)=><>{row.tr_worthy}</>
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
                 width: "150px",
+                cell : (row)=><>{row.tr_available}</>
             },
             {
                 name: '',
