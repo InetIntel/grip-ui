@@ -55,7 +55,9 @@ const Footer = ()=> {
                         </a>
                     </div>
                     <div className="footer__logos-item footer__logos-item--gatech">
-                        <img src={gatechLogo} alt="Georgia Tech Logo" className="footer__gatech-logo" />
+                        <a target="_blank" href="https://www.gatech.edu/" className="footer__logo-link">
+                            <img src={gatechLogo} alt="Georgia Tech Logo" className="footer__gatech-logo" />
+                        </a>
                     </div>
                 </div>
             </div>

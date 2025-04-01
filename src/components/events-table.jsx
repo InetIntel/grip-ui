@@ -9,15 +9,17 @@ import DataTable from 'react-data-table-component';
 import SearchBar from './search-bar';
 
 import {
-  extract_largest_prefix,
-  translate_suspicion_str_to_values,
-  translate_suspicion_values_to_str
-} from '../utils/events';
-import AsNumber from './asn';
-import IPPrefix from './ip-prefix';
-import { InferenceTagsList } from './tags/inference-tag';
-import { ASNDROP_URL, BASE_URL, BLOCKLIST_URL } from '../utils/endpoints';
+    extract_largest_prefix,
+    translate_suspicion_str_to_values,
+    translate_suspicion_values_to_str
+} from "../utils/events";
 
+import { utcMoment } from '../utils/timeutils';
+
+import AsNumber from "./asn";
+import IPPrefix from "./ip-prefix";
+import {InferenceTagsList} from "./tags/inference-tag";
+import {ASNDROP_URL, BASE_URL, BLOCKLIST_URL} from "../utils/endpoints";
 
 function unix_time_to_str(unix_time) {
   if (unix_time === null) return '';
@@ -125,14 +127,18 @@ const columns = [
     cell: row => (<>{row.event_type}</>),
   },
 ];
-function parse_time(ts_str) {
-  if (!isNaN(ts_str)) {
-    const d = new Date(parseInt(ts_str));
-    return moment.utc(d.toUTCString());
-  }
-  return moment.utc(ts_str, 'YYYY-MM-DDTHH:mm');
-}
 
+function parse_time(ts_str) {
+        //! TZ: CHANGE THIS TO USE OFFSET UTC
+        if(isNaN(ts_str)){
+            // not a number
+            return moment(ts_str, "YYYY-MM-DDTHH:mm");
+        } else {
+            // is a number
+            let d = new Date(parseInt(ts_str));
+            return moment(d.toUTCString()) //! THIS CAN POTENTIALLY CAUSE ISSUES - d.toUTCSTring can mess with time
+        }
+}
 
 export default function EventsTable() {
   const navigate = useNavigate();
