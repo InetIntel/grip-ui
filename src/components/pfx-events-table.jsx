@@ -107,7 +107,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Inferences',
                 selector: 'inferences',
-                cell: row => <InferenceTagsList inferences={row.inferences} />,
+                cell: row => <InferenceTagsList inferences={[row.inferences]} />,
             },
             {
                 name: 'Traceroute Worthy',
@@ -199,7 +199,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Inferences',
                 selector: 'inferences',
-                cell: row => <InferenceTagsList inferences={row.inferences} />,
+                cell: row => <InferenceTagsList inferences={[row.inferences]}  />,
               },
             {
                 name: 'Traceroute Worthy',
