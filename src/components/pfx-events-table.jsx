@@ -99,7 +99,7 @@ class PfxEventsTable extends React.Component {
                 wrap: true,
                 grow:2,
                 cell: row => {
-
+                    console.log(row,'row print');
                     let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                     return <PropertyTagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
                 }
@@ -107,7 +107,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Inferences',
                 selector: 'inferences',
-                cell: row => <InferenceTagsList inferences={[row.inferences]} />,
+                cell: row => <InferenceTagsList inferences={row.inferences.props.inferences} />,
             },
             {
                 name: 'Traceroute Worthy',
@@ -192,6 +192,7 @@ class PfxEventsTable extends React.Component {
                 wrap: true,
                 grow:2,
                 cell: row => {
+                    console.log(row,'row print');
                     let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                     return <PropertyTagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
                 }
@@ -199,7 +200,7 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Inferences',
                 selector: 'inferences',
-                cell: row => <InferenceTagsList inferences={[row.inferences]}  />,
+                cell: row => <InferenceTagsList inferences={row.inferences.props.inferences}  />,
               },
             {
                 name: 'Traceroute Worthy',
@@ -257,6 +258,7 @@ class PfxEventsTable extends React.Component {
             event.tags = pfx_event.tags;
             event.tr_worthy = pfx_event.traceroutes.worthy.toString();
             event.tr_available = pfx_event.traceroutes.msms.some(msm => msm.results.length>0).toString();
+            console.log(pfx_event.inferences,'inferences');
             event.inferences = <InferenceTagsList inferences={pfx_event.inferences}/>;
             event.fingerprint = prefixes.join("_")
                 .replace(/\//g, "-");
