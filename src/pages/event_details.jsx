@@ -32,123 +32,118 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import React from 'react';
-import axios from "axios";
-import EventDetailsTable from "../components/event-details-table";
-import PfxEventsTable from "../components/pfx-events-table";
-import EventTrTagsTable from "../components/event-tr-tags-table";
-import queryString from "query-string";
-import {BASE_URL, TAGS_URL} from "../utils/endpoints";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import queryString from 'query-string';
 
-class EventDetails extends React.Component {
+import EventDetailsTable from '../components/event-details-table';
+import PfxEventsTable from '../components/pfx-events-table';
+import EventTrTagsTable from '../components/event-tr-tags-table';
+import { BASE_URL, TAGS_URL } from '../utils/endpoints';
 
-    constructor(props) {
-        super(props);
+function EventDetails() {
+  // Extract URL parameters using useParams hook
+  const { eventId, eventType } = useParams();
+  const jsonUrl = `${BASE_URL}/event/id/${eventId}`;
+  const tagsUrl = TAGS_URL;
 
-        this.eventId = this.props.match.params.eventId;
-        this.eventType = this.eventId.split("-")[0];
-        this.jsonUrl = `${BASE_URL}/event/id/${this.eventId}`;
-        this.tagsUrl = `${TAGS_URL}`;
+  const [loading, setLoading] = useState(true);
+  const [eventData, setEventData] = useState(undefined);
+  const [tagsData, setTagsData] = useState(undefined);
 
-        this.state = {
-            loading: true,
-            eventData: undefined,
-            tagsData: undefined,
-        };
+  useEffect(() => {
+    const loadEventData = async () => {
+      try {
+        const response = await axios.get(jsonUrl);
+        setEventData(response.data);
+      } catch (error) {
+        setEventData({ error: true, error_msg: error.message });
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadEventData();
+  }, [jsonUrl]);
 
-    }
+  useEffect(() => {
+    const loadTagsData = async () => {
+      try {
+        const response = await axios.get(tagsUrl);
+        setTagsData(response.data);
+      } catch (error) {
+        console.error('Error loading tags data:', error);
+      }
+    };
+    loadTagsData();
+  }, [tagsUrl]);
 
-    async componentDidMount() {
-        this.loadEventData();
-        this.loadTagsData();
-    }
+  if (loading) {
+    return <div>loading event data ...</div>;
+  }
 
-    async loadEventData() {
-        const response = await axios.get(this.jsonUrl);
-        this.setState({
-            loading: false,
-            eventData: response.data,
-        })
-    }
+  if (eventData && eventData.error) {
+    return (
+      <div>
+        <p>Event details loading failed</p>
+        <p>{eventData.error_msg}</p>
+      </div>
+    );
+  }
 
-    async loadTagsData() {
-        const response = await axios.get(this.tagsUrl);
-        this.setState({
-            tagsData: response.data,
-        });
-    }
+  // Parse query string for debug flag
+  const parsed = queryString.parse(window.location.search);
+  const debug = 'debug' in parsed || 'dbg' in parsed;
 
-    render() {
-        const {loading, eventData} = this.state;
+  return (
+    <div id="hijacks" className="container-fluid">
+      <div className="row">
+        <div className="col-md-12 page-header">
+          <h1>
+            <a href="/events">&#128281;</a>
+          </h1>
+          <h1> Event Details </h1>
+        </div>
+      </div>
+      <div>
+        <EventDetailsTable data={eventData} jsonUrl={jsonUrl} />
+      </div>
 
-        if(loading){
-            return(
-                <div>
-                    loading event data ...
-                </div>
-            )
+      {/*
+      <div>
+        { debug &&
+          <EventSuspicionTable 
+              suspicion_tags={eventData.inference.suspicion.suspicion_tags}
+              all_tags={eventData.tags}
+              title="Tags Suspicion Table" 
+          />
         }
-        if("error" in eventData){
-            return (
-                <div>
-                    <p>
-                        Event details loading failed
-                    </p>
-                    <p>
-                        {error_msg}
-                    </p>
-                </div>
-            )
-        }
+      </div>
+      */}
 
-        const parsed = queryString.parse(location.search);
-        let debug = false;
-        if("debug" in parsed || "dbg" in parsed){
-            debug = true
-        }
+      <div>
+        {tagsData !== undefined && debug && (
+          <EventTrTagsTable
+            eventTags={eventData.tags}
+            allTags={tagsData}
+            title="Tags Traceroute Worthiness Table"
+          />
+        )}
+      </div>
 
-        return (
-            <div id='hijacks' className='container-fluid'>
-                <div className='row'>
-                    <div className='col-md-12 page-header'>
-                        <h1> Event Details </h1>
-                    </div>
-                </div>
-                <div>
-                    <EventDetailsTable data={this.state.eventData} jsonUrl={this.jsonUrl}/>
-                </div>
-
-
-                {/*<div>*/}
-                {/*    { debug &&*/}
-                {/*    <EventSuspicionTable suspicion_tags={this.state.eventData.inference.suspicion.suspicion_tags}*/}
-                {/*                         all_tags={this.state.eventData.tags}*/}
-                {/*                         title={"Tags Suspicion Table"}*/}
-                {/*    />*/}
-                {/*    }*/}
-                {/*</div>*/}
-
-                <div>
-                    {this.state.tagsData!==undefined && debug &&
-                    <EventTrTagsTable eventTags={this.state.eventData.tags}
-                                      allTags={this.state.tagsData}
-                                      title={"Tags Traceroute Worthiness Table"}
-                    />
-                    }
-                </div>
-
-                <div>
-                    <PfxEventsTable data={this.state.eventData.pfx_events}
-                                    tagsData={this.state.tagsData}
-                                    eventId={this.eventId}
-                                    eventType={this.eventType}
-                                    isEventDetails={true}
-                                    title={"Prefix Event List"}
-                    />
-                </div>
-            </div>
-        );
-    }
+      <div>
+        <PfxEventsTable
+          data={eventData.pfx_events}
+          tagsData={tagsData}
+          eventId={eventId}
+          eventType={eventType}
+          isEventDetails={true}
+          title="Prefix Event List"
+        />
+      </div>
+    </div>
+  );
 }
 
 export default EventDetails;
+

@@ -99,7 +99,7 @@ class CodeRepos extends React.Component {
                 </div>
             </div>
         </div>
-    }
+    
 }
-
+}
 export default CodeRepos;

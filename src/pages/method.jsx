@@ -61,7 +61,7 @@ class Methodology extends React.Component {
                 </div>
             </div>
         </div>
-    }
 }
+};
 
 export default Methodology;

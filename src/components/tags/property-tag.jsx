@@ -35,7 +35,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import Link from "react-router-dom/Link";
+import {Link} from "react-router-dom";
 import {convertTagName} from "../../utils/tags";
 import axios from "axios";
 import {TAGS_URL} from "../../utils/endpoints";
