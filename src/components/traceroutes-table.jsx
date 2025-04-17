@@ -39,22 +39,22 @@ const columns = [
     {
         name: 'Measurements ID',
         selector: 'msm_id',
-        cell: (row)=> <div>${row.msm_id}</div>
+        cell: (row)=> <div>{row.msm_id}</div>
     },
     {
         name: 'Target ASN',
         selector: 'target_asn',
-        cell: (row)=> <div>${row.target_asn}</div>
+        cell: (row)=> <div>{row.target_asn}</div>
     },
     {
         name: 'Target IP',
         selector: 'target_ip',
-        cell: (row)=> <div>${row.target_ip}</div>
+        cell: (row)=> <div>{row.target_ip}</div>
     },
     {
         name: 'Traget Prefix',
         selector: 'target_pfx',
-        cell: (row)=> <div>${row.target_pfx}</div>
+        cell: (row)=> <div>{row.target_pfx}</div>
     },
     {
         name: 'Results (from RIPE)',
