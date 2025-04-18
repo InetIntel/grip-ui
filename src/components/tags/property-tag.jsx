@@ -114,7 +114,7 @@ class PropertyTag extends React.Component{
                         </Tooltip>
                     }
                 >
-            <Badge variant={type}>
+            <Badge bg={type}>
                 <FontAwesomeIcon icon={faInfoCircle} />
                 {" "}
                 {name}
