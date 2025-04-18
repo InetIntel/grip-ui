@@ -88,6 +88,7 @@ class PropertyTag extends React.Component{
     render() {
         let name = convertTagName(this.props.name);
         let type = this._translateType(this.props.type);
+        let textColor = type == "warning" ? "dark" : "light";
 
         const url = new URL(window.location.href);
         let parts = url.pathname.split("/");
@@ -97,7 +98,7 @@ class PropertyTag extends React.Component{
             event_type = parts[loc+1];
         }
         let search_term = `?tags=${this.props.name}&min_susp=0&max_susp=100&event_type=${event_type}`;
-        console.log(this.props, type);
+
         return (
             <Link to={{
                 pathname:"/events",
@@ -114,7 +115,7 @@ class PropertyTag extends React.Component{
                         </Tooltip>
                     }
                 >
-            <Badge bg={type}>
+            <Badge bg={type} text={textColor}>
                 <FontAwesomeIcon icon={faInfoCircle} />
                 {" "}
                 {name}

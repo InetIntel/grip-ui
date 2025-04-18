@@ -72,6 +72,7 @@ class InferenceTag extends React.Component{
     render() {
         let name = convertTagName(this.props.name);
         let type = this._determine_label_type()
+
         return (
             <div>
                 <OverlayTrigger
@@ -83,7 +84,7 @@ class InferenceTag extends React.Component{
                         </Tooltip>
                     }
                 >
-                <Badge variant={type[0]}>
+                <Badge bg={type[0]}>
                     <FontAwesomeIcon icon={faLightbulb} />
                     {" "}
                     {name}
