@@ -72,6 +72,12 @@ class InferenceTag extends React.Component{
     render() {
         let name = convertTagName(this.props.name);
         let type = this._determine_label_type()
+        let badgeStyle = {
+            display: 'inline-block',
+            width: '10em',
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+        };
 
         return (
             <div>
@@ -84,7 +90,7 @@ class InferenceTag extends React.Component{
                         </Tooltip>
                     }
                 >
-                <Badge bg={type[0]}>
+                <Badge bg={type[0]} style={badgeStyle}>
                     <FontAwesomeIcon icon={faLightbulb} />
                     {" "}
                     {name}
