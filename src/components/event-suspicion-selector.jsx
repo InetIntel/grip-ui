@@ -36,47 +36,45 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {ToggleButton, ToggleButtonGroup} from 'react-bootstrap';
 
-class EventSuspicionSelector extends React.Component {
-
-    static propTypes = {
-        eventSuspicionLevel: PropTypes.string,
-        onChange: PropTypes.func
+function EventSuspicionSelector({eventSuspicionLevel, onChange}) {
+    // onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734
+    const changeEventSuspicionLevel = (e) => {
+        const target = e.currentTarget.htmlFor;
+        if (target !== "") {
+            onChange(target);
+        }
     };
 
-    static defaultProps = {
-        eventSuspicionLevel: 'suspicious',
-        onChange: ()=>{}
-    };
-
-    render() {
-        return (
+    return(
             <div className="search-bar__component">
                 <label className="search-bar__label">
                     Select an event suspicion level
                 </label>
                 {/* onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
                 <ToggleButtonGroup type="radio" name="eventSuspicionLevel"
-                                   value={this.props.eventSuspicionLevel}
+                                   value={eventSuspicionLevel}
                 >
                     <ToggleButton value='all' id='all'
-                                  onClick={this._changeEventSuspicionLevel}>All</ToggleButton>
+                                  onClick={changeEventSuspicionLevel}>All</ToggleButton>
                     <ToggleButton value='suspicious' id='suspicious'
-                                  onClick={this._changeEventSuspicionLevel}>Suspicious</ToggleButton>
+                                  onClick={changeEventSuspicionLevel}>Suspicious</ToggleButton>
                     <ToggleButton value='grey' id='grey'
-                                  onClick={this._changeEventSuspicionLevel}>Grey</ToggleButton>
+                                  onClick={changeEventSuspicionLevel}>Grey</ToggleButton>
                     <ToggleButton value='benign' id='benign'
-                                  onClick={this._changeEventSuspicionLevel}>Benign</ToggleButton>
+                                  onClick={changeEventSuspicionLevel}>Benign</ToggleButton>
                 </ToggleButtonGroup>
             </div>
-        )
-    }
-
-    _changeEventSuspicionLevel = (e) => {
-        let target = e.target.id;
-        if(target!==""){
-            this.props.onChange(e.target.id);
-        }
-    };
+    );
 }
+
+EventSuspicionSelector.propTypes = {
+    eventType: PropTypes.string,
+    onChange: PropTypes.func
+};
+
+EventSuspicionSelector.defaultProps = {
+    eventType: 'suspicious',
+    onChange: () => {}
+};
 
 export default EventSuspicionSelector;
