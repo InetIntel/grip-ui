@@ -97,7 +97,7 @@ class PropertyTag extends React.Component{
             event_type = parts[loc+1];
         }
         let search_term = `?tags=${this.props.name}&min_susp=0&max_susp=100&event_type=${event_type}`;
-
+        console.log(this.props, type);
         return (
             <Link to={{
                 pathname:"/events",
