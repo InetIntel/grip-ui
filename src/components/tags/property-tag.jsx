@@ -98,7 +98,12 @@ class PropertyTag extends React.Component{
             event_type = parts[loc+1];
         }
         let search_term = `?tags=${this.props.name}&min_susp=0&max_susp=100&event_type=${event_type}`;
-
+        let badgeStyle = {
+            display: 'inline-block',
+            width: '10em',
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+        };
         return (
             <Link to={{
                 pathname:"/events",
@@ -115,7 +120,7 @@ class PropertyTag extends React.Component{
                         </Tooltip>
                     }
                 >
-            <Badge bg={type} text={textColor}>
+            <Badge bg={type} text={textColor} style={badgeStyle}>
                 <FontAwesomeIcon icon={faInfoCircle} />
                 {" "}
                 {name}
