@@ -106,7 +106,7 @@ class PropertyTag extends React.Component{
         };
         return (
             <Link to={{
-                pathname:"/events",
+                pathname:"/",
                 search: `${search_term}` }}
                   replace={true}
                   target={"_blank"}
