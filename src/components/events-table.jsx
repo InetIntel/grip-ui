@@ -236,7 +236,7 @@ export default function EventsTable() {
   function _loadEventsData() {
     const [min_susp, max_susp] = translate_suspicion_str_to_values(query.suspicionLevel);
 
-    let baseUrl = `${BASE_URL}/?`;
+    let baseUrl = `${BASE_URL}/events?`;
     let params = new URLSearchParams();
 
     params.append('length', query.perPage);
