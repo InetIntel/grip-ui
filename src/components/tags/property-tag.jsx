@@ -101,6 +101,7 @@ class PropertyTag extends React.Component{
         let badgeStyle = {
             display: 'inline-block',
             width: '10em',
+            height: '5em',
             whiteSpace: 'normal',
             wordWrap: 'break-word',
         };
