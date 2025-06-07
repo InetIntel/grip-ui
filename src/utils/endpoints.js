@@ -32,7 +32,11 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-const BASE_URL="https://api.grip.inetintel.cc.gatech.edu:443/json";
+const BASE_URL_PREFIX = "https://api.grip.inetintel.cc.gatech.edu:443";
+
+let BASE_URL = BASE_URL_PREFIX;
+BASE_URL_PREFIX = (process.env.NODE_ENV === 'DEV') ? "/dev" : "";
+BASE_URL = BASE_URL_PREFIX + BASE_URL + "/json";
 
 const TAGS_URL=`${BASE_URL}/tags`
 const ASNDROP_URL=`${BASE_URL}/asndrop`
