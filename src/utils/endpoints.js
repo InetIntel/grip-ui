@@ -34,9 +34,8 @@
 
 const BASE_URL_PREFIX = "https://api.grip.inetintel.cc.gatech.edu:443";
 
-let BASE_URL = BASE_URL_PREFIX;
-BASE_URL_PREFIX = (process.env.NODE_ENV === 'DEV') ? "/dev" : "";
-BASE_URL = BASE_URL_PREFIX + BASE_URL + "/json";
+let BASE_URL = BASE_URL_PREFIX + ((process.env.GRIP_ENV === 'DEV') ? "/dev" : "");
+BASE_URL += "/json";
 
 const TAGS_URL=`${BASE_URL}/tags`
 const ASNDROP_URL=`${BASE_URL}/asndrop`
