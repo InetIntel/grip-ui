@@ -1,8 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+const env = dotenv.config().parsed || {};
+
+const envKeys = {
+  'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
+};
 
 module.exports = {
-  entry: './src/index.js', 
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -43,7 +50,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html'
-    })
+    }),
+    new webpack.DefinePlugin(envKeys)
   ],
   devServer: {
     static: {

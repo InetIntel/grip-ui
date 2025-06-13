@@ -31,8 +31,7 @@
  * IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
-
-const BASE_URL="https://api.grip.inetintel.cc.gatech.edu:443/json";
+const BASE_URL = process.env.BASE_URL || "https://api.grip.inetintel.cc.gatech.edu:443/json";
 
 const TAGS_URL=`${BASE_URL}/tags`
 const ASNDROP_URL=`${BASE_URL}/asndrop`
