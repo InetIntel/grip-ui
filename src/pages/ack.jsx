@@ -57,26 +57,23 @@ function OrgCard({ org }) {
 }
 
 
-class Acknowledgement extends React.Component {
-
-    render() {
-        return (
-            <div id='hijacks' className='container-fluid subpage'>
+function Acknowledgement() {
+    return (
+        <div id='hijacks' className='container-fluid subpage'>
             <div className='row partners'>
                 <h2>
-                Acknowledgements
+                    Acknowledgements
                 </h2>
             </div>
             <div className="row partners">
                 {ORGANIZATION_ORDER.map(org => (
-                <div className="col-1-of-3" key={org}>
-                    <OrgCard org={org} />
-                </div>
+                    <div className="col-1-of-3" key={org}>
+                        <OrgCard org={org} />
+                    </div>
                 ))}
             </div>
-            </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default Acknowledgement;
