@@ -33,147 +33,47 @@
  */
 
 import React from 'react';
+import ACK_CONSTANTS from '../constants/ackConstants';
 
-// Logos
-import caidaLogo from '../images/logos/caida.png';
-import xsedeLogo from '../images/logos/xsede-black.png';
-import sdscLogo from '../images/logos/sdsc.svg';
-import ucsdLogo from '../images/logos/ucsd.svg';
-import nsfLogo from '../images/logos/nsf.svg';
-import isocLogo from '../images/logos/isoc.svg';
-import ripeLogo from '../images/logos/ripencc.svg';
-import gatechcocLogo from '../images/logos/gatech_coc_cropped.svg';
-import manrsLogo from '../images/logos/manrs.png';
-import amazonLogo from '../images/logos/amazon_cropped.png';
-import googleLogo from '../images/logos/google.png';
+const ORGANIZATIONS = ACK_CONSTANTS.organizations;
+const ORGANIZATION_ORDER = ACK_CONSTANTS.organizationOrder;
 
-class Card extends React.Component {
-    orgs = {
-        "caida":{
-            "image": <img src={caidaLogo} className="card__logo-icon"/>,
-            "link": "https://www.caida.org",
-            "desc": "This project was originally developed at CAIDA, UC San Diego."
-        },
-        "ucsd":{
-            "image": <img src={ucsdLogo} className="card__logo-icon"/>,
-            "link": "https://www.ucsd.edu",
-            "desc": "This project was originally developed at CAIDA, UC San Diego."
-        },
-        "nsf":{
-            "image": <img src={nsfLogo} className="card__logo-icon"/>,
-            "link": "https://www.caida.org/funding/hijacks/",
-            "desc": "This platform was supported by NSF grant CNS-1423659 " +
-                "(Detecting and Characterizing Internet Traffic Interception Based on BGP Hijacking)."
-        },
-        "ripe":{
-            "image": <img src={ripeLogo} className="card__logo-icon"/>,
-            "link": "https://www.ripe.net/support/cpf/funding-recipients-2020",
-            "desc": "RIPE Community Projects Fund for 2020: BGP Hijacking Observatory"
-        },
-        "sdsc":{
-            "image": <img src={sdscLogo} className="card__logo-icon"/>,
-            "link": "https://www.sdsc.edu",
-            "desc": "The San Diego Super Computer Center originally hosted the project and provided infrastructure."
-        },
-        "xsede":{
-            "image": <img src={xsedeLogo} className="card__logo-icon"/>,
-            "link": "https://www.xsede.org",
-            "desc": "The Extreme Science and Engineering Discovery Environment (XSEDE) provided computing infrastructure previously used by this project"
-        },
-        "isoc":{
-            "image": <img src={isocLogo} className="card__logo-icon"/>,
-            "link": "https://www.internetsociety.org",
-            "desc": "The Internet Society has supported this project."
-        },
-        "gatechcoc":{
-            "image": <img src={gatechcocLogo} className="card__logo-icon card__logo-icon--gatech"/>,
-            "link": "https://support.cc.gatech.edu",
-            "desc": "The Technology Services Organization (TSO) at Georgia Tech's College of Computing provides and manages computing infrastructure for this project."
-        },
-        "manrs":{
-            "image": <img src={manrsLogo} className="card__logo-icon card__logo-icon--gatech"/>,
-            "link": "https://manrs.org",
-            "desc": "The MANRS project at the Global Cyber Alliance."
-        },
-        "amazon":{
-            "image": <img src={amazonLogo} className="card__logo-icon card__logo-icon--gatech"/>,
-            "link": "https://www.amazon.science/",
-            "desc": "The platform is supported by Amazon Science."
-        },
-        "google":{
-            "image": <img src={googleLogo} className="card__logo-icon card__logo-icon--gatech"/>,
-            "link": "https://research.google/",
-            "desc": "The platform is supported by Google Research."
-        }
-    }
+function OrgCard({ org }) {
+    let className = "card__logo-icon";
+    className += ORGANIZATIONS[org].isGatechLogo ? " card__logo-icon--gatech" : "";
 
-    render() {
-        const org = this.props.org;
-        const text = "home." +  org;
-        let image = null;
-        return (
-            <a className="card__link" target='_blank' href={this.orgs[org].link}>
-                <div className="card" >
-                    <div className="card__logo">
-                        { this.orgs[org].image }
-                    </div>
-                    <div className="card__content">
-                        { this.orgs[org].desc }
-                    </div>
+    return (
+        <a className="card__link" target='_blank' href={ORGANIZATIONS[org].link} rel="noopener noreferrer">
+            <div className="card">
+                <div className="card__logo">
+                    <img src={ORGANIZATIONS[org].image} className={className} alt={`${org} logo`} />
                 </div>
-            </a>
-        )
-    }
+                <div className="card__content">
+                    {ORGANIZATIONS[org].desc}
+                </div>
+            </div>
+        </a>
+    );
 }
 
 
-
-class Acknowledgement extends React.Component {
-
-    render() {
-        return <div id='hijacks' className='container-fluid subpage'>
+function Acknowledgement() {
+    return (
+        <div id='hijacks' className='container-fluid subpage'>
             <div className='row partners'>
-                    <h2 >
-                        Acknowledgements
-                    </h2>
+                <h2>
+                    Acknowledgements
+                </h2>
             </div>
             <div className="row partners">
-                <div className="col-1-of-3">
-                    <Card org="nsf"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="ripe"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="caida"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="ucsd"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="isoc"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="xsede"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="sdsc"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="gatechcoc"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="manrs"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="amazon"/>
-                </div>
-                <div className="col-1-of-3">
-                    <Card org="google"/>
-                </div>
+                {ORGANIZATION_ORDER.map(org => (
+                    <div className="col-1-of-3" key={org}>
+                        <OrgCard org={org} />
+                    </div>
+                ))}
             </div>
         </div>
-    }
+    );
 }
 
 export default Acknowledgement;
