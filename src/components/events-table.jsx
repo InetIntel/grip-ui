@@ -155,8 +155,8 @@ export default function EventsTable() {
   const queryRef = useRef({
     perPage: 10,
     curPage: 0,
-    startTime: moment().utc().subtract(1, 'days'),
-    endTime: moment().utc(),
+    startTime: utcMoment().subtract(1, 'days'),
+    endTime: utcMoment(),
     eventType: 'moas',
     suspicionLevel: 'suspicious',
     min_susp: 80,
