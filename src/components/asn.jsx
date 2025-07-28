@@ -146,7 +146,7 @@ class AsNumber extends React.Component {
         let res;
         if(this.props.simple){
            res =  <React.Fragment>
-                AS{asn}
+                AS{asn} test
             </React.Fragment>
 
         } else {
