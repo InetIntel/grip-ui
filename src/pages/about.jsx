@@ -7,11 +7,6 @@ import Methodology from './method';
 import grip_concept from '../images/diagrams/grip_conceptual_pipeline.png';
 import data_flow from '../images/diagrams/data_flow.png';
 
-import { useState, useEffect } from 'react';
-import { NotionRenderer } from 'react-notion-x';
-import { ABOUT_NOTION_URL } from '../utils/endpoints';
-import axios from "axios";
-
 // const AboutPage = ()=>{
 
 //     return(
@@ -30,6 +25,15 @@ import axios from "axios";
 //             <CodeRepos />
 //         </div>
 //     )
+import 'react-notion-x/src/styles.css';
+import 'prismjs/themes/prism-tomorrow.css';
+
+import { useState, useEffect } from 'react';
+import { NotionRenderer } from 'react-notion-x';
+import { ABOUT_NOTION_URL } from '../utils/endpoints';
+import axios from "axios";
+
+
 
 function AboutPage() {
     const [recordMap, setRecordMap] = useState(null);
@@ -41,13 +45,19 @@ function AboutPage() {
             try {
                 const response = await axios.get(ABOUT_NOTION_URL);
                 const data = response.data;
-                setRecordMap(data);
+                if (data && typeof data === 'object') {
+                    console.log(response);
+                    setRecordMap({ block: data });
+                } else {
+                    setError("Invalid Notion data format received.");
+                }
             } catch (err) {
                 setError(err.message);
             } finally {
                 setIsLoading(false);
             }
         };
+
 
         fetchNotionPage();
     }, []);
