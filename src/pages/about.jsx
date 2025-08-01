@@ -10,6 +10,8 @@ import data_flow from '../images/diagrams/data_flow.png';
 import { useState, useEffect } from 'react';
 import { NotionRenderer } from 'react-notion-x';
 import { ABOUT_NOTION_URL } from '../utils/endpoints';
+import axios from "axios";
+
 // const AboutPage = ()=>{
 
 //     return(
