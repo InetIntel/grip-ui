@@ -41,7 +41,7 @@ function AboutPage() {
             try {
                 const response = await axios.get(ABOUT_NOTION_URL);
                 const data = response.data;
-                console.log(data);
+                setRecordMap(data);
             } catch (err) {
                 setError(err.message);
             } finally {
