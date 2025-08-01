@@ -38,5 +38,6 @@ const ASNDROP_URL=`${BASE_URL}/asndrop`
 const BLOCKLIST_URL=`${BASE_URL}/blocklist`
 
 const FEEDBACK_URL="https://api.grip.inetintel.cc.gatech.edu/dev/feedback"
+const ABOUT_NOTION_URL = "https://api.grip.inetintel.cc.gatech.edu/fetchnotion/about"
 
-export {BASE_URL, TAGS_URL, ASNDROP_URL, BLOCKLIST_URL, FEEDBACK_URL}
+export {BASE_URL, TAGS_URL, ASNDROP_URL, BLOCKLIST_URL, FEEDBACK_URL, ABOUT_NOTION_URL};
