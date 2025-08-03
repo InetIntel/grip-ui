@@ -1,37 +1,27 @@
 
+import 'react-notion-x/src/styles.css';
 
 import React from 'react';
-import LinkA from "../utils/linka";
-import CodeRepos from './repos';
-import Methodology from './method';
-import grip_concept from '../images/diagrams/grip_conceptual_pipeline.png';
-import data_flow from '../images/diagrams/data_flow.png';
-
-// const AboutPage = ()=>{
-
-//     return(
-//         <div className="about-page-container">
-//             <div className="image-container">
-//                 <div className="image-wrapper">
-//                     <img src={grip_concept} alt="Grip Conceptual Pipeline" className="responsive-image" />
-//                     <p className="image-label">GRIP Conceptual Pipeline</p>
-//                 </div>
-//                 <div className="image-wrapper">
-//                     <img src={data_flow} alt="Data Flow Diagram" className="responsive-image" />
-//                     <p className="image-label">Data Flow Diagram</p>
-//                 </div>
-//             </div>
-//             <Methodology />
-//             <CodeRepos />
-//         </div>
-//     )
-import 'react-notion-x/src/styles.css';
-import 'prismjs/themes/prism-tomorrow.css';
-
 import { useState, useEffect } from 'react';
 import { NotionRenderer } from 'react-notion-x';
 import { ABOUT_NOTION_URL } from '../utils/endpoints';
 import axios from "axios";
+
+//! DEBUG
+
+function NotionStyleOverrides() {
+    return (
+        <style>
+            {`
+        .notion-h3 {
+          color: red !important;
+        }
+      `}
+        </style>
+    );
+}
+
+//! END DEBUG
 
 
 
@@ -46,7 +36,6 @@ function AboutPage() {
                 const response = await axios.get(ABOUT_NOTION_URL);
                 const data = response.data;
                 if (data && typeof data === 'object') {
-                    console.log(response);
                     setRecordMap({ block: data });
                 } else {
                     setError("Invalid Notion data format received.");
@@ -66,13 +55,15 @@ function AboutPage() {
     if (error) return <div>Error: {error}</div>;
     if (!recordMap) return <div>No data</div>;
 
+    // Then in your return:
     return (
-        <div className="about-page">
+        <>
+            <NotionStyleOverrides />
             <NotionRenderer
                 recordMap={recordMap}
-                fullPage={true}
+                fullPage={false}
             />
-        </div>
+        </>
     );
 }
 
