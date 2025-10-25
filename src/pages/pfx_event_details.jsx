@@ -39,8 +39,6 @@ import TraceroutesTable from "../components/traceroutes-table";
 import PfxEventDetailsTable from "../components/pfx-event-details-table";
 import { BASE_URL, TAGS_URL } from "../utils/endpoints";
 
-const HORIZONTAL_OFFSET = 480;
-
 function PfxEventDetails() {
   const { eventId, pfxEventId: fingerprint } = useParams();
   const computedEventType = eventId.split("-")[0];

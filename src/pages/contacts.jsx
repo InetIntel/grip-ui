@@ -1,5 +1,4 @@
 import React from 'react';
-import LinkA from "../utils/linka";
 
 class Contacts extends React.Component {
 
