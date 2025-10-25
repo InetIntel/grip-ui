@@ -129,14 +129,13 @@ const columns = [
 ];
 
 function parse_time(ts_str) {
-        //! TZ: CHANGE THIS TO USE OFFSET UTC
         if(isNaN(ts_str)){
             // not a number
             return moment(ts_str, "YYYY-MM-DDTHH:mm");
         } else {
             // is a number
             let d = new Date(parseInt(ts_str));
-            return moment(d.toUTCString()) //! THIS CAN POTENTIALLY CAUSE ISSUES - d.toUTCSTring can mess with time
+            return moment(d.toUTCString())
         }
 }
 
@@ -161,13 +160,13 @@ export default function EventsTable() {
     suspicionLevel: 'suspicious',
     min_susp: 80,
     max_susp: 100,
-    min_duration: 0,
-    max_duration: 0,
+    min_duration:0,
+    max_duration:0,
     pfxs: [],
     asns: [],
     tags: [],
     codes: [],
-  });
+    });
 
   const query = queryRef.current;
 
@@ -322,6 +321,7 @@ export default function EventsTable() {
     query.asns = parameters.asns;
     query.tags = parameters.tags;
     query.codes = parameters.codes;
+    
     query.startTime = moment(parameters.startDate.format('YYYY-MM-DDTHH:mm'), 'YYYY-MM-DDTHH:mm');
     query.endTime = moment(parameters.endDate.format('YYYY-MM-DDTHH:mm'), 'YYYY-MM-DDTHH:mm');
     _loadEventsData();
