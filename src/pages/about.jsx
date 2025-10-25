@@ -1,7 +1,6 @@
 
 
 import React from 'react';
-import LinkA from "../utils/linka";
 import CodeRepos from './repos';
 import Methodology from './method';
 import grip_concept from '../images/diagrams/grip_conceptual_pipeline.png';
