@@ -106,18 +106,6 @@ function EventDetails() {
         <EventDetailsTable data={eventData} jsonUrl={jsonUrl} />
       </div>
 
-      {/*
-      <div>
-        { debug &&
-          <EventSuspicionTable 
-              suspicion_tags={eventData.inference.suspicion.suspicion_tags}
-              all_tags={eventData.tags}
-              title="Tags Suspicion Table" 
-          />
-        }
-      </div>
-      */}
-
       <div>
         {tagsData !== undefined && debug && (
           <EventTrTagsTable

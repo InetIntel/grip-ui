@@ -58,16 +58,6 @@ function tr_to_type(tr_worthiness){
     }
 }
 
-function tr_str_to_value(tr_worthiness){
-    if(tr_worthiness==="yes"){
-        return 1;
-    } else if (tr_worthiness === "no"){
-        return 0;
-    } else {
-        return -1;
-    }
-}
-
 function extract_tags_tr_worthiness(tags_data){
     if(tags_data===undefined || Object.keys(tags_data).length === 0){
         return {};
