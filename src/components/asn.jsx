@@ -69,7 +69,7 @@ function AsNumber({ asn, data }) {
 
 	const fullName = asOrg?.organization?.orgName || "";
 	const shortName = abbreviateStringToLength(fullName, 22);
-	const asLabel = `AS${asNumber} ${shortName}`;
+	const asLabel = `AS${asNumber} ${shortName}`.trim();
 
 	const spanLabel =
 		(isPrivateAsNumber && 'private') ||
