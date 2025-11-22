@@ -13,24 +13,30 @@ export function countryCodeToFlagEmoji(countryCode) {
 	//   countryCode: string, 2-letter country code
 	// Output:
 	//   string: emoji flag or empty string if invalid input
-
+	
 	const EMOJI_OFFSET = 127397;
-	const countryCodeUpperCase = countryCode.toUpperCase();
 
-	if (typeof countryCode !== 'string'
-		&& !/^[A-Z]{2}$/.test(countryCodeUpperCase)) {
+	if (typeof countryCode !== 'string') {
 		return "";
 	}
 
-	return String.fromCodePoint(...[...countryCodeUpperCase].map(
-		c => c.codePointAt() + EMOJI_OFFSET)
+	const countryCodeUpperCase = countryCode.toUpperCase();
+
+	if (!/^[A-Z]{2}$/.test(countryCodeUpperCase)) {
+		return "";
+	}
+
+	return String.fromCodePoint(
+		...[...countryCodeUpperCase].map(
+			c => c.codePointAt() + EMOJI_OFFSET
+		)
 	);
 }
 
 export function abbrieviateStringToLength(string, abbrieviationLength) {
 	let prefixStringLengthPercentage = 0.7;
 	let separator = '...';
-	
+
 	if (string.length <= abbrieviationLength ||
 		abbrieviationLength <= separator.length) {
 		return string;
@@ -40,10 +46,11 @@ export function abbrieviateStringToLength(string, abbrieviationLength) {
 	const prefixLetterCount = Math.floor(
 		totalLetterCount * prefixStringLengthPercentage
 	);
+	const suffixLetterCount = totalLetterCount - prefixLetterCount;
 
 	const prefix = string.substring(0, prefixLetterCount);
 	const suffix = string.substring(
-		string.length - (totalLetterCount - prefixLetterCount)
+		string.length - suffixLetterCount, string.length
 	);
 
 	return prefix + separator + suffix;
