@@ -51,6 +51,7 @@ function AsNumber({ asn, data }) {
         let count = 0;
         if (is_private) {
             res.push(<p key={`tooltip-${count++}`}>Private AS Number</p>);
+            res.push(<p key={`tooltip-${count++}`}>Private AS Number</p>);
         }
         if (on_blacklist) {
             res.push(<p key={`tooltip-${count++}`}>AS is on a blacklist</p>)
