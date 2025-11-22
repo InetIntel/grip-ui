@@ -86,13 +86,13 @@ function AsNumber({ asn, data }) {
 				</Tooltip>
 			}
 		>
-			<span>
+			<span className="asn-label">
 				<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
 					<span className="asn__country">{countryFlag}</span>{label}
 					{spanLabel.length > 0 && 
 						<b> ({spanLabel}) </b>
 					}
-				</a>{' '}
+				</a>
 			</span>
 		</OverlayTrigger>
 	)
