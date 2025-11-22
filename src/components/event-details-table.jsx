@@ -34,7 +34,7 @@
 
 import React from "react";
 import {extract_impact, extract_largest_prefix, unix_time_to_str} from "../utils/events";
-import AsNumber from "./asn";
+import AsnLabel from "./AsnLabel";
 import IPPrefix from "./ip-prefix";
 import axios from "axios";
 import {InferenceTagsList} from "./tags/inference-tag";
@@ -124,7 +124,7 @@ class EventDetailsTable extends React.Component {
                                     <td>
                                         {data.summary && data.summary.victims &&
                                             data.summary.victims.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={data.asinfo} />
+                                                return <AsnLabel key={asn} asn={asn} data={data.asinfo} />
                                             })
                                         }
                                     </td>
@@ -134,7 +134,7 @@ class EventDetailsTable extends React.Component {
                                     <td>
                                         {data.summary && data.summary.attackers &&
                                             data.summary.attackers.map(function(asn){
-                                                return <AsNumber key={asn} asn={asn} data={data.asinfo} />
+                                                return <AsnLabel key={asn} asn={asn} data={data.asinfo} />
                                             })
                                         }
                                     </td>

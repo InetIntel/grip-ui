@@ -43,7 +43,7 @@ import {
 	tooltipGenerator
 } from "./utils/AsnUtils";
 
-function AsNumber({ asn, data }) {
+function AsnLabel({ asn, data }) {
 	//! TODO: shift this to a config file
 	const ASRANK_URL = "https://asrank.caida.org/asns?asn=";
 
@@ -96,9 +96,9 @@ function AsNumber({ asn, data }) {
 	)
 }
 
-AsNumber.propTypes = {
+AsnLabel.propTypes = {
 	asn: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 	data: PropTypes.object
 };
 
-export default AsNumber;
+export default AsnLabel;

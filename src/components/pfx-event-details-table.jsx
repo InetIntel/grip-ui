@@ -34,7 +34,7 @@
 
 import React from "react";
 import {unix_time_to_str} from "../utils/events";
-import AsNumber from "./asn";
+import AsnLabel from "./AsnLabel";
 import IPPrefix from "./ip-prefix";
 import axios from "axios";
 import {InferenceTagsList} from "./tags/inference-tag";
@@ -147,10 +147,10 @@ class PfxEventDetailsTable extends React.Component {
         let victims = "None";
         let attackers = "None";
         if(data.victims.length>0){
-            victims = data.victims.map(function(asn){ return <AsNumber key={asn} asn={asn} data={asinfo} /> });
+            victims = data.victims.map(function(asn){ return <AsnLabel key={asn} asn={asn} data={asinfo} /> });
         }
         if(data.attackers.length>0){
-            attackers = data.attackers.map(function(asn){ return <AsNumber key={asn} asn={asn} data={asinfo} /> });
+            attackers = data.attackers.map(function(asn){ return <AsnLabel key={asn} asn={asn} data={asinfo} /> });
         }
 
         return (

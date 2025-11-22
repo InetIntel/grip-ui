@@ -16,7 +16,7 @@ import {
 
 import { utcMoment } from '../utils/timeutils';
 
-import AsNumber from "./asn";
+import AsnLabel from "./AsnLabel";
 import IPPrefix from "./ip-prefix";
 import {InferenceTagsList} from "./tags/inference-tag";
 import {ASNDROP_URL, BASE_URL, BLOCKLIST_URL} from "../utils/endpoints";
@@ -31,7 +31,7 @@ function renderOrigins(origins, data) {
   return (
     <div>
       {uniqueOrigins.slice(0, 2).map(asn => (
-        <AsNumber key={asn} asn={asn} data={data} />
+        <AsnLabel key={asn} asn={asn} data={data} />
       ))}
       {uniqueOrigins.length > 2 && '...'}
     </div>
