@@ -46,7 +46,6 @@ function AsNumber({ asn, data }) {
     //! TODO: shift this to a config file
     const ASRANK_URL = "https://asrank.caida.org/asns?asn=";
 
-    let asNumber = Number.parseInt(asn, 10);
     function tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop) {
         let res = [];
         let count = 0;
@@ -85,6 +84,8 @@ function AsNumber({ asn, data }) {
 
     console.log(data);
 
+    const asNumber = Number.parseInt(asn, 10);
+    
     const isPrivateAsNumber = isPrivateASN(asNumber);
     const onBlacklist = data.blacklist?.includes(asNumber);
     const onAsndrop = data.asndrop?.includes(asNumber);
@@ -102,8 +103,9 @@ function AsNumber({ asn, data }) {
     let countryCode = asorg?.organization?.country.iso;
     let countryFlag = countryCodeToFlagEmoji(countryCode);
 
-    let asName = abbrieviateStringToLength(asorg?.organization?.orgName, 22);
-    let ASLabel = `AS${asNumber} ${asName}`;
+    let asFullName = asorg?.organization?.orgName || "";
+    let asShortName = abbrieviateStringToLength(asFullName, 22);
+    let ASLabel = `AS${asNumber} ${asShortName}`;
 
     const spanLabel =
         (isPrivateAsNumber && 'private') ||

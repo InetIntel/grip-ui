@@ -30,7 +30,7 @@ export function countryCodeToFlagEmoji(countryCode) {
 export function abbrieviateStringToLength(string, abbrieviationLength) {
 	let prefixStringLengthPercentage = 0.7;
 	let separator = '...';
-
+	
 	if (string.length <= abbrieviationLength ||
 		abbrieviationLength <= separator.length) {
 		return string;
