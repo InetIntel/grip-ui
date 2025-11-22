@@ -39,7 +39,8 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { 
     isPrivateASN, 
     countryCodeToFlagEmoji, 
-    abbrieviateStringToLength 
+    abbrieviateStringToLength,
+    tooltipGenerator
 } from "./utils/AsnUtils";
 
 function AsNumber({ asn, data }) {
@@ -92,7 +93,8 @@ function AsNumber({ asn, data }) {
     const onAsndrop = data.asndrop?.includes(asNumber);
 
     // construct tooltip
-    const tooltip_str = tooltip(asn, data, isPrivateAsNumber, onBlacklist, onAsndrop);
+    // const tooltip_str = tooltip(asn, data, isPrivateAsNumber, onBlacklist, onAsndrop);
+    const tooltip_str = tooltipGenerator(asn, data, isPrivateAsNumber, onBlacklist, onAsndrop);
     console.log(tooltip_str);
 
     // TODO: consider loading data from asrank api if props.data is not available

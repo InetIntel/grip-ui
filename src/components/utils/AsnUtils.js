@@ -13,7 +13,7 @@ export function countryCodeToFlagEmoji(countryCode) {
 	//   countryCode: string, 2-letter country code
 	// Output:
 	//   string: emoji flag or empty string if invalid input
-	
+
 	const EMOJI_OFFSET = 127397;
 
 	if (typeof countryCode !== 'string') {
@@ -56,8 +56,45 @@ export function abbrieviateStringToLength(string, abbrieviationLength) {
 	return prefix + separator + suffix;
 }
 
+export function tooltipGenerator(asn, asinfo, is_private, on_blacklist, on_asndrop) {
+	let res = [];
+
+	if (is_private) res.push("Private AS Number");
+	if (on_blacklist) res.push("AS is on a blacklist");
+	if (on_asndrop) res.push("AS is on Spamhaus ASN DROP list");
+
+	if (asinfo[asn]?.asrank?.organization?.country) {
+		let asorg = asinfo[asn].asrank;
+		let country_name = asorg.organization.country.name;
+		let org_name = asorg.organization.orgName;
+		let rank = asorg.rank;
+		if (org_name) {
+			org_name = org_name.replaceAll('"', "");
+			res.push(
+				`ASN: ${asn}`,
+				`Name: ${org_name}`,
+				`Country: ${country_name}`,
+				`Rank: ${rank}`
+			);
+		}
+	}
+	if ("hegemony" in asinfo && asn in asinfo.asrank) {
+		res.push(`Hegemony: ${asinfo.hegemony[asn]}`);
+	}
+	if (res.length === 0) {
+		res.push("AS Info Unavailable");
+	}
+
+	return (
+		<ul style="ul_tooltip">
+			{res.map((item, index) => (<li key={`tooltip-${index}`}>{item}</li>))}
+		</ul>
+	);
+}
+
 export default {
 	isPrivateASN,
 	countryCodeToFlagEmoji,
-	abbrieviateStringToLength
+	abbrieviateStringToLength,
+	tooltipGenerator
 };
