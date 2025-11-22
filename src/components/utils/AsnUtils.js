@@ -1,4 +1,4 @@
-function countryCodeToFlagEmoji(countryCode) {
+export function countryCodeToFlagEmoji(countryCode) {
 	// Convert country code to corresponding emoji flag
 	//
 	// Input: 
@@ -19,7 +19,7 @@ function countryCodeToFlagEmoji(countryCode) {
 	);
 }
 
-function abbrieviate(string, abbrieviationLength) {
+export function abbrieviateString(string, abbrieviationLength) {
 		let prefixStringLengthPercentage = 0.7;
 		let separator = '...';
 
