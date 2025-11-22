@@ -76,7 +76,6 @@ function AsNumber({ asn, data }) {
 		(onBlacklist && 'blacklist') ||
 		(onAsndrop && 'asndrop') ||
 		"";
-
 	return (
 		<OverlayTrigger
 			key={asNumber}
@@ -87,12 +86,14 @@ function AsNumber({ asn, data }) {
 				</Tooltip>
 			}
 		>
-			<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
-				<span className="asn__country">{countryFlag}</span>{label}
-				{spanLabel.length > 0 && 
-					<b> ({spanLabel}) </b>
-				}
-			</a>{' '}
+			<span>
+				<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
+					<span className="asn__country">{countryFlag}</span>{label}
+					{spanLabel.length > 0 && 
+						<b> ({spanLabel}) </b>
+					}
+				</a>{' '}
+			</span>
 		</OverlayTrigger>
 	)
 }
