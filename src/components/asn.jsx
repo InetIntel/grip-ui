@@ -69,7 +69,7 @@ function AsNumber({ asn, data }) {
 
 	const fullName = asOrg?.organization?.orgName || "";
 	const shortName = abbreviateStringToLength(fullName, 22);
-	const label = `AS${asNumber} ${shortName}`;
+	const asLabel = `AS${asNumber} ${shortName}`;
 
 	const spanLabel =
 		(isPrivateAsNumber && 'private') ||
@@ -88,10 +88,8 @@ function AsNumber({ asn, data }) {
 		>
 			<span className="asn-label">
 				<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
-					<span className="asn__country">{countryFlag}</span>{label}
-					{spanLabel.length > 0 && 
-						<b> ({spanLabel}) </b>
-					}
+					<span className="asn__country">{countryFlag}</span>{asLabel}
+					{spanLabel.length > 0 && <b> ({spanLabel}) </b>}
 				</a>
 			</span>
 		</OverlayTrigger>
