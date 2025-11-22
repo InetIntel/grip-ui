@@ -34,7 +34,7 @@
 
 import * as React from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { countryCodeToFlagEmoji, abbrieviateString} from "../utils/AsnUtils";
+import { countryCodeToFlagEmoji, abbrieviateString} from "./utils/AsnUtils";
 
 function AsNumber(props) {
     function tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop) {
