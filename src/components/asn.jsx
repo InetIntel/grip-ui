@@ -39,7 +39,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { 
     isPrivateASN, 
     countryCodeToFlagEmoji, 
-    abbrieviateStringToLength,
+    abbreviateStringToLength,
     tooltipGenerator
 } from "./utils/AsnUtils";
 
@@ -47,68 +47,30 @@ function AsNumber({ asn, data }) {
     //! TODO: shift this to a config file
     const ASRANK_URL = "https://asrank.caida.org/asns?asn=";
 
-    function tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop) {
-        let res = [];
-        let count = 0;
-        if (is_private) {
-            res.push(<p key={`tooltip-${count++}`}>Private AS Number</p>);
-            res.push(<p key={`tooltip-${count++}`}>Private AS Number</p>);
-        }
-        if (on_blacklist) {
-            res.push(<p key={`tooltip-${count++}`}>AS is on a blacklist</p>)
-        }
-        if (on_asndrop) {
-            res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
-        }
-        if (asinfo[asn]?.asrank?.organization?.country) {
-            let asorg = asinfo[asn].asrank;
-            let country_name = asorg.organization.country.name;
-            let org_name = asorg.organization.orgName;
-            let rank = asorg.rank;
-            if (org_name) {
-                org_name = org_name.replaceAll('"', "");
-                res.push(
-                    <p key={`tooltip-${count++}`}> ASN: {asn} </p>,
-                    <p key={`tooltip-${count++}`}> Name: {org_name} </p>,
-                    <p key={`tooltip-${count++}`}> Country: {country_name} </p>,
-                    <p key={`tooltip-${count++}`}> Rank: {rank} </p>
-                );
-            }
-        }
-        if ("hegemony" in asinfo && asn in asinfo.asrank) {
-            res.push(<p key={`tooltip-${count++}`}> Hegemony: {asinfo.hegemony[asn]} </p>);
-        }
-        if (res.length === 0) {
-            res.push(<p key={`tooltip-${count++}`}>AS Info Unavailable</p>);
-        }
-        return (<>{res}</>);
-    }
-
-    console.log(data);
-
     const asNumber = Number.parseInt(asn, 10);
     
     const isPrivateAsNumber = isPrivateASN(asNumber);
     const onBlacklist = data.blacklist?.includes(asNumber);
     const onAsndrop = data.asndrop?.includes(asNumber);
 
-    // construct tooltip
-    // const tooltip_str = tooltip(asn, data, isPrivateAsNumber, onBlacklist, onAsndrop);
-    const tooltip_str = tooltipGenerator(asn, data, isPrivateAsNumber, onBlacklist, onAsndrop);
+    const asStatus = {
+        isPrivateAsNumber,
+        onBlacklist,
+        onAsndrop
+    }
+
+    const tooltipTextList = tooltipGenerator(asNumber, data, asStatus);
     console.log(tooltip_str);
 
     // TODO: consider loading data from asrank api if props.data is not available
-    let asorg = null;
-    if (data[asn]?.asrank) {
-        asorg = data[asn].asrank;
-    }
 
-    let countryCode = asorg?.organization?.country.iso;
-    let countryFlag = countryCodeToFlagEmoji(countryCode);
+    const asOrg = data[asNumber]?.asrank || '';
+    const countryCode = asOrg?.organization?.country?.iso;
+    const countryFlag = countryCodeToFlagEmoji(countryCode);
 
-    let asFullName = asorg?.organization?.orgName || "";
-    let asShortName = abbrieviateStringToLength(asFullName, 22);
-    let ASLabel = `AS${asNumber} ${asShortName}`;
+    const fullName = asOrg?.organization?.orgName || "";
+    const shortName = abbreviateStringToLength(fullName, 22);
+    const label = `AS${asNumber} ${shortName}`;
 
     const spanLabel =
         (isPrivateAsNumber && 'private') ||
@@ -122,12 +84,12 @@ function AsNumber({ asn, data }) {
             placement={"top"}
             overlay={
                 <Tooltip id={`tooltip-${asNumber}`}>
-                    {tooltip_str}
+                    {tooltipTextList}
                 </Tooltip>
             }
         >
-            <a href={ASRANK_URL + asn} target="_blank" rel="noopener noreferrer">
-                <span className="asn__country">{countryFlag}</span> {ASLabel}
+            <a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
+                <span className="asn__country">{countryFlag}</span> {label}
                 {spanLabel.length > 0 && 
                     <span className="badge badge-info"> {spanLabel} </span>
                 }
