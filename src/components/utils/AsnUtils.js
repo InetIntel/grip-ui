@@ -14,18 +14,19 @@ export function countryCodeToFlagEmoji(countryCode) {
 	// Input: 
 	//   countryCode: string, 2-letter country code
 	// Output:
-	//   string: emoji flag or empty string if invalid input
+	//   string: corresponding emoji flag or white flag if invalid input
 
 	const EMOJI_OFFSET = 127397;
-
+	const WHITE_FLAG = '\u{1F3F3}'; 
+	
 	if (typeof countryCode !== 'string') {
-		return "";
+		return WHITE_FLAG;
 	}
 
 	const countryCodeUpperCase = countryCode.toUpperCase();
 
 	if (!/^[A-Z]{2}$/.test(countryCodeUpperCase)) {
-		return "";
+		return WHITE_FLAG;
 	}
 
 	return String.fromCodePoint(
