@@ -65,21 +65,19 @@ export function tooltipGenerator(asn, asinfo, is_private, on_blacklist, on_asndr
 	if (on_blacklist) res.push("AS is on a blacklist");
 	if (on_asndrop) res.push("AS is on Spamhaus ASN DROP list");
 
-	if (asinfo[asn]?.asrank?.organization?.country) {
-		let asorg = asinfo[asn].asrank;
-		let country_name = asorg.organization.country.name;
-		let org_name = asorg.organization.orgName;
-		let rank = asorg.rank;
+	const asrank = asinfo[asn]?.asrank;
+	if (asrank?.organization?.country?.name) {
+		const org_name = asrank.asnName?.replaceAll('"', "");
 		if (org_name) {
-			org_name = org_name.replaceAll('"', "");
 			res.push(
 				`ASN: ${asn}`,
 				`Name: ${org_name}`,
-				`Country: ${country_name}`,
-				`Rank: ${rank}`
+				`Country: ${asrank.organization.country.name}`,
+				`Rank: ${asrank.rank}`
 			);
 		}
 	}
+
 	if ("hegemony" in asinfo && asn in asinfo.asrank) {
 		res.push(`Hegemony: ${asinfo.hegemony[asn]}`);
 	}
@@ -89,11 +87,11 @@ export function tooltipGenerator(asn, asinfo, is_private, on_blacklist, on_asndr
 
 	// Tying key to the item since items are unique, and to avoid key 
 	// warnings in sonarqube
-	
+
 	return (
-		<ul className="ul_tooltip">
-			{res.map((item) => (<li key={item}>{item}</li>))}
-		</ul>
+		<>
+			{res.map((item) => (<p key={item}>{item}</p>))}
+		</>
 	);
 }
 
