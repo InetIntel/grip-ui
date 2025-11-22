@@ -37,70 +37,70 @@ import PropTypes from 'prop-types';
 
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { 
-    isPrivateASN, 
-    countryCodeToFlagEmoji, 
-    abbreviateStringToLength,
-    tooltipGenerator
+	isPrivateASN, 
+	countryCodeToFlagEmoji, 
+	abbreviateStringToLength,
+	tooltipGenerator
 } from "./utils/AsnUtils";
 
 function AsNumber({ asn, data }) {
-    //! TODO: shift this to a config file
-    const ASRANK_URL = "https://asrank.caida.org/asns?asn=";
+	//! TODO: shift this to a config file
+	const ASRANK_URL = "https://asrank.caida.org/asns?asn=";
 
-    const asNumber = Number.parseInt(asn, 10);
-    
-    const isPrivateAsNumber = isPrivateASN(asNumber);
-    const onBlacklist = data.blacklist?.includes(asNumber);
-    const onAsndrop = data.asndrop?.includes(asNumber);
+	const asNumber = Number.parseInt(asn, 10);
+	
+	const isPrivateAsNumber = isPrivateASN(asNumber);
+	const onBlacklist = data.blacklist?.includes(asNumber);
+	const onAsndrop = data.asndrop?.includes(asNumber);
 
-    const asStatus = {
-        isPrivateAsNumber,
-        onBlacklist,
-        onAsndrop
-    }
+	const asStatus = {
+		isPrivateAsNumber,
+		onBlacklist,
+		onAsndrop
+	}
 
-    const tooltipTextList = tooltipGenerator(asNumber, data, asStatus);
-    console.log(tooltip_str);
+	const tooltipTextList = tooltipGenerator(asNumber, data, asStatus);
+	console.log(tooltip_str);
 
-    // TODO: consider loading data from asrank api if props.data is not available
+	// TODO: consider loading data from asrank api if props.data is not available
 
-    const asOrg = data[asNumber]?.asrank || '';
-    const countryCode = asOrg?.organization?.country?.iso;
-    const countryFlag = countryCodeToFlagEmoji(countryCode);
+	const asOrg = data[asNumber]?.asrank || '';
+	const countryCode = asOrg?.organization?.country?.iso;
+	const countryFlag = countryCodeToFlagEmoji(countryCode);
 
-    const fullName = asOrg?.organization?.orgName || "";
-    const shortName = abbreviateStringToLength(fullName, 22);
-    const label = `AS${asNumber} ${shortName}`;
+	const fullName = asOrg?.organization?.orgName || "";
+	const shortName = abbreviateStringToLength(fullName, 22);
+	const label = `AS${asNumber} ${shortName}`;
 
-    const spanLabel =
-        (isPrivateAsNumber && 'private') ||
-        (onBlacklist && 'blacklist') ||
-        (onAsndrop && 'asndrop') ||
-        "";
+	const spanLabel =
+		(isPrivateAsNumber && 'private') ||
+		(onBlacklist && 'blacklist') ||
+		(onAsndrop && 'asndrop') ||
+		"";
 
-    return (
-        <OverlayTrigger
-            key={asNumber}
-            placement={"top"}
-            overlay={
-                <Tooltip id={`tooltip-${asNumber}`}>
-                    {tooltipTextList}
-                </Tooltip>
-            }
-        >
-            <a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
-                <span className="asn__country">{countryFlag}</span> {label}
-                {spanLabel.length > 0 && 
-                    <span className="badge badge-info"> {spanLabel} </span>
-                }
-            </a>
-        </OverlayTrigger>
-    )
+	return (
+		<OverlayTrigger
+			key={asNumber}
+			placement={"top"}
+			overlay={
+				<Tooltip id={`tooltip-${asNumber}`}>
+					{tooltipTextList}
+				</Tooltip>
+			}
+		>
+			<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
+				<span className="asn__country">{countryFlag}</span> {label}
+				{spanLabel.length > 0 && 
+					<span className="badge badge-info"> {spanLabel} </span>
+				}
+			</a>
+		</OverlayTrigger>
+	)
 }
 
 AsNumber.propTypes = {
-    asn: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    data: PropTypes.object
+	asn: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+	data: PropTypes.object
 };
 
 export default AsNumber;
