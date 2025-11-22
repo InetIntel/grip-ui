@@ -60,7 +60,6 @@ function AsNumber({ asn, data }) {
 	}
 
 	const tooltipTextList = tooltipGenerator(asNumber, data, asStatus);
-	console.log(tooltip_str);
 
 	// TODO: consider loading data from asrank api if props.data is not available
 
@@ -89,11 +88,11 @@ function AsNumber({ asn, data }) {
 			}
 		>
 			<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
-				<span className="asn__country">{countryFlag}</span> {label}
+				<span className="asn__country">{countryFlag}</span>{label}
 				{spanLabel.length > 0 && 
-					<span className="badge badge-info"> {spanLabel} </span>
+					<b> ({spanLabel}) </b>
 				}
-			</a>
+			</a>{' '}
 		</OverlayTrigger>
 	)
 }
