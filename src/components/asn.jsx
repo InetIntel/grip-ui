@@ -33,157 +33,102 @@
  */
 
 import * as React from "react";
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { countryCodeToFlagEmoji, abbrieviateString} from "../utils/AsnUtils";
 
-
-class AsNumber extends React.Component {
-
-    abbrFit(string, nChars, divPos, sep) {
-        // The relative position where to place the '...'
-        divPos = divPos || 0.7;
-        sep = sep || '...';
-        if (nChars<=sep.length) {
-            // If string is smaller than separator
-            sep='';
-        }
-
-        nChars-=sep.length;
-
-        if (string.length<=nChars) return ""+string;
-
-        return string.substring(0,nChars*divPos)
-            + sep
-            + string.substring(string.length - nChars*(1-divPos), string.length);
-    }
-
-    flag(country_code) {
-        const OFFSET = 127397;
-        // only allow string input
-        if (typeof country_code !== 'string'){
-            // throw new TypeError('argument must be a string');
-            return "";
-        }
-        // ensure country code is all caps
-        const cc = country_code.toUpperCase();
-        // return the emoji flag corresponding to country_code or null
-        return (/^[A-Z]{2}$/.test(cc))
-            ? String.fromCodePoint(...[...cc].map(c => c.charCodeAt() + OFFSET))
-            : null;
-    }
-
-    tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop){
-        // let res = <p>AS Info Unavailable</p>;
+function AsNumber(props) {
+    function tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop) {
         let res = [];
-        let count=0;
-        if(is_private){
+        let count = 0;
+        if (is_private) {
             res.push(<p key={`tooltip-${count++}`}>Private AS Number</p>);
         }
-        if(on_blacklist){
+        if (on_blacklist) {
             res.push(<p key={`tooltip-${count++}`}>AS is on a blacklist</p>)
         }
-        if(on_asndrop){
+        if (on_asndrop) {
             res.push(<p key={`tooltip-${count++}`}>AS is on Spamhaus ASN DROP list</p>)
         }
-        if (asinfo[asn] && asinfo[asn].asrank && asinfo[asn].asrank.organization && asinfo[asn].asrank.organization.country ) {
+        if (asinfo[asn]?.asrank?.organization?.country) {
             let asorg = asinfo[asn].asrank;
             let country_name = asorg.organization.country.name;
             let org_name = asorg.organization.orgName;
             let rank = asorg.rank;
             if (org_name) {
-                org_name = org_name.replace(/"/g, "");
-                res.push(<p key={`tooltip-${count++}`}> ASN: {asn} </p>);
-                res.push(<p key={`tooltip-${count++}`}> Name: {org_name} </p>);
-                res.push(<p key={`tooltip-${count++}`}> Country: {country_name} </p>);
-                res.push(<p key={`tooltip-${count++}`}> Rank: {rank} </p>);
+                org_name = org_name.replaceAll('"', "");
+                res.push(
+                    <p key={`tooltip-${count++}`}> ASN: {asn} </p>,
+                    <p key={`tooltip-${count++}`}> Name: {org_name} </p>,
+                    <p key={`tooltip-${count++}`}> Country: {country_name} </p>,
+                    <p key={`tooltip-${count++}`}> Rank: {rank} </p>
+                );
             }
         }
         if ("hegemony" in asinfo && asn in asinfo.asrank) {
             res.push(<p key={`tooltip-${count++}`}> Hegemony: {asinfo.hegemony[asn]} </p>);
         }
-        if(res.length===0){
+        if (res.length === 0) {
             res.push(<p key={`tooltip-${count++}`}>AS Info Unavailable</p>);
         }
-        return (
-            <>
-                {res}
-            </>
-        );
+        return (<>{res}</>);
     }
 
-    render() {
-        let data = this.props.data;
-        let asn = parseInt(this.props.asn);
+    const data = props.data;
+    const asn = parseInt(props.asn);
 
-        // check blacklist and private asn
-        let on_blacklist = false;
-        let on_asndrop = false;
-        if(data.blacklist && data.blacklist.includes(asn)){ on_blacklist = true; }
-        if(data.asndrop && data.asndrop.includes(asn)){ on_asndrop = true; }
-        let is_private = (asn>=64512 && asn<=65534) || (asn>=4200000000 && asn<=4294967294);
+    // check blacklist and private asn
+    let on_blacklist = data.blacklist?.includes(asn);
+    let on_asndrop = data.asndrop?.includes(asn);
 
-        // construct tooltip
-        let tooltip_str = this.tooltip(asn, data, is_private, on_blacklist, on_asndrop);
+    const is_private = (asn >= 64512 && asn <= 65534) || (asn >= 4200000000 && asn <= 4294967294);
 
-        // TODO: consider loading data from asrank api if this.props.data is not available
-        // render country flag and org name
-        let asorg = null;
-        if(data[asn] && data[asn].asrank){
-            asorg = data[asn].asrank;
-        }
-        let country_flag = "";
-        let as_name = "";
-        if(asorg && asorg.organization){
-            let country_code = asorg.organization.country.iso;
-            let org_name = asorg.organization.orgName;
-            if(country_code){
-                country_flag = this.flag(country_code);
-            }
-            if(org_name){
-                as_name = this.abbrFit(org_name,22);
-            }
-        }
+    // construct tooltip
+    const tooltip_str = tooltip(asn, data, is_private, on_blacklist, on_asndrop);
 
-        let res;
-        if(this.props.simple){
-           res =  <React.Fragment>
-                AS{asn}
-            </React.Fragment>
-
-        } else {
-            res =
-                <React.Fragment>
-                    <span className="asn__country"> {country_flag}</span>
-                    AS{asn} {as_name} {" "}
-                    {is_private &&
-                    <span className="badge badge-info">private</span>
-                    }
-                    {on_blacklist &&
-                    <span className="badge badge-info">blacklist</span>
-                    }
-                    {on_asndrop &&
-                    <span className="badge badge-info">asndrop</span>
-                    }
-                </React.Fragment>
-        }
-
-        return (
-            <OverlayTrigger
-                key={this.props.asn}
-                placement={"top"}
-                overlay={
-                    <Tooltip id={`tooltip-${asn}`}>
-                        {tooltip_str}
-                    </Tooltip>
-                }
-            >
-            <span>
-                <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank">
-                    {res}
-                </a>
-            </span>
-            </OverlayTrigger>
-        )
+    // TODO: consider loading data from asrank api if props.data is not available
+    // render country flag and org name
+    let asorg = null;
+    if (data[asn]?.asrank) {
+        asorg = data[asn].asrank;
     }
+    let country_flag = "";
+    let as_name = "";
+
+
+    if (asorg?.organization) {
+        let country_code = asorg.organization.country.iso;
+        let org_name = asorg.organization.orgName;
+        if (country_code) {
+            country_flag = countryCodeToFlagEmoji(country_code);
+        }
+        if (org_name) {
+            as_name = abbrieviateString(org_name, 22);
+        }
+    }
+
+    const spanLabel =
+        (is_private && 'private') ||
+        (on_blacklist && 'blacklist') ||
+        (on_asndrop && 'asndrop') ||
+        undefined;
+
+    return (
+        <OverlayTrigger
+            key={props.asn}
+            placement={"top"}
+            overlay={
+                <Tooltip id={`tooltip-${asn}`}>
+                    {tooltip_str}
+                </Tooltip>
+            }
+        >
+            <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank" rel="noopener noreferrer">
+                <span className="asn__country"> {country_flag}</span>
+                AS{asn} {as_name} {" "}
+                {spanLabel && <span className="badge badge-info">{spanLabel}</span>}
+            </a>
+        </OverlayTrigger>
+    )
 }
 
 export default AsNumber;
