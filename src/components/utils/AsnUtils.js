@@ -87,9 +87,12 @@ export function tooltipGenerator(asn, asinfo, is_private, on_blacklist, on_asndr
 		res.push("AS Info Unavailable");
 	}
 
+	// Tying key to the item since items are unique, and to avoid key 
+	// warnings in sonarqube
+	
 	return (
-		<ul style="ul_tooltip">
-			{res.map((item, index) => (<li key={`tooltip-${index}`}>{item}</li>))}
+		<ul className="ul_tooltip">
+			{res.map((item) => (<li key={item}>{item}</li>))}
 		</ul>
 	);
 }
