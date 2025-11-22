@@ -33,10 +33,20 @@
  */
 
 import * as React from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { countryCodeToFlagEmoji, abbrieviateString} from "./utils/AsnUtils";
+import PropTypes from 'prop-types';
 
-function AsNumber(props) {
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { 
+    isPrivateASN, 
+    countryCodeToFlagEmoji, 
+    abbrieviateString 
+} from "./utils/AsnUtils";
+
+function AsNumber({ asn, data }) {
+    //! TODO: shift this to a config file
+    const ASRANK_URL = "https://asrank.caida.org/asns?asn=";
+
+    let asNumber = Number.parseInt(asn, 10);
     function tooltip(asn, asinfo, is_private, on_blacklist, on_asndrop) {
         let res = [];
         let count = 0;
@@ -73,17 +83,15 @@ function AsNumber(props) {
         return (<>{res}</>);
     }
 
-    const data = props.data;
-    const asn = parseInt(props.asn);
+    console.log(data);
 
-    // check blacklist and private asn
-    let on_blacklist = data.blacklist?.includes(asn);
-    let on_asndrop = data.asndrop?.includes(asn);
-
-    const is_private = (asn >= 64512 && asn <= 65534) || (asn >= 4200000000 && asn <= 4294967294);
+    const isPrivateAsNumber = isPrivateASN(asNumber);
+    const onBlacklist = data.blacklist?.includes(asNumber);
+    const onAsndrop = data.asndrop?.includes(asNumber);
 
     // construct tooltip
-    const tooltip_str = tooltip(asn, data, is_private, on_blacklist, on_asndrop);
+    const tooltip_str = tooltip(asn, data, isPrivateAsNumber, onBlacklist, onAsndrop);
+    console.log(tooltip_str);
 
     // TODO: consider loading data from asrank api if props.data is not available
     // render country flag and org name
@@ -91,44 +99,42 @@ function AsNumber(props) {
     if (data[asn]?.asrank) {
         asorg = data[asn].asrank;
     }
-    let country_flag = "";
-    let as_name = "";
 
+    let countryCode = asorg?.organization?.country.iso;
+    let countryFlag = countryCodeToFlagEmoji(countryCode);
 
-    if (asorg?.organization) {
-        let country_code = asorg.organization.country.iso;
-        let org_name = asorg.organization.orgName;
-        if (country_code) {
-            country_flag = countryCodeToFlagEmoji(country_code);
-        }
-        if (org_name) {
-            as_name = abbrieviateString(org_name, 22);
-        }
-    }
+    let asName = abbrieviateString(asorg?.organization?.orgName, 22);
+    let ASLabel = `AS${asNumber} ${asName}`;
 
     const spanLabel =
-        (is_private && 'private') ||
-        (on_blacklist && 'blacklist') ||
-        (on_asndrop && 'asndrop') ||
-        undefined;
+        (isPrivateAsNumber && 'private') ||
+        (onBlacklist && 'blacklist') ||
+        (onAsndrop && 'asndrop') ||
+        "";
 
     return (
         <OverlayTrigger
-            key={props.asn}
+            key={asNumber}
             placement={"top"}
             overlay={
-                <Tooltip id={`tooltip-${asn}`}>
+                <Tooltip id={`tooltip-${asNumber}`}>
                     {tooltip_str}
                 </Tooltip>
             }
         >
-            <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank" rel="noopener noreferrer">
-                <span className="asn__country"> {country_flag}</span>
-                AS{asn} {as_name} {" "}
-                {spanLabel && <span className="badge badge-info">{spanLabel}</span>}
+            <a href={ASRANK_URL + asn} target="_blank" rel="noopener noreferrer">
+                <span className="asn__country">{countryFlag}</span> {ASLabel}
+                {spanLabel.length > 0 && 
+                    <span className="badge badge-info"> {spanLabel} </span>
+                }
             </a>
         </OverlayTrigger>
     )
 }
+
+AsNumber.propTypes = {
+    asn: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    data: PropTypes.object
+};
 
 export default AsNumber;
