@@ -39,7 +39,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { 
     isPrivateASN, 
     countryCodeToFlagEmoji, 
-    abbrieviateString 
+    abbrieviateStringToLength 
 } from "./utils/AsnUtils";
 
 function AsNumber({ asn, data }) {
@@ -94,7 +94,6 @@ function AsNumber({ asn, data }) {
     console.log(tooltip_str);
 
     // TODO: consider loading data from asrank api if props.data is not available
-    // render country flag and org name
     let asorg = null;
     if (data[asn]?.asrank) {
         asorg = data[asn].asrank;
@@ -103,7 +102,7 @@ function AsNumber({ asn, data }) {
     let countryCode = asorg?.organization?.country.iso;
     let countryFlag = countryCodeToFlagEmoji(countryCode);
 
-    let asName = abbrieviateString(asorg?.organization?.orgName, 22);
+    let asName = abbrieviateStringToLength(asorg?.organization?.orgName, 22);
     let ASLabel = `AS${asNumber} ${asName}`;
 
     const spanLabel =
