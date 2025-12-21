@@ -42,6 +42,7 @@ import {
 	abbreviateStringToLength,
 	tooltipGenerator
 } from "./utils/AsnUtils";
+import UnknownFlag from "../images/UnknownFlag.png";
 
 function AsnLabel({ asn, data }) {
 	//! TODO: shift this to a config file
@@ -88,7 +89,12 @@ function AsnLabel({ asn, data }) {
 		>
 			<span className="asn-label">
 				<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
-					<span className="asn__country">{countryFlag}</span>{asLabel}
+					<span className="asn__country">
+						{countryFlag || (
+							<img src={UnknownFlag} alt="Unknown flag" className="asn__flag" />
+						)}
+					</span>
+					{asLabel}
 					{spanLabel.length > 0 && <b> ({spanLabel}) </b>}
 				</a>
 			</span>

@@ -13,7 +13,7 @@ export function countryCodeToFlagEmoji(countryCode) {
 	// Outputs the corresponding emoji flag or white flag if invalid input
 
 	const EMOJI_OFFSET = 127397;
-	const WHITE_FLAG = '\u{1F3F3}'; 
+	// const WHITE_FLAG = '\u{1F3F3}'; 
 	
 	if (typeof countryCode !== 'string') {
 		return WHITE_FLAG;
@@ -22,7 +22,7 @@ export function countryCodeToFlagEmoji(countryCode) {
 	const countryCodeUpperCase = countryCode.toUpperCase();
 
 	if (!/^[A-Z]{2}$/.test(countryCodeUpperCase)) {
-		return WHITE_FLAG;
+		return '';
 	}
 
 	return String.fromCodePoint(
