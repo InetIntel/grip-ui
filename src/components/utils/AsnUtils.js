@@ -16,7 +16,7 @@ export function countryCodeToFlagEmoji(countryCode) {
 	// const WHITE_FLAG = '\u{1F3F3}'; 
 	
 	if (typeof countryCode !== 'string') {
-		return WHITE_FLAG;
+		return '';
 	}
 
 	const countryCodeUpperCase = countryCode.toUpperCase();
