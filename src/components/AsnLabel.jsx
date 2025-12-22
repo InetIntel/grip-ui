@@ -36,9 +36,9 @@ import * as React from "react";
 import PropTypes from 'prop-types';
 
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { 
-	isPrivateASN, 
-	countryCodeToFlagEmoji, 
+import {
+	isPrivateASN,
+	countryCodeToFlagEmoji,
 	abbreviateStringToLength,
 	tooltipGenerator
 } from "./utils/AsnUtils";
@@ -49,7 +49,7 @@ function AsnLabel({ asn, data }) {
 	const ASRANK_URL = "https://asrank.caida.org/asns?asn=";
 
 	const asNumber = Number.parseInt(asn, 10);
-	
+
 	const isPrivateAsNumber = isPrivateASN(asNumber);
 	const onBlacklist = data.blacklist?.includes(asNumber);
 	const onAsndrop = data.asndrop?.includes(asNumber);
@@ -92,11 +92,11 @@ function AsnLabel({ asn, data }) {
 					{countryFlag || (
 						<img src={UnknownFlag} alt="<?>" className="asn__flag" />
 					)}
+					<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
+						{asLabel}
+						{spanLabel.length > 0 && <b> ({spanLabel}) </b>}
+					</a>
 				</span>
-				<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
-					{asLabel}
-					{spanLabel.length > 0 && <b> ({spanLabel}) </b>}
-				</a>
 			</span>
 		</OverlayTrigger>
 	)
