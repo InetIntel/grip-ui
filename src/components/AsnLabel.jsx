@@ -88,10 +88,12 @@ function AsnLabel({ asn, data }) {
 			}
 		>
 			<span className="asn-label">
-				<span className="asn__country">
-					{countryFlag || (
-						<img src={UnknownFlag} alt="<?>" className="asn__flag" />
-					)}
+				<span className="asn_country">
+					<span className="asn_flag_section">
+						{countryFlag || (
+							<img src={UnknownFlag} alt="<?>" className="asn_flag"/>
+						)}
+					</span>
 					<a href={ASRANK_URL + asNumber} target="_blank" rel="noopener noreferrer">
 						{asLabel}
 						{spanLabel.length > 0 && <b> ({spanLabel}) </b>}

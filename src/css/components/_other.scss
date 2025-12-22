@@ -96,12 +96,16 @@ TAGS
   margin-bottom: 5px;
 }
 
-.asn__country {
+.asn_country {
   white-space: nowrap;
   width: 100%;
 }
 
-.asn__flag {
+.asn_flag_section {
+  margin-right: 0.5em;
+}
+
+.asn_flag {
   height: 1em;
   width: auto;
   vertical-align: middle;
