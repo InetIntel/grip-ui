@@ -10,10 +10,9 @@ export function isPrivateASN(asn) {
 
 export function countryCodeToFlagEmoji(countryCode) {
 	// Convert country code to corresponding emoji flag
-	// Outputs the corresponding emoji flag or white flag if invalid input
+	// Outputs the corresponding emoji flag, or empty string if invalid input
 
 	const EMOJI_OFFSET = 127397;
-	// const WHITE_FLAG = '\u{1F3F3}'; 
 	
 	if (typeof countryCode !== 'string') {
 		return '';
