@@ -32,7 +32,6 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import * as React from "react";
 import PropTypes from 'prop-types';
 
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
