@@ -1,5 +1,3 @@
-import * as React from "react";
-
 function isInRange(value, min, max) {
 	return value >= min && value <= max;
 }
