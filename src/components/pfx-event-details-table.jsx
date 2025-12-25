@@ -34,7 +34,7 @@
 
 import React from "react";
 import {unix_time_to_str} from "../utils/events";
-import AsnLabel from "./AsnLabel";
+import AsnLabel from "./asn-label";
 import IPPrefix from "./ip-prefix";
 import axios from "axios";
 import {InferenceTagsList} from "./tags/inference-tag";

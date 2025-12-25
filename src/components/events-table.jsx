@@ -16,7 +16,7 @@ import {
 
 import { utcMoment } from '../utils/timeutils';
 
-import AsnLabel from "./AsnLabel";
+import AsnLabel from "./asn-label";
 import IPPrefix from "./ip-prefix";
 import {InferenceTagsList} from "./tags/inference-tag";
 import {ASNDROP_URL, BASE_URL, BLOCKLIST_URL} from "../utils/endpoints";
