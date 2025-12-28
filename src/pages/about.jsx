@@ -63,7 +63,7 @@ function AboutPage() {
                 recordMap={recordMap}
                 fullPage={false}
             />
-            <iframe src="https://inetintel.notion.site/ebd//1cafd138961080fd9bcad7ffe3dd5a85" width="100%" style="overflow: hidden; border: none;" frameborder="0" allowfullscreen />
+            <iframe src="https://inetintel.notion.site/ebd//1cafd138961080fd9bcad7ffe3dd5a85" width="100%" style={{overflow: "hidden", border: "none"}} frameborder="0" allowfullscreen />
         </>
     );
 }
