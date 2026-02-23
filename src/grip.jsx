@@ -34,6 +34,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/tags" element={<EventTags />} />
+          <Route path="/events" element={<EventList />} />
           {/* Fallback for the root route */}
           <Route path="/" element={<EventsList />} />
         </Routes>
@@ -45,7 +46,7 @@ function App() {
 
 function HijacksApp() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.APP_BASENAME}>
       <App />
     </BrowserRouter>
   );

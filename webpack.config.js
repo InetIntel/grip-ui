@@ -6,6 +6,7 @@ const env = dotenv.config().parsed || {};
 
 const envKeys = {
   'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
+  'process.env.APP_BASENAME': JSON.stringify(env.APP_BASENAME || '/'),
 };
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: (env.APP_BASENAME || '') + '/'
   },
   module: {
     rules: [
