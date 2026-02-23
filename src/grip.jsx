@@ -34,7 +34,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/tags" element={<EventTags />} />
-          <Route path="/events" element={<EventList />} />
+          <Route path="/events" element={<EventsList />} />
           {/* Fallback for the root route */}
           <Route path="/" element={<EventsList />} />
         </Routes>
