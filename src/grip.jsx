@@ -9,16 +9,14 @@ import EventTags from "./pages/event_tags";
 import Acknowledgement from "./pages/ack";
 import Contacts from "./pages/contacts";
 import AboutPage from "./pages/about";
-import Header from "./templates/header";
 
 // Layout/Template Components
-import Nav from "./templates/nav";
+import Header from "./templates/header";
 import Footer from "./templates/footer";
 
 function App() {
   return (
     <div className="app-container">
-      {/* <Nav /> */}
       <Header />
       <div className="content-wrapper">
         <Routes>
