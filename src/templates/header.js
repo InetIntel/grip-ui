@@ -138,18 +138,42 @@ const Header = () => {
       >
         <div className="header__drawer-item">
           <Link
-            to="/dashboard"
+            to="/"
             className="a-header"
             onClick={() => setShowDrawer(false)}
           >
             {events}
           </Link>
         </div>
+        <div className="header__drawer-item">
+          <Link
+            to="/ack"
+            className="a-header"
+            onClick={() => setShowDrawer(false)}
+          >
+            {acknowledgements}
+          </Link>
+        </div>
+        <div className="header__drawer-item">
+          <Link
+            to="/about"
+            className="a-header"
+            onClick={() => setShowDrawer(false)}
+          >
+            {about}
+          </Link>
+        </div>
+        <div className="header__drawer-item">
+          <a
+            href="/contacts"
+            className="a-header"
+            onClick={() => setShowDrawer(false)}
+          >
+            {contacts}
+          </a>
+        </div>
 
-        <div
-          className="header__drawer-item mt-6 pt-6"
-          style={{ borderTop: "1px solid gray" }}
-        >
+        <div className="header__drawer-item header__drawer-separator mt-6 pt-6">
           <Select
             value={language}
             style={{ width: 100 }}
