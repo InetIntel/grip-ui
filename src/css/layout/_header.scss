@@ -122,7 +122,7 @@
 .header__drawer-item {
   color: #fff;
   font-size: 16px;
-  margin-bottom: 18px;
+  margin: 18px;
 
   .a-header {
     color: #fff;
@@ -132,6 +132,11 @@
       text-decoration: underline;
     }
   }
+}
+
+.header__drawer-separator {
+  border-top: 1px solid gray;
+  padding-top: 1em;
 }
 
 .header__language-select {
