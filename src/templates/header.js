@@ -36,7 +36,7 @@
  * MODIFICATIONS.
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import T from "i18n-react";
 // import gripLogo from "images/logos/grip-logo.svg";
@@ -46,6 +46,7 @@ import {
   getSavedLanguagePreference,
   saveLanguagePreference,
 } from "../utils/storage";
+import { changeLanguage } from "../utils/strings";
 import { CloseOutlined, MenuOutlined } from "@ant-design/icons";
 
 const languageOptions = [
@@ -63,6 +64,7 @@ const Header = () => {
   const handleLanguageChange = (language) => {
     setLanguage(language);
     saveLanguagePreference(language);
+    changeLanguage(language);
     window.location.reload();
   };
 
@@ -83,23 +85,23 @@ const Header = () => {
           </Link>
         </div> */}
         <div className="header__item">
-          <Link to="/" className="a-fake">
+          <Link to="/" className="a-header">
             {events}
           </Link>
         </div>
         <div className="header__item">
-          <Link to="/ack" className="a-fake">
+          <Link to="/ack" className="a-header">
             {acknowledgements}
           </Link>
         </div>
         <div className="header__item">
-          <Link to="/about" className="a-fake">
+          <Link to="/about" className="a-header">
             {about}
           </Link>
         </div>
 
         <div className="header__item">
-          <a href="/contacts" className="a-fake">
+          <a href="/contacts" className="a-header">
             {contacts}
           </a>
         </div>
@@ -115,7 +117,7 @@ const Header = () => {
           />
         </div>
 
-        
+
       </div>
 
       {/* DRAWER MENU */}
@@ -127,17 +129,17 @@ const Header = () => {
         closeIcon={
           <CloseOutlined style={{ fontSize: "16px", color: "#fff" }} />
         }
-        extra={
-          <Link to="/" onClick={() => setShowDrawer(false)}>
-            <img src={iodaLogo} alt={iodaLogoAltText} width="97" height="35" />
-          </Link>
-        }
+        // extra={
+        //   <Link to="/" onClick={() => setShowDrawer(false)}>
+        //     <img src={gripLogo} alt={gripLogoAltText} width="97" height="35" />
+        //   </Link>
+        // }
         width={320}
       >
         <div className="header__drawer-item">
           <Link
             to="/dashboard"
-            className="a-fake"
+            className="a-header"
             onClick={() => setShowDrawer(false)}
           >
             {events}

@@ -38,6 +38,9 @@ import { createRoot } from "react-dom/client";
 import HijacksApp from "./grip";
 import './css/main.scss';
 
+import T from "i18n-react";
+import "./utils/strings";
+
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<HijacksApp />);
