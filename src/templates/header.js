@@ -75,7 +75,7 @@ const Header = () => {
 
   return (
     <div className="header">
-      <div className="header__container p-6 max-cont row items-center">
+      <div className="header__container max-cont row items-center">
         <div className="header__drawer-icon">
           <Button icon={<MenuOutlined />} onClick={toggleDrawerMenu} />
         </div>
