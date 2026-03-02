@@ -101,9 +101,9 @@ const Header = () => {
         </div>
 
         <div className="header__item">
-          <a href="/contacts" className="a-header">
+          <Link to="/contacts" className="a-header">
             {contacts}
-          </a>
+          </Link>
         </div>
 
         <div className="header__item">
@@ -122,7 +122,7 @@ const Header = () => {
 
       {/* DRAWER MENU */}
       <Drawer
-        placement="right"
+        placement="left"
         onClose={() => setShowDrawer(false)}
         open={showDrawer}
         className="header__drawer-body"
@@ -169,7 +169,7 @@ const Header = () => {
             className="a-header"
             onClick={() => setShowDrawer(false)}
           >
-            {about}
+            {contacts}
           </Link>
         </div>
 
