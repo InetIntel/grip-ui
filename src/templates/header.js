@@ -122,7 +122,7 @@ const Header = () => {
 
       {/* DRAWER MENU */}
       <Drawer
-        placement="left"
+        placement="right"
         onClose={() => setShowDrawer(false)}
         open={showDrawer}
         className="header__drawer-body"
@@ -164,13 +164,13 @@ const Header = () => {
           </Link>
         </div>
         <div className="header__drawer-item">
-          <a
-            href="/contacts"
+          <Link
+            to="/contacts"
             className="a-header"
             onClick={() => setShowDrawer(false)}
           >
-            {contacts}
-          </a>
+            {about}
+          </Link>
         </div>
 
         <div className="header__drawer-item header__drawer-separator mt-6 pt-6">
