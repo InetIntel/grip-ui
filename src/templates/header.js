@@ -41,7 +41,7 @@ import { Link } from "react-router-dom";
 import T from "i18n-react";
 // import gripLogo from "images/logos/grip-logo.svg";
 
-import { Select, Tooltip, Switch, Button, Drawer } from "antd";
+import { Select, Button, Drawer } from "antd";
 import {
   getSavedLanguagePreference,
   saveLanguagePreference,
