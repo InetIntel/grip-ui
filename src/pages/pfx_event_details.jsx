@@ -113,7 +113,6 @@ function PfxEventDetails() {
         finished_ts: data.finished_ts,
       };
 
-      console.log(`event_type = ${data.event_type}`);
       if ("prefix" in data.details) {
         pfxEventLocal.prefix = data.details.prefix;
       }
@@ -153,9 +152,7 @@ function PfxEventDetails() {
                 if (last_hop !== "*" && !targets.has(last_hop)) {
                   tr_path.push("*");
                 }
-                if (tr_path.length === 0) {
-                  console.log(`error as tr path: '${tr_path}', from ${result.as_traceroute}`);
-                } else {
+                if (tr_path.length !== 0) {
                   as_routes.push(tr_path);
                 }
               }

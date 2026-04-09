@@ -44,7 +44,6 @@ const columns = [
     selector: 'victims',
     grow: 1,
     cell: row => {
-      console.log("Row data:", row);
       return <div>{renderOrigins(row.summary.victims, row.asinfo)}</div>;
     }
   },

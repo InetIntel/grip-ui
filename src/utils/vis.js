@@ -92,7 +92,6 @@ function clean_graph(path_lst){
             for (let j = i+1; j < newpath.length ; j++) {
                 let next_asn = newpath[j];
                 if(find_cycle([next_asn], cur_asn)){
-                    console.log(`cycle found in ${newpath} ${newpath[j]} ${newpath[i]}, path removed`);
                     has_cycle = true;
                     break
                 }

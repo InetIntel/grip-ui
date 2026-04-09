@@ -45,7 +45,6 @@ function EventsList() {
 
   // Equivalent of componentDidMount + componentWillUnmount
   useEffect(() => {
-    console.log('inside events')
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
