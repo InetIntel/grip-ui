@@ -11,13 +11,13 @@ import Contacts from "./pages/contacts";
 import AboutPage from "./pages/about";
 
 // Layout/Template Components
-import Nav from "./templates/nav";
+import Header from "./templates/header";
 import Footer from "./templates/footer";
 
 function App() {
   return (
     <div className="app-container">
-      <Nav />
+      <Header />
       <div className="content-wrapper">
         <Routes>
           <Route
