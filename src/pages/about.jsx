@@ -1,6 +1,7 @@
 
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CodeRepos from './repos';
 import Methodology from './method';
 import grip_concept from '../images/diagrams/grip_conceptual_pipeline.png';
@@ -22,6 +23,16 @@ const AboutPage = ()=>{
             </div>
             <Methodology />
             <CodeRepos />
+            <div id='hijacks' className='container-fluid subpage' style={{ paddingBottom: '40px' }}>
+                <div className="api-aup-section">
+                    <h2 className="section-header">
+                        API Acceptable Use Policy
+                    </h2>
+                    <div className="repos__description">
+                        To support academic research and educational projects, we provide access to data via our public API. Use of this API is subject to rate-limiting, data usage, and scraping terms. Please read our complete <Link to="/aup" style={{ textDecoration: 'underline', fontWeight: 'bold' }}>Acceptable Use Policy (AUP)</Link> to learn more about our permitted use and guidelines.
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
