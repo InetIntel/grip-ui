@@ -9,6 +9,7 @@ import EventTags from "./pages/event_tags";
 import Acknowledgement from "./pages/ack";
 import Contacts from "./pages/contacts";
 import AboutPage from "./pages/about";
+import AcceptableUsePolicy from "./pages/aup";
 
 // Layout/Template Components
 import Nav from "./templates/nav";
@@ -31,6 +32,7 @@ function App() {
           <Route path="/ack" element={<Acknowledgement />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contacts" element={<Contacts />} />
+          <Route path="/aup" element={<AcceptableUsePolicy />} />
           <Route path="/tags" element={<EventTags />} />
           <Route path="/events" element={<EventsList />} />
           {/* Fallback for the root route */}
