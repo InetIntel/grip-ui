@@ -160,7 +160,7 @@ export default function EventsTable() {
     startTime: utcMoment().subtract(1, "days"),
     endTime: utcMoment(),
     eventType: "moas",
-    category: "suspicious",
+    category: "incidents",
     min_duration: 0,
     max_duration: 0,
     pfxs: [],

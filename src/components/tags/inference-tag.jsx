@@ -76,7 +76,8 @@ class InferenceTag extends React.Component{
         let type = this._determine_label_type()
         let badgeStyle = {
             display: 'inline-block',
-            width: '10em',
+            width: '16em',
+            padding: '8px 12px',
             whiteSpace: 'normal',
             wordWrap: 'break-word',
         };
@@ -96,7 +97,7 @@ class InferenceTag extends React.Component{
                     <FontAwesomeIcon icon={faLightbulb} />
                     {" "}
                     {name}
-                    {this.props.render_level && ` (${this.props.suspicion_level})` }
+                    {this.props.render_level && this.props.labels && this.props.labels.length > 0 && ` (${this.props.labels.join(', ')})` }
                 </Badge>
                 </OverlayTrigger>
                 {this.props.render_explanation &&
