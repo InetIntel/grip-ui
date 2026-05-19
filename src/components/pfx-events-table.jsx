@@ -40,6 +40,7 @@ import {extract_tags_tr_worthiness} from "../utils/tags";
 import IPPrefix from "./ip-prefix";
 import LinkA from "../utils/linka";
 import {InferenceTagsList} from "./tags/inference-tag";
+import { useNavigate } from "react-router-dom";
 
 
 class PfxEventsTable extends React.Component {
@@ -269,6 +270,15 @@ class PfxEventsTable extends React.Component {
         return processed;
     }
 
+    handleRowClicked = (row) => {
+        let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+        if (this.props.navigate) {
+            this.props.navigate(url);
+        } else {
+            window.open(url, '_self');
+        }
+    };
+
     render() {
         let data = this.preprocessData(this.props.data, this.props.tagsData);
         let columns = [];
@@ -284,6 +294,8 @@ class PfxEventsTable extends React.Component {
                 columns={columns}
                 striped={true}
                 highlightOnHover={true}
+                pointerOnHover={true}
+                onRowClicked={this.handleRowClicked}
                 data={data}
                 pagination={this.props.enablePagination}
             />
@@ -291,4 +303,11 @@ class PfxEventsTable extends React.Component {
     }
 }
 
-export default PfxEventsTable;
+function withNavigation(Component) {
+    return function WrappedComponent(props) {
+        const navigate = useNavigate();
+        return <Component {...props} navigate={navigate} />;
+    }
+}
+
+export default withNavigation(PfxEventsTable);
