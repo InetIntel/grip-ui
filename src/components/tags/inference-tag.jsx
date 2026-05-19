@@ -58,15 +58,17 @@ class InferenceTag extends React.Component{
     };
 
     _determine_label_type(){
-        let level = this.props.suspicion_level;
-        let res = ["secondary", "question-circle"];
-        if(level >= 80) {
-            res = ["danger", "thumbs-down"]
+        let labels = this.props.labels || [];
+        let name = this.props.name;
+        if (labels.includes("legitimate")) {
+            return ["success", "thumbs-up"];
+        } else if (labels.includes("suspicious")) {
+            return ["danger", "thumbs-down"];
+        } else if (labels.includes("misconfig")) {
+            return ["warning", "exclamation-triangle"];
+        } else {
+            return ["secondary", "question-circle"];
         }
-        else if(level <= 20) {
-            res = ["success", "thumbs-up"]
-        }
-        return res;
     }
 
     render() {
@@ -130,6 +132,7 @@ class InferenceTagsList extends React.Component {
                 {this.props.inferences.map(function(inference){
                     return <InferenceTag key={`inference-${inference.inference_id}`}
                                          name={inference.inference_id}
+                                         labels={inference.labels}
                                          suspicion_level={inference.suspicion_level}
                                          explanation={inference.explanation}
                                          render_level={this.props.render_level}

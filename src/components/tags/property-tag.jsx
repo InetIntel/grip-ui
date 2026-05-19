@@ -34,18 +34,18 @@
 
 import * as React from "react";
 import PropTypes from "prop-types";
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import {convertTagName} from "../../utils/tags";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { convertTagName } from "../../utils/tags";
 import axios from "axios";
-import {TAGS_URL} from "../../utils/endpoints";
+import { TAGS_URL } from "../../utils/endpoints";
 import Badge from "react-bootstrap/Badge";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
-class PropertyTag extends React.Component{
+class PropertyTag extends React.Component {
 
     static propTypes = {
         name: PropTypes.string,
@@ -62,10 +62,10 @@ class PropertyTag extends React.Component{
         type: "na",
     };
 
-    _translateType(type){
+    _translateType(type) {
         let res = "default";
 
-        switch(type){
+        switch (type) {
             case "suspicious":
             case "yes":
                 res = "warning";
@@ -94,10 +94,10 @@ class PropertyTag extends React.Component{
         let parts = url.pathname.split("/");
         let loc = parts.indexOf("events");
         let event_type = "all";
-        if(loc>0){
-            event_type = parts[loc+1];
+        if (loc > 0) {
+            event_type = parts[loc + 1];
         }
-        let search_term = `?tags=${this.props.name}&min_susp=0&max_susp=100&event_type=${event_type}`;
+        let search_term = `?tags=${this.props.name}&event_type=${event_type}`;
         let badgeStyle = {
             display: 'inline-block',
             width: '10em',
@@ -106,10 +106,11 @@ class PropertyTag extends React.Component{
         };
         return (
             <Link to={{
-                pathname:"/",
-                search: `${search_term}` }}
-                  replace={true}
-                  target={"_blank"}
+                pathname: "/",
+                search: `${search_term}`
+            }}
+                replace={true}
+                target={"_blank"}
             >
                 <OverlayTrigger
                     key={name}
@@ -120,11 +121,11 @@ class PropertyTag extends React.Component{
                         </Tooltip>
                     }
                 >
-            <Badge bg={type} text={textColor} style={badgeStyle}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                {" "}
-                {name}
-            </Badge>
+                    <Badge bg={type} text={textColor} style={badgeStyle}>
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                        {" "}
+                        {name}
+                    </Badge>
                 </OverlayTrigger>
             </Link>
         )
@@ -141,7 +142,7 @@ class PropertyTag extends React.Component{
 class PropertyTagsList extends React.Component {
 
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             tagDefinitions: {},
@@ -161,7 +162,7 @@ class PropertyTagsList extends React.Component {
     };
 
     handleClick = (e) => {
-        if(e.target.className==="tags-list" && this.props.enableClick){
+        if (e.target.className === "tags-list" && this.props.enableClick) {
             // if clicking on the empty area of the TagsList
             window.open(this.props.url, "_self");
         }
@@ -172,19 +173,19 @@ class PropertyTagsList extends React.Component {
         let tagDefinitions = this.state.tagDefinitions;
         return (
             <div className="tags-list" onClick={(e) => this.handleClick(e)}>
-                {Object.keys(tags).map(function(tag_name, index){
+                {Object.keys(tags).map(function (tag_name, index) {
                     let definition = "";
-                    if(tag_name in tagDefinitions){
+                    if (tag_name in tagDefinitions) {
                         definition = tagDefinitions[tag_name].definition;
                     }
                     return <PropertyTag key={`tag-${tag_name}`}
-                                        name={tag_name}
-                                        type={tags[tag_name]}
-                                        definition={definition}/>
+                        name={tag_name}
+                        type={tags[tag_name]}
+                        definition={definition} />
                 })}
             </div>
         )
     }
 }
 
-export {PropertyTag, PropertyTagsList};
+export { PropertyTag, PropertyTagsList };

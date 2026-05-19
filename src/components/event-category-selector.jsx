@@ -36,45 +36,60 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {ToggleButton, ToggleButtonGroup} from 'react-bootstrap';
 
-function EventSuspicionSelector({eventSuspicionLevel, onChange}) {
+function EventCategorySelector({category, onChange}) {
     // onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734
-    const changeEventSuspicionLevel = (e) => {
-        const target = e.currentTarget.htmlFor;
+    const changeCategory = (e) => {
+        let target = e.currentTarget.htmlFor;
+        if (target === "incidents_sub") {
+            target = "incidents";
+        }
         if (target !== "") {
             onChange(target);
         }
     };
 
+    const isIncident = ["incidents", "misconfigurations", "suspicious", "unclassified"].includes(category);
+    const topValue = isIncident ? 'incidents' : category;
+
     return(
             <div className="search-bar__component">
                 <label className="search-bar__label">
-                    Select an event suspicion level
+                    Select an event category
                 </label>
-                {/* onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
-                <ToggleButtonGroup type="radio" name="eventSuspicionLevel"
-                                   value={eventSuspicionLevel}
-                >
-                    <ToggleButton value='all' id='all'
-                                  onClick={changeEventSuspicionLevel}>All</ToggleButton>
-                    <ToggleButton value='suspicious' id='suspicious'
-                                  onClick={changeEventSuspicionLevel}>Suspicious</ToggleButton>
-                    <ToggleButton value='grey' id='grey'
-                                  onClick={changeEventSuspicionLevel}>Grey</ToggleButton>
-                    <ToggleButton value='benign' id='benign'
-                                  onClick={changeEventSuspicionLevel}>Benign</ToggleButton>
-                </ToggleButtonGroup>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {/* onClick hax due to https://github.com/react-bootstrap/react-bootstrap/issues/2734 */}
+                    <ToggleButtonGroup type="radio" name="categoryTop" value={topValue}>
+                        <ToggleButton variant="primary" value='all' id='all'
+                                      onClick={changeCategory}>All</ToggleButton>
+                        <ToggleButton variant="success" value='legitimate' id='legitimate'
+                                      onClick={changeCategory}>Legitimate</ToggleButton>
+                        <ToggleButton variant="danger" value='incidents' id='incidents'
+                                      onClick={changeCategory}>Incidents</ToggleButton>
+                    </ToggleButtonGroup>
+
+                    <ToggleButtonGroup type="radio" name="categoryBottom" value={category}>
+                        <ToggleButton variant="danger" value='incidents' id='incidents_sub'
+                                      onClick={changeCategory}>All Incidents</ToggleButton>
+                        <ToggleButton variant="danger" value='misconfigurations' id='misconfigurations'
+                                      onClick={changeCategory}>Misconfigurations</ToggleButton>
+                        <ToggleButton variant="danger" value='suspicious' id='suspicious'
+                                      onClick={changeCategory}>Suspicious</ToggleButton>
+                        <ToggleButton variant="danger" value='unclassified' id='unclassified'
+                                      onClick={changeCategory}>Unclassified</ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
             </div>
     );
 }
 
-EventSuspicionSelector.propTypes = {
+EventCategorySelector.propTypes = {
     eventType: PropTypes.string,
     onChange: PropTypes.func
 };
 
-EventSuspicionSelector.defaultProps = {
+EventCategorySelector.defaultProps = {
     eventType: 'suspicious',
     onChange: () => {}
 };
 
-export default EventSuspicionSelector;
+export default EventCategorySelector;

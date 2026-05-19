@@ -9,17 +9,17 @@ import DataTable from 'react-data-table-component';
 import SearchBar from './search-bar';
 
 import {
-    extract_largest_prefix,
-    translate_suspicion_str_to_values,
-    translate_suspicion_values_to_str
+  extract_largest_prefix,
+  translate_category_to_label,
+  translate_label_to_category
 } from "../utils/events";
 
 import { utcMoment } from '../utils/timeutils';
 
 import AsnLabel from "./asn-label";
 import IPPrefix from "./ip-prefix";
-import {InferenceTagsList} from "./tags/inference-tag";
-import {ASNDROP_URL, BASE_URL, BLOCKLIST_URL} from "../utils/endpoints";
+import { InferenceTagsList } from "./tags/inference-tag";
+import { ASNDROP_URL, BASE_URL, BLOCKLIST_URL } from "../utils/endpoints";
 
 function unix_time_to_str(unix_time) {
   if (unix_time === null) return '';
@@ -58,14 +58,14 @@ const columns = [
   {
     name: 'Largest (Sub)Prefix',
     selector: 'prefixes',
-    width: '160px',
+    width: '200px',
     cell: row => {
       const prefix = extract_largest_prefix(row);
       return <IPPrefix prefix={prefix} />;
     },
   },
   {
-    name: '# Prefix Events',
+    name: <div># Prefix<br />Events</div>,
     selector: 'prefixes',
     width: '100px',
     cell: row => row.pfx_events.length,
@@ -99,17 +99,21 @@ const columns = [
     },
   },
   {
-    name: 'Suspicion',
-    width: '100px',
+    name: 'Category',
+    width: '150px',
     cell: row => {
-      const susp_level = row.summary.inference_result.primary_inference.suspicion_level;
-      if (susp_level >= 80) return 'High';
-      if (susp_level > 20) return 'Medium';
-      return 'Low';
+      const labels = row.summary.inference_result.primary_inference.labels || [];
+      if (labels.includes("legitimate")) return "legitimate";
+      if (labels.includes("incident")) {
+          if (labels.includes("misconfig")) return "misconfiguration";
+          if (labels.includes("suspicious")) return "suspicious";
+          return "unclassified";
+      }
+      return "unknown";
     },
   },
   {
-    name: 'Category',
+    name: 'Subcategory',
     width: '220px',
     cell: row => (
       <InferenceTagsList
@@ -128,14 +132,14 @@ const columns = [
 ];
 
 function parse_time(ts_str) {
-        if(isNaN(ts_str)){
-            // not a number
-            return moment(ts_str, "YYYY-MM-DDTHH:mm");
-        } else {
-            // is a number
-            let d = new Date(parseInt(ts_str));
-            return moment(d.toUTCString())
-        }
+  if (isNaN(ts_str)) {
+    // not a number
+    return moment(ts_str, "YYYY-MM-DDTHH:mm");
+  } else {
+    // is a number
+    let d = new Date(parseInt(ts_str));
+    return moment(d.toUTCString())
+  }
 }
 
 export default function EventsTable() {
@@ -156,16 +160,14 @@ export default function EventsTable() {
     startTime: utcMoment().subtract(1, "days"),
     endTime: utcMoment(),
     eventType: "moas",
-    suspicionLevel: "suspicious",
-    min_susp: 80,
-    max_susp: 100,
-    min_duration:0,
-    max_duration:0,
+    category: "suspicious",
+    min_duration: 0,
+    max_duration: 0,
     pfxs: [],
     asns: [],
     tags: [],
     codes: [],
-    });
+  });
 
   const query = queryRef.current;
 
@@ -193,11 +195,8 @@ export default function EventsTable() {
     if ('event_type' in parsed) {
       query.eventType = parsed.event_type;
     }
-    if ('min_susp' in parsed) {
-      query.min_susp = parseInt(parsed.min_susp);
-    }
-    if ('max_susp' in parsed) {
-      query.max_susp = parseInt(parsed.max_susp);
+    if ('labels' in parsed) {
+      query.category = translate_label_to_category(parsed.labels);
     }
     if ('min_duration' in parsed) {
       query.min_duration = parseInt(parsed.min_duration);
@@ -211,9 +210,6 @@ export default function EventsTable() {
     if ('ts_end' in parsed) {
       query.endTime = parse_time(parsed.ts_end);
     }
-
-    query.suspicionLevel = translate_suspicion_values_to_str(query.min_susp, query.max_susp);
-    [query.min_susp, query.max_susp] = translate_suspicion_str_to_values(query.suspicionLevel);
   }
 
   async function _loadBlackList() {
@@ -232,8 +228,6 @@ export default function EventsTable() {
   }
 
   function _loadEventsData() {
-    const [min_susp, max_susp] = translate_suspicion_str_to_values(query.suspicionLevel);
-
     let baseUrl = `${BASE_URL}/events?`;
     let params = new URLSearchParams();
 
@@ -241,8 +235,12 @@ export default function EventsTable() {
     params.append('start', query.perPage * query.curPage);
     params.append('ts_start', query.startTime.format('YYYY-MM-DDTHH:mm'));
     params.append('ts_end', query.endTime.format('YYYY-MM-DDTHH:mm'));
-    params.append('min_susp', min_susp);
-    params.append('max_susp', max_susp);
+    
+    let labels = translate_category_to_label(query.category);
+    if (labels !== "") {
+        params.append('labels', labels);
+    }
+
     params.append('event_type', query.eventType);
 
     if (query.pfxs.length > 0) params.append('pfxs', query.pfxs);
@@ -299,9 +297,9 @@ export default function EventsTable() {
     _loadEventsData();
   }
 
-  function _handleSearchSuspicionChange(suspicionLevel) {
+  function _handleSearchCategoryChange(category) {
     query.curPage = 0;
-    query.suspicionLevel = suspicionLevel;
+    query.category = category;
     _loadEventsData();
   }
 
@@ -320,7 +318,7 @@ export default function EventsTable() {
     query.asns = parameters.asns;
     query.tags = parameters.tags;
     query.codes = parameters.codes;
-    
+
     query.startTime = moment(parameters.startDate.format('YYYY-MM-DDTHH:mm'), 'YYYY-MM-DDTHH:mm');
     query.endTime = moment(parameters.endDate.format('YYYY-MM-DDTHH:mm'), 'YYYY-MM-DDTHH:mm');
     _loadEventsData();
@@ -338,7 +336,7 @@ export default function EventsTable() {
 
   if (!loadingEvents && !loadingExternal) {
 
-   
+
     finalData = events.map(event => {
       if (!event.asinfo) {
         event.asinfo = {};
@@ -356,7 +354,7 @@ export default function EventsTable() {
         query={query}
         onTimeChange={_handleSearchTimeChange}
         onEventTypeChange={_handleSearchEventTypeChange}
-        onEventSuspicionChange={_handleSearchSuspicionChange}
+        onCategoryChange={_handleSearchCategoryChange}
         onSearch={_handleSearchSearch}
         handleSearch={_handleOverallSearch}
       />
