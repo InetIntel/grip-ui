@@ -132,6 +132,7 @@ function EventDetails() {
     );
   }
 
+  const parsed = queryString.parse(window.location.search);
   const debug = 'debug' in parsed || 'dbg' in parsed;
 
   return (
