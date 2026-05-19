@@ -32,6 +32,7 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 const BASE_URL = process.env.BASE_URL || "https://api.grip.inetintel.cc.gatech.edu:443/dev/json";
+const LEGACY_BASE_URL = "https://api.grip.inetintel.cc.gatech.edu:443/v1/json";
 
 const TAGS_URL=`${BASE_URL}/tags`
 const ASNDROP_URL=`${BASE_URL}/asndrop`

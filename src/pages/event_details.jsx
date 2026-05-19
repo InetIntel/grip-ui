@@ -40,12 +40,17 @@ import queryString from 'query-string';
 import EventDetailsTable from '../components/event-details-table';
 import PfxEventsTable from '../components/pfx-events-table';
 import EventTrTagsTable from '../components/event-tr-tags-table';
-import { BASE_URL, TAGS_URL } from '../utils/endpoints';
+import { BASE_URL, LEGACY_BASE_URL, TAGS_URL } from '../utils/endpoints';
 
 function EventDetails() {
   // Extract URL parameters using useParams hook
   const { eventId, eventType } = useParams();
-  const jsonUrl = `${BASE_URL}/event/id/${eventId}`;
+  const isLegacyRequest = window.location.pathname.startsWith('/legacy');
+
+  const jsonUrl = isLegacyRequest
+    ? `${LEGACY_BASE_URL}/event/id/${eventId}`
+    : `${BASE_URL}/event/id/${eventId}`;
+
   const tagsUrl = TAGS_URL;
 
   const [loading, setLoading] = useState(true);
@@ -83,20 +88,59 @@ function EventDetails() {
   }
 
   if (eventData && eventData.error) {
+    if (isLegacyRequest) {
+      return (
+        <div className="container mt-5">
+          <div className="alert alert-danger" role="alert">
+            <h4 className="alert-heading">Event Permanently Unavailable</h4>
+            <p>We're sorry, but we couldn't find the event you're looking for in any of our datasets. <em>({eventData.error_msg})</em></p>
+            <hr />
+            <p>
+              This event is no longer available in our updated BGP dataset, and we have also verified that it cannot be found in our historical legacy database. It may have been permanently removed, or the ID might be incorrect.
+            </p>
+            <p className="mb-0">
+              If you believe this is an error or need further assistance, please feel free to reach out to us at <a href="mailto:grip-info@cc.gatech.edu" className="alert-link">grip-info@cc.gatech.edu</a>.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    const legacyUrl = window.location.origin + "/legacy" + window.location.pathname;
+
     return (
-      <div>
-        <p>Event details loading failed</p>
-        <p>{eventData.error_msg}</p>
+      <div className="container mt-5">
+        <div className="alert alert-warning" role="alert">
+          <h4 className="alert-heading">Event Not Found</h4>
+          <p>We couldn't find the event you're looking for. <em>({eventData.error_msg})</em></p>
+          <hr />
+          <p>
+            As part of our commitment to accuracy, we regularly re-process publicly available BGP data using our constantly improving detection and inference algorithms to report BGP events more accurately.
+            Because of this, older events may no longer be available in the current system.
+          </p>
+          <p>
+            If you are looking for historical data, you can try searching for this exact event in our legacy dataset by clicking here:
+            <br />
+            <strong><a href={legacyUrl} className="alert-link">{legacyUrl}</a></strong>
+          </p>
+          <hr />
+          <p className="mb-0">
+            If you need further assistance or have any questions, feel free to contact us at <a href="mailto:grip-info@cc.gatech.edu" className="alert-link">grip-info@cc.gatech.edu</a>.
+          </p>
+        </div>
       </div>
     );
   }
 
-  // Parse query string for debug flag
-  const parsed = queryString.parse(window.location.search);
   const debug = 'debug' in parsed || 'dbg' in parsed;
 
   return (
     <div id="hijacks" className="container-fluid">
+      {isLegacyRequest && (
+        <div className="alert alert-info mt-3" role="alert">
+          <strong>Notice:</strong> You are currently viewing historical legacy data for this event.
+        </div>
+      )}
       <div className="row">
         <div className="col-md-12 page-header">
           <h1> Event Details </h1>
