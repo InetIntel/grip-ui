@@ -40,4 +40,4 @@ const BLOCKLIST_URL=`${BASE_URL}/blocklist`
 
 const FEEDBACK_URL="https://api.grip.inetintel.cc.gatech.edu/dev/feedback"
 
-export {BASE_URL, TAGS_URL, ASNDROP_URL, BLOCKLIST_URL, FEEDBACK_URL}
+export { BASE_URL, LEGACY_BASE_URL, TAGS_URL, ASNDROP_URL, BLOCKLIST_URL, FEEDBACK_URL }

@@ -45,7 +45,7 @@ import { BASE_URL, LEGACY_BASE_URL, TAGS_URL } from '../utils/endpoints';
 function EventDetails() {
   // Extract URL parameters using useParams hook
   const { eventId, eventType } = useParams();
-  const isLegacyRequest = window.location.pathname.startsWith('/legacy');
+  const isLegacyRequest = window.location.pathname.includes('/legacy');
 
   const jsonUrl = isLegacyRequest
     ? `${LEGACY_BASE_URL}/event/id/${eventId}`
@@ -106,7 +106,7 @@ function EventDetails() {
       );
     }
 
-    const legacyUrl = window.location.origin + "/legacy" + window.location.pathname;
+    const legacyUrl = window.location.origin + window.location.pathname.replace('/events', '/legacy/events');
 
     return (
       <div className="container mt-5">
