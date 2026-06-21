@@ -43,7 +43,7 @@ import Badge from "react-bootstrap/Badge";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 class PropertyTag extends React.Component {
 
@@ -191,7 +191,7 @@ class PropertyTagsList extends React.Component {
         const regularTags = [];
 
         Object.keys(tags).forEach(tag_name => {
-            const match = tag_name.match(/^irr-([a-zA-Z0-9]+)-all-(newcomer-no-record|oldcomer-no-record)$/i);
+            const match = tag_name.match(/^irr-([a-zA-Z0-9\-]+)-all-(newcomer-no-record|oldcomer-no-record)$/i);
             if (match) {
                 const db = match[1].toUpperCase();
                 const suffix = match[2]; // "newcomer-no-record" or "oldcomer-no-record"
@@ -271,8 +271,8 @@ class PropertyTagsList extends React.Component {
             const bgType = getAggregatedType(group.tags);
             
             group.tags.sort((a, b) => {
-                const dbA = a.name.match(/^irr-([a-zA-Z0-9]+)-all-(newcomer-no-record|oldcomer-no-record)$/i)[1].toUpperCase();
-                const dbB = b.name.match(/^irr-([a-zA-Z0-9]+)-all-(newcomer-no-record|oldcomer-no-record)$/i)[1].toUpperCase();
+                const dbA = a.name.match(/^irr-([a-zA-Z0-9\-]+)-all-(newcomer-no-record|oldcomer-no-record)$/i)[1].toUpperCase();
+                const dbB = b.name.match(/^irr-([a-zA-Z0-9\-]+)-all-(newcomer-no-record|oldcomer-no-record)$/i)[1].toUpperCase();
                 return dbA.localeCompare(dbB);
             });
 
@@ -327,7 +327,7 @@ class PropertyTagsList extends React.Component {
                                         <FontAwesomeIcon icon={faInfoCircle} />
                                         {" "}
                                         {titleText}
-                                        {" ▾"}
+                                        <FontAwesomeIcon icon={faCaretDown} style={{ marginLeft: '6px', fontSize: '1.2em' }} />
                                     </Badge>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu renderOnMount popperConfig={{ strategy: 'fixed' }} style={{ maxHeight: '300px', overflowY: 'auto', zIndex: 1050 }}>

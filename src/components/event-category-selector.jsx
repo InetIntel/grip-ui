@@ -70,11 +70,11 @@ function EventCategorySelector({category, onChange}) {
                     <ToggleButtonGroup type="radio" name="categoryBottom" value={category}>
                         <ToggleButton variant="danger" value='incidents' id='incidents_sub'
                                       onClick={changeCategory}>All Incidents</ToggleButton>
-                        <ToggleButton variant="danger" value='misconfigurations' id='misconfigurations'
+                        <ToggleButton variant="warning" value='misconfigurations' id='misconfigurations'
                                       onClick={changeCategory}>Misconfigurations</ToggleButton>
                         <ToggleButton variant="danger" value='suspicious' id='suspicious'
                                       onClick={changeCategory}>Suspicious</ToggleButton>
-                        <ToggleButton variant="danger" value='unclassified' id='unclassified'
+                        <ToggleButton variant="secondary" value='unclassified' id='unclassified'
                                       onClick={changeCategory}>Unclassified</ToggleButton>
                     </ToggleButtonGroup>
                 </div>
