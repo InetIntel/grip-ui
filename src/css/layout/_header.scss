@@ -31,7 +31,8 @@
  * IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
- @use "../abstracts/index" as *;
+@use "../abstracts/index" as *;
+
 .header {
   width: 100%;
   background-color: $color-primary;
@@ -51,10 +52,11 @@
   width: 100%;
   padding: 0 20px;
   align-items: center;
+  font-size: 1.4rem;
 }
 
 .header__logo a {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: $color-white;
   text-decoration: none;
   font-weight: bold;
@@ -80,24 +82,64 @@
   transform: translateX(0);
 }
 
-.header__list {
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-  width: 100%;
-  color: $color-white;
-  font-size: 1.4rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
 .header__item {
   flex: 1;
   display: flex;
   justify-content: center;
   text-align: center;
   padding: 1rem 0;
+
+  .a-header {
+    color: $color-white;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.header__drawer-icon {
+  display: none;
+}
+
+.header__drawer-body {
+  background-color: #2c3e50 !important;
+  color: #fff;
+}
+
+.header__drawer-item {
+  color: #fff;
+  font-size: 16px;
+  margin: 18px;
+
+  .a-header {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.header__drawer-separator {
+  border-top: 1px solid gray;
+  padding-top: 1em;
+}
+
+.header__language-select {
+  z-index: 1001;
+}
+
+@media only screen and (max-width: 54.375em) {
+  .header__item {
+    display: none;
+  }
+
+  .header__drawer-icon {
+    display: block;
+  }
 }
 
 .header__link {
@@ -120,29 +162,29 @@
 
 @media (max-width: 768px) {
   .header__burger {
-      display: block;
+    display: block;
   }
 
   .header__nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: $color-primary;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $color-primary;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
   }
 
   .header__nav--mobile-open {
-      transform: translateX(0);
+    transform: translateX(0);
   }
 
   .header__list {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
@@ -158,9 +200,9 @@
 }
 
 .header__logo-image {
-  height: 60px; 
+  height: 60px;
   width: auto;
-  margin-right: 10px; 
+  margin-right: 10px;
   border-radius: 4px;
   border: 1px solid gray;
 }

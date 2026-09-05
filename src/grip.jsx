@@ -12,13 +12,13 @@ import AboutPage from "./pages/about";
 import AcceptableUsePolicy from "./pages/aup";
 
 // Layout/Template Components
-import Nav from "./templates/nav";
+import Header from "./templates/header";
 import Footer from "./templates/footer";
 
 function App() {
   return (
     <div className="app-container">
-      <Nav />
+      <Header />
       <div className="content-wrapper">
         <Routes>
           <Route
