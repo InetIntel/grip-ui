@@ -58,15 +58,17 @@ class InferenceTag extends React.Component{
     };
 
     _determine_label_type(){
-        let level = this.props.suspicion_level;
-        let res = ["secondary", "question-circle"];
-        if(level >= 80) {
-            res = ["danger", "thumbs-down"]
+        let labels = this.props.labels || [];
+        let name = this.props.name;
+        if (labels.includes("legitimate")) {
+            return ["success", "thumbs-up"];
+        } else if (labels.includes("suspicious")) {
+            return ["danger", "thumbs-down"];
+        } else if (labels.includes("misconfig")) {
+            return ["warning", "exclamation-triangle"];
+        } else {
+            return ["secondary", "question-circle"];
         }
-        else if(level <= 20) {
-            res = ["success", "thumbs-up"]
-        }
-        return res;
     }
 
     render() {
@@ -74,7 +76,8 @@ class InferenceTag extends React.Component{
         let type = this._determine_label_type()
         let badgeStyle = {
             display: 'inline-block',
-            width: '10em',
+            width: '16em',
+            padding: '8px 12px',
             whiteSpace: 'normal',
             wordWrap: 'break-word',
         };
@@ -94,7 +97,7 @@ class InferenceTag extends React.Component{
                     <FontAwesomeIcon icon={faLightbulb} />
                     {" "}
                     {name}
-                    {this.props.render_level && ` (${this.props.suspicion_level})` }
+                    {this.props.render_level && this.props.labels && this.props.labels.length > 0 && ` (${this.props.labels.join(', ')})` }
                 </Badge>
                 </OverlayTrigger>
                 {this.props.render_explanation &&
@@ -130,6 +133,7 @@ class InferenceTagsList extends React.Component {
                 {this.props.inferences.map(function(inference){
                     return <InferenceTag key={`inference-${inference.inference_id}`}
                                          name={inference.inference_id}
+                                         labels={inference.labels}
                                          suspicion_level={inference.suspicion_level}
                                          explanation={inference.explanation}
                                          render_level={this.props.render_level}

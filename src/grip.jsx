@@ -21,6 +21,18 @@ function App() {
       <Nav />
       <div className="content-wrapper">
         <Routes>
+          {/* Legacy Routes */}
+          <Route
+            path="/legacy/events/:eventType/:eventId/:pfxEventId"
+            element={<PfxEventDetails />}
+          />
+          <Route
+            path="/legacy/events/:eventType/:eventId"
+            element={<EventDetails />}
+          />
+          <Route path="/legacy/events" element={<EventsList />} />
+          
+          {/* Standard Routes */}
           <Route
             path="/events/:eventType/:eventId/:pfxEventId"
             element={<PfxEventDetails />}

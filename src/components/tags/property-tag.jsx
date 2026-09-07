@@ -34,18 +34,18 @@
 
 import * as React from "react";
 import PropTypes from "prop-types";
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import {convertTagName} from "../../utils/tags";
+import { OverlayTrigger, Tooltip, Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { convertTagName } from "../../utils/tags";
 import axios from "axios";
-import {TAGS_URL} from "../../utils/endpoints";
+import { TAGS_URL } from "../../utils/endpoints";
 import Badge from "react-bootstrap/Badge";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
-class PropertyTag extends React.Component{
+class PropertyTag extends React.Component {
 
     static propTypes = {
         name: PropTypes.string,
@@ -62,10 +62,10 @@ class PropertyTag extends React.Component{
         type: "na",
     };
 
-    _translateType(type){
+    _translateType(type) {
         let res = "default";
 
-        switch(type){
+        switch (type) {
             case "suspicious":
             case "yes":
                 res = "warning";
@@ -94,10 +94,10 @@ class PropertyTag extends React.Component{
         let parts = url.pathname.split("/");
         let loc = parts.indexOf("events");
         let event_type = "all";
-        if(loc>0){
-            event_type = parts[loc+1];
+        if (loc > 0) {
+            event_type = parts[loc + 1];
         }
-        let search_term = `?tags=${this.props.name}&min_susp=0&max_susp=100&event_type=${event_type}`;
+        let search_term = `?tags=${this.props.name}&event_type=${event_type}`;
         let badgeStyle = {
             display: 'inline-block',
             width: '10em',
@@ -106,10 +106,11 @@ class PropertyTag extends React.Component{
         };
         return (
             <Link to={{
-                pathname:"/",
-                search: `${search_term}` }}
-                  replace={true}
-                  target={"_blank"}
+                pathname: "/",
+                search: `${search_term}`
+            }}
+                replace={true}
+                target={"_blank"}
             >
                 <OverlayTrigger
                     key={name}
@@ -120,17 +121,31 @@ class PropertyTag extends React.Component{
                         </Tooltip>
                     }
                 >
-            <Badge bg={type} text={textColor} style={badgeStyle}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                {" "}
-                {name}
-            </Badge>
+                    <Badge bg={type} text={textColor} style={badgeStyle}>
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                        {" "}
+                        {name}
+                    </Badge>
                 </OverlayTrigger>
             </Link>
         )
     }
 }
 
+
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+  <span
+    ref={ref}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation(); // prevent parent click navigation
+      onClick(e);
+    }}
+    style={{ cursor: 'pointer', display: 'inline-block' }}
+  >
+    {children}
+  </span>
+));
 
 /**
  * Render a list of tags from a event or a prefix event.
@@ -141,7 +156,7 @@ class PropertyTag extends React.Component{
 class PropertyTagsList extends React.Component {
 
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             tagDefinitions: {},
@@ -161,7 +176,7 @@ class PropertyTagsList extends React.Component {
     };
 
     handleClick = (e) => {
-        if(e.target.className==="tags-list" && this.props.enableClick){
+        if (e.target.className === "tags-list" && this.props.enableClick) {
             // if clicking on the empty area of the TagsList
             window.open(this.props.url, "_self");
         }
@@ -170,21 +185,167 @@ class PropertyTagsList extends React.Component {
     render() {
         let tags = this.props.tags;
         let tagDefinitions = this.state.tagDefinitions;
+
+        // 1. Group the tags
+        const aggregated = {};
+        const regularTags = [];
+
+        Object.keys(tags).forEach(tag_name => {
+            const match = tag_name.match(/^irr-([a-zA-Z0-9\-]+)-all-(newcomer-no-record|oldcomer-no-record)$/i);
+            if (match) {
+                const db = match[1].toUpperCase();
+                const suffix = match[2]; // "newcomer-no-record" or "oldcomer-no-record"
+
+                if (!aggregated[suffix]) {
+                    aggregated[suffix] = {
+                        suffix: suffix,
+                        dbs: [],
+                        tags: []
+                    };
+                }
+                if (!aggregated[suffix].dbs.includes(db)) {
+                    aggregated[suffix].dbs.push(db);
+                    aggregated[suffix].dbs.sort(); // Sort alphabetically
+                }
+                aggregated[suffix].tags.push({
+                    name: tag_name,
+                    type: tags[tag_name]
+                });
+            } else {
+                regularTags.push({
+                    name: tag_name,
+                    type: tags[tag_name]
+                });
+            }
+        });
+
+        const getAggregatedType = (tagList) => {
+            const types = tagList.map(t => t.type);
+            if (types.includes("suspicious") || types.includes("yes")) {
+                return "warning";
+            }
+            if (types.every(t => t === "benign" || t === "no")) {
+                return "success";
+            }
+            return "secondary";
+        };
+
+        const getTypeOrder = (rawType) => {
+            if (rawType === "suspicious" || rawType === "yes" || rawType === "warning") return 1;
+            if (rawType === "benign" || rawType === "no" || rawType === "success") return 3;
+            return 2; // na, grey, unknown, default, secondary
+        };
+
+        const formatSuffix = (suffix) => {
+            // e.g. "newcomer-no-record" -> "Newcomer No Record"
+            return suffix.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+        };
+
+        // Styling for the badge
+        let badgeStyle = {
+            display: 'inline-block',
+            width: '10em',
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+            margin: '2px',
+            cursor: 'pointer'
+        };
+
+        // Combine and sort all items to render
+        const renderableItems = [];
+
+        // 1. Add regular tags
+        regularTags.forEach(tag => {
+            renderableItems.push({
+                isAggregated: false,
+                key: `tag-${tag.name}`,
+                name: tag.name,
+                type: tag.type,
+                order: getTypeOrder(tag.type)
+            });
+        });
+
+        // 2. Add aggregated dropdowns
+        Object.keys(aggregated).forEach(suffix => {
+            const group = aggregated[suffix];
+            const bgType = getAggregatedType(group.tags);
+            
+            group.tags.sort((a, b) => {
+                const dbA = a.name.match(/^irr-([a-zA-Z0-9\-]+)-all-(newcomer-no-record|oldcomer-no-record)$/i)[1].toUpperCase();
+                const dbB = b.name.match(/^irr-([a-zA-Z0-9\-]+)-all-(newcomer-no-record|oldcomer-no-record)$/i)[1].toUpperCase();
+                return dbA.localeCompare(dbB);
+            });
+
+            // Format DB list to show at most 2 items and end with '..' if truncated
+            let dbListText = group.dbs.slice(0, 2).join(', ');
+            if (group.dbs.length > 2) {
+                dbListText += ', ..';
+            }
+
+            renderableItems.push({
+                isAggregated: true,
+                key: `agg-${suffix}`,
+                suffix: suffix,
+                group: group,
+                bgType: bgType,
+                dbListText: dbListText,
+                order: getTypeOrder(bgType)
+            });
+        });
+
+        // Sort items by order (1: yes/warning, 2: n/a/secondary, 3: no/success)
+        renderableItems.sort((a, b) => {
+            if (a.order !== b.order) {
+                return a.order - b.order;
+            }
+            const nameA = a.isAggregated ? a.suffix : a.name;
+            const nameB = b.isAggregated ? b.suffix : b.name;
+            return nameA.localeCompare(nameB);
+        });
+
         return (
             <div className="tags-list" onClick={(e) => this.handleClick(e)}>
-                {Object.keys(tags).map(function(tag_name, index){
-                    let definition = "";
-                    if(tag_name in tagDefinitions){
-                        definition = tagDefinitions[tag_name].definition;
+                {renderableItems.map((item) => {
+                    if (!item.isAggregated) {
+                        let definition = "";
+                        if (item.name in tagDefinitions) {
+                            definition = tagDefinitions[item.name].definition;
+                        }
+                        return <PropertyTag key={item.key}
+                            name={item.name}
+                            type={item.type}
+                            definition={definition} />;
+                    } else {
+                        const { suffix, group, bgType, dbListText } = item;
+                        const textColor = bgType === "warning" ? "dark" : "light";
+                        const titleText = `IRR [${dbListText}] ${formatSuffix(suffix)}`;
+
+                        return (
+                            <Dropdown key={item.key} className="d-inline-block" onClick={(e) => e.stopPropagation()}>
+                                <Dropdown.Toggle as={CustomToggle}>
+                                    <Badge bg={bgType} text={textColor} style={badgeStyle}>
+                                        <FontAwesomeIcon icon={faInfoCircle} />
+                                        {" "}
+                                        {titleText}
+                                        <FontAwesomeIcon icon={faCaretDown} style={{ marginLeft: '6px', fontSize: '1.2em' }} />
+                                    </Badge>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu renderOnMount popperConfig={{ strategy: 'fixed' }} style={{ maxHeight: '300px', overflowY: 'auto', zIndex: 1050 }}>
+                                    {group.dbs.map((db) => {
+                                        return (
+                                            <div key={`item-${db}`} style={{ padding: '6px 16px', fontSize: '0.95em', color: '#212529', fontWeight: '500' }}>
+                                                {db}
+                                            </div>
+                                        );
+                                    })}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        );
                     }
-                    return <PropertyTag key={`tag-${tag_name}`}
-                                        name={tag_name}
-                                        type={tags[tag_name]}
-                                        definition={definition}/>
                 })}
             </div>
-        )
+        );
     }
 }
 
-export {PropertyTag, PropertyTagsList};
+export { PropertyTag, PropertyTagsList };
