@@ -99,8 +99,7 @@ class PfxEventsTable extends React.Component {
                 wrap: true,
                 grow:2,
                 cell: row => {
-                    let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
-                    return <PropertyTagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
+                    return <PropertyTagsList tags={row.tags_dict} enableClick={this.props.enableClick}/>
                 }
             },
             {
@@ -191,8 +190,7 @@ class PfxEventsTable extends React.Component {
                 wrap: true,
                 grow:2,
                 cell: row => {
-                    let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
-                    return <PropertyTagsList tags={row.tags_dict} enableClick={this.props.enableClick} url={url}/>
+                    return <PropertyTagsList tags={row.tags_dict} />
                 }
             },
             {

@@ -32,104 +32,85 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import * as React from "react";
 import PropTypes from "prop-types";
-import {OverlayTrigger, Tooltip} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import {convertTagName} from "../../utils/tags";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { convertTagName } from "../../utils/tags";
 import axios from "axios";
-import {TAGS_URL} from "../../utils/endpoints";
+import { TAGS_URL } from "../../utils/endpoints";
 import Badge from "react-bootstrap/Badge";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
-class PropertyTag extends React.Component{
-
-    static propTypes = {
-        name: PropTypes.string,
-        /**
-         * type of the tag labels:
-         * - default: na tag (grey)
-         * - success: no tag (green)
-         * - danger: yes tag (red)
-         */
-        type: PropTypes.string,
-    };
-
-    static defaultProps = {
-        type: "na",
-    };
-
-    _translateType(type){
-        let res = "default";
-
-        switch(type){
-            case "suspicious":
-            case "yes":
-                res = "warning";
-                break;
-            case "benign":
-            case "no":
-                res = "success";
-                break;
-            case "grey":
-            case "na":
-            case "unknown":
-                res = "secondary";
-                break;
-            default:
-                break;
-        }
-        return res;
+const translateType = (type) => {
+    switch (type) {
+        case "suspicious":
+        case "yes":
+            return "warning";
+        case "benign":
+        case "no":
+            return "success";
+        case "grey":
+        case "na":
+        case "unknown":
+            return "secondary";
+        default:
+            return "default";
     }
+};
 
-    render() {
-        let name = convertTagName(this.props.name);
-        let type = this._translateType(this.props.type);
-        let textColor = type == "warning" ? "dark" : "light";
+const badgeStyle = {
+    display: "inline-block",
+    width: "10em",
+    whiteSpace: "normal",
+    wordWrap: "break-word",
+};
 
-        const url = new URL(window.location.href);
-        let parts = url.pathname.split("/");
-        let loc = parts.indexOf("events");
-        let event_type = "all";
-        if(loc>0){
-            event_type = parts[loc+1];
-        }
-        let search_term = `?tags=${this.props.name}&min_susp=0&max_susp=100&event_type=${event_type}`;
-        let badgeStyle = {
-            display: 'inline-block',
-            width: '10em',
-            whiteSpace: 'normal',
-            wordWrap: 'break-word',
-        };
-        return (
-            <Link to={{
-                pathname:"/",
-                search: `${search_term}` }}
-                  replace={true}
-                  target={"_blank"}
+const PropertyTag = ({ name: rawName, type: rawType = "na", definition }) => {
+    const name = convertTagName(rawName);
+    const type = translateType(rawType);
+    const textColor = type === "warning" ? "dark" : "light";
+
+    const parts = window.location.pathname.split("/");
+    const loc = parts.indexOf("events");
+    const eventType = loc > 0 ? parts[loc + 1] : "all";
+
+    const search = `?tags=${rawName}&min_susp=0&max_susp=100&event_type=${eventType}`;
+
+    return (
+        <Link
+            to={{ pathname: "/", search }}
+            replace={true}
+            target="_blank"
+        >
+            <OverlayTrigger
+                key={name}
+                placement="top"
+                overlay={<Tooltip id={`tooltip-${name}`}>{definition}</Tooltip>}
             >
-                <OverlayTrigger
-                    key={name}
-                    placement={"top"}
-                    overlay={
-                        <Tooltip id={`tooltip-${name}`}>
-                            {this.props.definition}
-                        </Tooltip>
-                    }
-                >
-            <Badge bg={type} text={textColor} style={badgeStyle}>
-                <FontAwesomeIcon icon={faInfoCircle} />
-                {" "}
-                {name}
-            </Badge>
-                </OverlayTrigger>
-            </Link>
-        )
-    }
-}
+                <Badge bg={type} text={textColor} style={badgeStyle}>
+                    <FontAwesomeIcon icon={faInfoCircle} /> {name}
+                </Badge>
+            </OverlayTrigger>
+        </Link>
+    );
+};
+
+PropertyTag.propTypes = {
+    name: PropTypes.string,
+    /**
+     * type of the tag labels:
+     * - default: na tag (grey)
+     * - success: no tag (green)
+     * - danger: yes tag (red)
+     */
+    type: PropTypes.string,
+    definition: PropTypes.string,
+};
+
+export default PropertyTag;
 
 
 /**
@@ -138,53 +119,42 @@ class PropertyTag extends React.Component{
  * This component is responsible for both loading tags information from remote, and render tag combinations
  * based on their nature.
  */
-class PropertyTagsList extends React.Component {
+const PropertyTagsList = ({ tags }) => {
+    const [tagDefinitions, setTagDefinitions] = useState({});
 
-
-    constructor(props){
-        super(props);
-        this.state = {
-            tagDefinitions: {},
+    useEffect(() => {
+        const loadTagsData = async () => {
+            try {
+                const response = await axios.get(TAGS_URL);
+                setTagDefinitions(response.data.definitions);
+            } catch (err) {
+                // Do nothing, just leave tagDefinitions as empty object
+            }
         };
-    }
 
-    componentDidMount() {
-        this._loadTagsData()
-    }
+        loadTagsData();
+    }, []);
 
-    _loadTagsData = async () => {
-        const response = await axios.get(TAGS_URL);
-        let definitions = response.data.definitions;
-        this.setState({
-            tagDefinitions: definitions,
-        })
-    };
+    return (
+        <div className="tags-list" onClick={handleClick}>
+            {Object.keys(tags).map((tagName) => (
+                <PropertyTag
+                    key={`tag-${tagName}`}
+                    name={tagName}
+                    type={tags[tagName]}
+                    definition={tagDefinitions[tagName]?.definition ?? ""}
+                />
+            ))}
+        </div>
+    );
+};
 
-    handleClick = (e) => {
-        if(e.target.className==="tags-list" && this.props.enableClick){
-            // if clicking on the empty area of the TagsList
-            window.open(this.props.url, "_self");
-        }
-    };
+PropertyTagsList.propTypes = {
+    tags: PropTypes.object,
+    enableClick: PropTypes.bool,
+};
 
-    render() {
-        let tags = this.props.tags;
-        let tagDefinitions = this.state.tagDefinitions;
-        return (
-            <div className="tags-list" onClick={(e) => this.handleClick(e)}>
-                {Object.keys(tags).map(function(tag_name, index){
-                    let definition = "";
-                    if(tag_name in tagDefinitions){
-                        definition = tagDefinitions[tag_name].definition;
-                    }
-                    return <PropertyTag key={`tag-${tag_name}`}
-                                        name={tag_name}
-                                        type={tags[tag_name]}
-                                        definition={definition}/>
-                })}
-            </div>
-        )
-    }
+const NestedTag = ({ name, type, definition }) => {
 }
 
-export {PropertyTag, PropertyTagsList};
+export { PropertyTag, PropertyTagsList };
