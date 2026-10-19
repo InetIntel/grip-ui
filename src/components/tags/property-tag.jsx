@@ -33,6 +33,7 @@
  */
 
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { convertTagName } from "../../utils/tags";
@@ -44,22 +45,17 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
-const translateType = (type) => {
-    switch (type) {
-        case "suspicious":
-        case "yes":
-            return "warning";
-        case "benign":
-        case "no":
-            return "success";
-        case "grey":
-        case "na":
-        case "unknown":
-            return "secondary";
-        default:
-            return "default";
-    }
+const TYPE_VARIANTS = {
+    suspicious: "warning",
+    yes: "warning",
+    benign: "success",
+    no: "success",
+    grey: "secondary",
+    na: "secondary",
+    unknown: "secondary",
 };
+
+const translateType = (type) => TYPE_VARIANTS[type] ?? "default";
 
 const badgeStyle = {
     display: "inline-block",
@@ -112,6 +108,76 @@ PropertyTag.propTypes = {
 
 export default PropertyTag;
 
+const NestedTag = ({
+    name,
+    type = "na",
+    tags = [],
+    definition,
+    nestedTagDefinitions = {},
+    tagDefinitions = {},
+    enableClick = true,
+}) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const familyDefinition = definition ?? nestedTagDefinitions[name]?.definition ?? nestedTagDefinitions[name] ?? "";
+    const badgeType = translateType(type);
+    const textColor = badgeType === "warning" ? "dark" : "light";
+    const tooltipId = `nested-tag-tooltip-${name.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+
+    return (
+        <div className="nested-tag">
+            <OverlayTrigger
+                placement="top"
+                overlay={<Tooltip id={tooltipId}>{familyDefinition}</Tooltip>}
+            >
+                <button
+                    type="button"
+                    className="btn p-0 border-0 bg-transparent"
+                    aria-expanded={isExpanded}
+                    disabled={!enableClick}
+                    onClick={() => setIsExpanded((expanded) => !expanded)}
+                >
+                    <Badge bg={badgeType} text={textColor} style={badgeStyle}>
+                        <FontAwesomeIcon icon={faInfoCircle} /> {convertTagName(name)}
+                        <span className="ms-1" aria-hidden="true">{isExpanded ? "−" : "+"}</span>
+                    </Badge>
+                </button>
+            </OverlayTrigger>
+            {isExpanded && (
+                <div className="nested-tag-children" role="group" aria-label={`${convertTagName(name)} tags`}>
+                    {tags.map((tag) => {
+                        const tagName = typeof tag === "string" ? tag : tag.name;
+                        if (!tagName) return null;
+
+                        return (
+                            <PropertyTag
+                                key={tagName}
+                                name={tagName}
+                                type={tag.type ?? "na"}
+                                definition={tagDefinitions[tagName]?.definition ?? tagDefinitions[tagName] ?? ""}
+                            />
+                        );
+                    })}
+                </div>
+            )}
+        </div>
+    );
+};
+
+NestedTag.propTypes = {
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string,
+    tags: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({
+            name: PropTypes.string,
+            type: PropTypes.string,
+        }),
+    ])),
+    definition: PropTypes.string,
+    nestedTagDefinitions: PropTypes.object,
+    tagDefinitions: PropTypes.object,
+    enableClick: PropTypes.bool,
+};
 
 /**
  * Render a list of tags from a event or a prefix event.
@@ -119,14 +185,16 @@ export default PropertyTag;
  * This component is responsible for both loading tags information from remote, and render tag combinations
  * based on their nature.
  */
-const PropertyTagsList = ({ tags }) => {
+const PropertyTagsList = ({ tags = {}, enableClick = true }) => {
     const [tagDefinitions, setTagDefinitions] = useState({});
+    const [nestedTagDefinitions, setNestedTagDefinitions] = useState({});
 
     useEffect(() => {
         const loadTagsData = async () => {
             try {
                 const response = await axios.get(TAGS_URL);
-                setTagDefinitions(response.data.definitions);
+                setTagDefinitions(response.data.definitions ?? {});
+                setNestedTagDefinitions(response.data.nested_tag_definitions ?? {});
             } catch (err) {
                 // Do nothing, just leave tagDefinitions as empty object
             }
@@ -136,15 +204,32 @@ const PropertyTagsList = ({ tags }) => {
     }, []);
 
     return (
-        <div className="tags-list" onClick={handleClick}>
-            {Object.keys(tags).map((tagName) => (
-                <PropertyTag
-                    key={`tag-${tagName}`}
-                    name={tagName}
-                    type={tags[tagName]}
-                    definition={tagDefinitions[tagName]?.definition ?? ""}
-                />
-            ))}
+        <div className="tags-list">
+            {Object.entries(tags).map(([familyName, familyTags]) => {
+                const childTags = Object.entries(familyTags ?? {}).map(([tagName, type]) => ({ name: tagName, type }));
+
+                if (familyName === "other") {
+                    return childTags.map((tag) => (
+                        <PropertyTag
+                            key={tag.name}
+                            name={tag.name}
+                            type={tag.type}
+                            definition={tagDefinitions[tag.name]?.definition ?? ""}
+                        />
+                    ));
+                }
+
+                return (
+                    <NestedTag
+                        key={`tag-family-${familyName}`}
+                        name={familyName}
+                        tags={childTags}
+                        nestedTagDefinitions={nestedTagDefinitions}
+                        tagDefinitions={tagDefinitions}
+                        enableClick={enableClick}
+                    />
+                );
+            })}
         </div>
     );
 };
@@ -154,7 +239,5 @@ PropertyTagsList.propTypes = {
     enableClick: PropTypes.bool,
 };
 
-const NestedTag = ({ name, type, definition }) => {
-}
 
-export { PropertyTag, PropertyTagsList };
+export { NestedTag, PropertyTag, PropertyTagsList };

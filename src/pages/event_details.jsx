@@ -32,7 +32,7 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import queryString from 'query-string';
@@ -46,7 +46,7 @@ function EventDetails() {
   // Extract URL parameters using useParams hook
   const { eventId, eventType } = useParams();
   const jsonUrl = `${BASE_URL}/event/id/${eventId}`;
-  const tagsUrl = TAGS_URL;
+  const tagsUrl = `${TAGS_URL}?nested=true`;
 
   const [loading, setLoading] = useState(true);
   const [eventData, setEventData] = useState(undefined);
@@ -122,7 +122,6 @@ function EventDetails() {
           tagsData={tagsData}
           eventId={eventId}
           eventType={eventType}
-          isEventDetails={true}
           title="Prefix Event List"
         />
       </div>

@@ -34,32 +34,28 @@
 
 import React from "react";
 import DataTable from "react-data-table-component";
-import PropTypes from "prop-types";
-import {PropertyTagsList} from "./tags/property-tag";
-import {extract_tags_tr_worthiness} from "../utils/tags";
+import { PropertyTagsList } from "./tags/property-tag";
+import { extract_tags_tr_worthiness } from "../utils/tags";
 import IPPrefix from "./ip-prefix";
 import LinkA from "../utils/linka";
-import {InferenceTagsList} from "./tags/inference-tag";
+import { InferenceTagsList } from "./tags/inference-tag";
 
+const renderAsns = (origins) =>
+    origins
+        .map((asn) => (
+            <a
+                key={asn}
+                href={`https://asrank.caida.org/asns?asn=${asn}`}
+                target="_blank"
+            >
+                {" "}AS{asn}{" "}
+            </a>
+        ))
+        .reduce((prev, curr) => [prev, ", ", curr], []);
 
 class PfxEventsTable extends React.Component {
 
-    columns1 = [];
-    columns2 = [];
-
-
-    static propTypes = {
-        isEventDetails: PropTypes.bool,
-        enableClick: PropTypes.bool,
-        enablePagination: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        enableClick: true,
-        enablePagination: true,
-    };
-
-    constructor(props){
+    constructor(props) {
         super(props);
         this.constructColumns()
     }
@@ -72,24 +68,22 @@ class PfxEventsTable extends React.Component {
 
     constructColumns = () => {
 
-        this.columns1 = [
+        this.moasOrEdgeEventColumns = [
             {
                 name: 'Prefix',
                 selector: 'prefix',
-                grow:1,
-                cell: row=>{
+                grow: 1,
+                cell: row => {
                     let origins = [];
-                    if("origins" in row.details){
+                    if ("origins" in row.details) {
                         origins = row.details.origins;
-                    } else if ("as1" in row.details){
+                    } else if ("as1" in row.details) {
                         origins = [row.details.as1, row.details.as2]
                     }
-                    let ases = origins.map(asn=>{
-                        return <a key={asn} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
-                    }).reduce((prev, curr) => [prev, ', ', curr]);
+                    let ases = renderAsns(origins);
 
                     return <div>
-                        <IPPrefix prefix={row.prefix}/> ({ases})
+                        <IPPrefix prefix={row.prefix} /> ({ases})
                     </div>
                 }
             },
@@ -97,9 +91,9 @@ class PfxEventsTable extends React.Component {
                 name: 'Tags',
                 selector: 'tags',
                 wrap: true,
-                grow:2,
+                grow: 2,
                 cell: row => {
-                    return <PropertyTagsList tags={row.tags_dict} enableClick={this.props.enableClick}/>
+                    return <PropertyTagsList tags={row.tags_dict} />
                 }
             },
             {
@@ -111,20 +105,20 @@ class PfxEventsTable extends React.Component {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
                 width: "150px",
-                cell : (row)=><>{row.tr_worthy}</>
+                cell: (row) => <>{row.tr_worthy}</>
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
                 width: "150px",
-                cell : (row)=><>{row.tr_available}</>
+                cell: (row) => <>{row.tr_available}</>
             },
             {
                 name: '',
                 selector: 'tr_worthy',
                 width: "100px",
-                cell: row=>{
-                    if(this.props.isEventDetails) {
+                cell: row => {
+                    if (this.props.isEventDetails) {
                         let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                         return <LinkA type="button" className="btn btn-sm btn-primary grip-btn" to={url}>
                             Details
@@ -135,52 +129,50 @@ class PfxEventsTable extends React.Component {
             },
         ];
 
-        this.columns2 = [
+        this.otherEventTypeColumns = [
             {
                 name: 'Sub Prefix',
                 selector: 'sub_pfx',
-                grow:1,
-                cell: row =>{
+                grow: 1,
+                cell: row => {
                     let origins = [];
-                    if('sub_origins' in row.details){
+                    if ('sub_origins' in row.details) {
                         origins = row.details.sub_origins;
-                    } else if ('old_origins' in row.details){
+                    } else if ('old_origins' in row.details) {
                         origins = row.details.old_origins;
-                        if(this.props.eventType==="defcon"){
+                        if (this.props.eventType === "defcon") {
                             origins = origins.concat(row.details.new_origins);
                         }
                     }
 
-                    let ases = origins.map(asn=>{
-                        return <a key={`pfx-asn-${asn}`} href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
-                    }).reduce((prev, curr) => [prev, ', ', curr]);
+                    let ases = renderAsns(origins);
 
                     return <React.Fragment>
-                        <IPPrefix prefix={row.sub_pfx}/> ({ases})
+                        <IPPrefix prefix={row.sub_pfx} /> ({ases})
                     </React.Fragment>
                 }
             },
             {
                 name: 'Super Prefix',
                 selector: 'super_pfx',
-                grow:1,
-                cell: row=>{
+                grow: 1,
+                cell: row => {
                     let origins = [];
-                    if('super_origins' in row.details){
+                    if ('super_origins' in row.details) {
                         origins = row.details.super_origins;
-                    } else if ('old_origins' in row.details){
+                    } else if ('old_origins' in row.details) {
                         origins = row.details.old_origins
-                        if(this.props.eventType==="defcon"){
+                        if (this.props.eventType === "defcon") {
                             origins = origins.concat(row.details.new_origins);
                         }
                     }
 
-                    let ases = origins.map(asn=>{
+                    let ases = origins.map(asn => {
                         return <a href={`https://asrank.caida.org/asns?asn=${asn}`} target="_blank"> AS{asn} </a>
                     }).reduce((prev, curr) => [prev, ', ', curr]);
 
                     return <React.Fragment>
-                        <IPPrefix prefix={row.super_pfx}/> ({ases})
+                        <IPPrefix prefix={row.super_pfx} /> ({ases})
                     </React.Fragment>
                 }
             },
@@ -188,7 +180,7 @@ class PfxEventsTable extends React.Component {
                 name: 'Tags',
                 selector: 'tags',
                 wrap: true,
-                grow:2,
+                grow: 2,
                 cell: row => {
                     return <PropertyTagsList tags={row.tags_dict} />
                 }
@@ -196,26 +188,26 @@ class PfxEventsTable extends React.Component {
             {
                 name: 'Inferences',
                 selector: 'inferences',
-                cell: row => <InferenceTagsList inferences={row.inferences.props.inferences}  />,
-              },
+                cell: row => <InferenceTagsList inferences={row.inferences.props.inferences} />,
+            },
             {
                 name: 'Traceroute Worthy',
                 selector: 'tr_worthy',
                 width: "150px",
-                cell : (row)=><>{row.tr_worthy}</>
+                cell: (row) => <>{row.tr_worthy}</>
             },
             {
                 name: 'Traceroute Available',
                 selector: 'tr_available',
                 width: "150px",
-                cell : (row)=><>{row.tr_available}</>
+                cell: (row) => <>{row.tr_available}</>
             },
             {
                 name: '',
                 selector: 'tr_worthy',
                 width: "100px",
-                cell: row=>{
-                    if(this.props.isEventDetails) {
+                cell: row => {
+                    if (this.props.isEventDetails) {
                         let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
                         return <LinkA type="button" className="btn btn-sm btn-primary grip-btn" to={url}>
                             Details
@@ -230,13 +222,12 @@ class PfxEventsTable extends React.Component {
     preprocessData(pfx_events, tags_data) {
 
         let processed = [];
-
         let tags_tr_worthy_dict = extract_tags_tr_worthiness(tags_data);
 
 
         for (let pfx_event of pfx_events) {
             let event = {};
-            let tags_dict={};
+            let tags_dict = {};
 
             let prefixes = [];
             if ("prefix" in pfx_event) {
@@ -251,17 +242,24 @@ class PfxEventsTable extends React.Component {
                 event.super_pfx = pfx_event.super_pfx;
                 prefixes.push(pfx_event.super_pfx);
             }
+
             event.tags = pfx_event.tags;
             event.tr_worthy = pfx_event.traceroutes.worthy.toString();
-            event.tr_available = pfx_event.traceroutes.msms.some(msm => msm.results.length>0).toString();
-            event.inferences = <InferenceTagsList inferences={pfx_event.inferences}/>;
-            event.fingerprint = prefixes.join("_")
-                .replace(/\//g, "-");
-            pfx_event.tags.forEach((tag)=>{
-                tags_dict[tag.name] = tag.name in tags_tr_worthy_dict? tags_tr_worthy_dict[tag.name]: "unknown";
-            });
-            event.tags_dict=tags_dict;
-            event.details=pfx_event.details;
+            event.tr_available = pfx_event.traceroutes.msms.some(msm => msm.results.length > 0).toString();
+            event.inferences = <InferenceTagsList inferences={pfx_event.inferences} />;
+            event.fingerprint = prefixes.join("_").replace(/\//g, "-");
+
+            for (const [tagFamily, tagList] of Object.entries(pfx_event.tags)) {
+                if (tagList.length > 0) {
+                    tags_dict[tagFamily] = {};
+                    for (let tag of tagList) {
+                        tags_dict[tagFamily][tag.name] = tag.name in tags_tr_worthy_dict ? tags_tr_worthy_dict[tag.name] : "unknown";
+                    }
+                }
+            }
+
+            event.tags_dict = tags_dict;
+            event.details = pfx_event.details;
             processed.push(event);
         }
         return processed;
@@ -269,11 +267,10 @@ class PfxEventsTable extends React.Component {
 
     render() {
         let data = this.preprocessData(this.props.data, this.props.tagsData);
-        let columns = [];
+        let columns = this.otherEventTypeColumns;
+        
         if (["moas", "edges"].includes(this.props.eventType)) {
-            columns = this.columns1
-        } else {
-            columns = this.columns2
+            columns = this.moasOrEdgeEventColumns
         }
 
         return (
@@ -283,7 +280,7 @@ class PfxEventsTable extends React.Component {
                 striped={true}
                 highlightOnHover={true}
                 data={data}
-                pagination={this.props.enablePagination}
+                pagination={true}
             />
         );
     }
