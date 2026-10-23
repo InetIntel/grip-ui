@@ -38,6 +38,7 @@ import AsnLabel from "./asn-label";
 import IPPrefix from "./ip-prefix";
 import axios from "axios";
 import {InferenceTagsList} from "./tags/inference-tag";
+import {PropertyTagsList} from "./tags/property-tag";
 import {ASNDROP_URL, BLOCKLIST_URL} from "../utils/endpoints";
 
 class EventDetailsTable extends React.Component {
@@ -111,6 +112,11 @@ class EventDetailsTable extends React.Component {
             data.asinfo.blacklist = this.state.blacklist;
             data.asinfo.asndrop = this.state.asndrop;
         }
+        const eventTags = Object.fromEntries(
+            (Array.isArray(data.tags) ? data.tags : [])
+                .map((tag) => typeof tag === "string" ? [tag, "unknown"] : [tag?.name, tag?.type ?? "unknown"])
+                .filter(([name]) => Boolean(name))
+        );
 
         return (
             <React.Fragment>
@@ -150,6 +156,10 @@ class EventDetailsTable extends React.Component {
                                 <tr>
                                     <th>Impact:</th>
                                     <td>{data.impact}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tags:</th>
+                                    <td><PropertyTagsList tags={eventTags} /></td>
                                 </tr>
                                 </tbody>
                             </table>
