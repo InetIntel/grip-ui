@@ -118,13 +118,10 @@ class PfxEventsTable extends React.Component {
                 selector: 'tr_worthy',
                 width: "100px",
                 cell: row => {
-                    if (this.props.isEventDetails) {
-                        let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
-                        return <LinkA type="button" className="btn btn-sm btn-primary grip-btn" to={url}>
-                            Details
-                        </LinkA>
-                    }
-                    return ""
+                    let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+                    return <LinkA type="button" className="btn btn-sm btn-primary grip-btn" to={url}>
+                        Details
+                    </LinkA>
                 }
             },
         ];
