@@ -206,7 +206,7 @@ const PropertyTagsList = ({ tags = {}, enableClick = true }) => {
     return (
         <div className="tags-list">
             {Object.entries(tags).map(([familyName, familyTags]) => {
-                if (typeof familyTags !== "object" || familyTags === null || (Array.isArray(familyTags) && familyTags.length > 0)) {
+                if (Array.isArray(familyTags) && familyTags.length > 0) {
                     return (
                         <PropertyTag
                             key={familyName}
