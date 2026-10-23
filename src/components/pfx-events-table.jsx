@@ -51,7 +51,7 @@ const renderAsns = (origins) =>
                 {" "}AS{asn}{" "}
             </a>
         ))
-        .reduce((prev, curr) => [prev, ", ", curr], []);
+        .reduce((prev, curr, index) => index === 0 ? [curr] : [...prev, ", ", curr], []);
 
 class PfxEventsTable extends React.Component {
 
