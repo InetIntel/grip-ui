@@ -249,11 +249,21 @@ class PfxEventsTable extends React.Component {
             event.inferences = <InferenceTagsList inferences={pfx_event.inferences} />;
             event.fingerprint = prefixes.join("_").replace(/\//g, "-");
 
-            for (const [tagFamily, tagList] of Object.entries(pfx_event.tags)) {
-                if (tagList.length > 0) {
-                    tags_dict[tagFamily] = {};
-                    for (let tag of tagList) {
-                        tags_dict[tagFamily][tag.name] = tag.name in tags_tr_worthy_dict ? tags_tr_worthy_dict[tag.name] : "unknown";
+            if (Array.isArray(pfx_event.tags)) {
+                for (const tag of pfx_event.tags) {
+                    if (tag?.name) {
+                        tags_dict[tag.name] = tags_tr_worthy_dict[tag.name] ?? "unknown";
+                    }
+                }
+            } else {
+                for (const [tagFamily, tagList] of Object.entries(pfx_event.tags ?? {})) {
+                    if (Array.isArray(tagList) && tagList.length > 0) {
+                        tags_dict[tagFamily] = {};
+                        for (const tag of tagList) {
+                            if (tag?.name) {
+                                tags_dict[tagFamily][tag.name] = tags_tr_worthy_dict[tag.name] ?? "unknown";
+                            }
+                        }
                     }
                 }
             }
