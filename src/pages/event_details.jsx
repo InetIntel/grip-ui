@@ -46,7 +46,7 @@ function EventDetails() {
   // Extract URL parameters using useParams hook
   const { eventId, eventType } = useParams();
   const jsonUrl = `${BASE_URL}/event/id/${eventId}?nested=true`;
-  const tagsUrl = `${TAGS_URL}?nested=true`;
+  const tagsUrl = `${TAGS_URL}`;
 
   const [loading, setLoading] = useState(true);
   const [eventData, setEventData] = useState(undefined);

@@ -194,7 +194,7 @@ const PropertyTagsList = ({ tags = {}, enableClick = true }) => {
             try {
                 const response = await axios.get(TAGS_URL);
                 setTagDefinitions(response.data.definitions ?? {});
-                setNestedTagDefinitions(response.data.nested_tag_definitions ?? {});
+                setNestedTagDefinitions(response.data.nested_tag_descriptions ?? {});
             } catch (err) {
                 // Do nothing, just leave tagDefinitions as empty object
             }
@@ -206,7 +206,7 @@ const PropertyTagsList = ({ tags = {}, enableClick = true }) => {
     return (
         <div className="tags-list">
             {Object.entries(tags).map(([familyName, familyTags]) => {
-                if (typeof familyTags !== "object" || familyTags === null || Array.isArray(familyTags)) {
+                if (typeof familyTags !== "object" || familyTags === null || (Array.isArray(familyTags) && familyTags.length > 0)) {
                     return (
                         <PropertyTag
                             key={familyName}
