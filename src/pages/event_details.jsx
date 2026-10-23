@@ -45,7 +45,7 @@ import { BASE_URL, TAGS_URL } from '../utils/endpoints';
 function EventDetails() {
   // Extract URL parameters using useParams hook
   const { eventId, eventType } = useParams();
-  const jsonUrl = `${BASE_URL}/event/id/${eventId}`;
+  const jsonUrl = `${BASE_URL}/event/id/${eventId}?nested=true`;
   const tagsUrl = `${TAGS_URL}?nested=true`;
 
   const [loading, setLoading] = useState(true);
