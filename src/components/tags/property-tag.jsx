@@ -218,6 +218,9 @@ const PropertyTagsList = ({ tags = {}, enableClick = true }) => {
                 }
 
                 const childTags = Object.entries(familyTags ?? {}).map(([tagName, type]) => ({ name: tagName, type }));
+                if (childTags.length === 0) {
+                    return null;
+                }
 
                 if (familyName === "other") {
                     return childTags.map((tag) => (
