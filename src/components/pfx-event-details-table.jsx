@@ -109,6 +109,10 @@ class PfxEventDetailsTable extends React.Component {
         processed["inferences"] = data.inferences;
         const tags = data.tags;
         for (const [tagFamily, tagList] of Object.entries(tags ?? {})) {
+            if(tagList.length===0){
+                continue
+            }
+            
             tags_dict[tagFamily] = {};
             const familyTags = Array.isArray(tagList)
                 ? tagList.map((tag) => typeof tag === "string" ? tag : tag?.name)
