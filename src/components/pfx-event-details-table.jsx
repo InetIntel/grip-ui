@@ -107,10 +107,19 @@ class PfxEventDetailsTable extends React.Component {
         }
 
         processed["inferences"] = data.inferences;
-        processed["tags"] = data.tags;
-        processed.tags.forEach((tag)=>{
-            tags_dict[tag.name] = tag.name in tags_tr_worthy_dict? tags_tr_worthy_dict[tag.name]: "unknown";
-        });
+        const tags = data.tags;
+        for (const [tagFamily, tagList] of Object.entries(tags ?? {})) {
+            tags_dict[tagFamily] = {};
+            const familyTags = Array.isArray(tagList)
+                ? tagList.map((tag) => typeof tag === "string" ? tag : tag?.name)
+                : Object.keys(tagList ?? {});
+            for (const tagName of familyTags) {
+                if (tagName) {
+                    tags_dict[tagFamily][tagName] = tags_tr_worthy_dict[tagName] ?? "unknown";
+                }
+            }
+        }
+        processed["tags"] = tags;
         processed.tags_dict=tags_dict;
 
         return processed
