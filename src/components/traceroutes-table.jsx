@@ -52,7 +52,7 @@ const columns = [
         cell: (row)=> <div>{row.target_ip}</div>
     },
     {
-        name: 'Traget Prefix',
+        name: 'Target Prefix',
         selector: 'target_pfx',
         cell: (row)=> <div>{row.target_pfx}</div>
     },
