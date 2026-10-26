@@ -119,7 +119,9 @@ const NestedTag = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const familyDefinition = definition ?? nestedTagDefinitions[name]?.definition ?? nestedTagDefinitions[name] ?? "";
-    const badgeType = translateType(type);
+    const firstChild = tags[0];
+    const firstChildType = typeof firstChild === "string" ? "na" : firstChild?.type;
+    const badgeType = translateType(firstChildType ?? type);
     const textColor = badgeType === "warning" ? "dark" : "light";
     const tooltipId = `nested-tag-tooltip-${name.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
