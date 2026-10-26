@@ -133,12 +133,13 @@ const NestedTag = ({
                     type="button"
                     className="btn p-0 border-0 bg-transparent"
                     aria-expanded={isExpanded}
+                    aria-label={`${isExpanded ? "Collapse" : "Expand"} ${convertTagName(name)} tags`}
                     disabled={!enableClick}
                     onClick={() => setIsExpanded((expanded) => !expanded)}
                 >
                     <Badge bg={badgeType} text={textColor} style={badgeStyle}>
                         <FontAwesomeIcon icon={faInfoCircle} /> {convertTagName(name)}
-                        <span className="ms-1" aria-hidden="true">{isExpanded ? "−" : "+"}</span>
+                        <span className="nested-tag-toggle-icon" aria-hidden="true">{isExpanded ? "−" : "+"}</span>
                     </Badge>
                 </button>
             </OverlayTrigger>
