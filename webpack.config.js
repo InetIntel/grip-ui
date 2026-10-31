@@ -2,11 +2,14 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
-const env = dotenv.config().parsed || {};
+const env = dotenv.config({ path: path.resolve(__dirname, '.env') }).parsed || {};
+
+const BASE_URL = env.BASE_URL || process.env.BASE_URL;
+const APP_BASENAME = env.APP_BASENAME || process.env.APP_BASENAME || '/';
 
 const envKeys = {
-  'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
-  'process.env.APP_BASENAME': JSON.stringify(env.APP_BASENAME || '/'),
+  'process.env.BASE_URL': JSON.stringify(BASE_URL),
+  'process.env.APP_BASENAME': JSON.stringify(APP_BASENAME),
 };
 
 module.exports = {
@@ -14,7 +17,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: (env.APP_BASENAME || '') + '/'
+    publicPath: APP_BASENAME.endsWith('/') ? APP_BASENAME : APP_BASENAME + '/'
   },
   module: {
     rules: [

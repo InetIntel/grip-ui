@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Page Components
@@ -21,6 +20,18 @@ function App() {
       <Nav />
       <div className="content-wrapper">
         <Routes>
+          {/* Legacy Routes */}
+          <Route
+            path="/legacy/events/:eventType/:eventId/:pfxEventId"
+            element={<PfxEventDetails />}
+          />
+          <Route
+            path="/legacy/events/:eventType/:eventId"
+            element={<EventDetails />}
+          />
+          <Route path="/legacy/events" element={<EventsList />} />
+          
+          {/* Standard Routes */}
           <Route
             path="/events/:eventType/:eventId/:pfxEventId"
             element={<PfxEventDetails />}
@@ -29,12 +40,12 @@ function App() {
             path="/events/:eventType/:eventId"
             element={<EventDetails />}
           />
+          <Route path="/events" element={<EventsList />} />
           <Route path="/ack" element={<Acknowledgement />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/aup" element={<AcceptableUsePolicy />} />
           <Route path="/tags" element={<EventTags />} />
-          <Route path="/events" element={<EventsList />} />
           {/* Fallback for the root route */}
           <Route path="/" element={<EventsList />} />
         </Routes>

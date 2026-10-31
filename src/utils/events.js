@@ -124,34 +124,36 @@ function extract_prefixes(pfx_event) {
     return prefixes;
 }
 
-function translate_suspicion_str_to_values(suspicionLevel) {
-    let min_susp = 0;
-    let max_susp = 100;
-    if (suspicionLevel === "suspicious") {
-        min_susp = 80;
-    } else if (suspicionLevel === "benign") {
-        max_susp = 20;
-    } else if (suspicionLevel === "grey") {
-        max_susp = 79;
-        min_susp = 21;
-    } else if (suspicionLevel === "all") {
-        // nothing to do here
+function translate_category_to_label(category) {
+    if (category === "misconfigurations") {
+        return "incident,misconfig";
+    } else if (category === "suspicious") {
+        return "incident,suspicious";
+    } else if (category === "legitimate") {
+        return "legitimate";
+    } else if (category === "incidents") {
+        return "incident";
+    } else if (category === "unclassified") {
+        return "incident,!misconfig,!suspicious";
     }
-    return [min_susp, max_susp];
+    return "";
 }
 
-function translate_suspicion_values_to_str(min_susp, max_susp) {
-    if(min_susp===80 && max_susp===100){
+function translate_label_to_category(label) {
+    if (label === "incident,misconfig") {
+        return "misconfigurations";
+    } else if (label === "incident,suspicious") {
         return "suspicious";
-    } else if (min_susp===0 && max_susp===20){
-        return "benign";
-    } else if (min_susp===21 && max_susp===79){
-        return "grey";
-    } else {
-        return "all";
+    } else if (label === "legitimate") {
+        return "legitimate";
+    } else if (label === "incident") {
+        return "incidents";
+    } else if (label === "incident,!misconfig,!suspicious") {
+        return "unclassified";
     }
+    return "all";
 }
 
 export {extract_impact, extract_largest_prefix, unix_time_to_str, extract_prefixes,
-    translate_suspicion_str_to_values, translate_suspicion_values_to_str
+    translate_category_to_label, translate_label_to_category
 }

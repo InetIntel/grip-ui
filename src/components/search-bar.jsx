@@ -32,22 +32,24 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import React from "react";
+import { useRef } from "react";
 import EventTypeSelector from "./event-type-selector";
-import EventSuspicionSelector from "./event-suspicion-selector";
+import EventCategorySelector from "./event-category-selector";
 import RangePicker from "./range-picker";
 import EventSearchBox from "./event-search-box";
-class SearchBar extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.datePicker = React.createRef();
-        this.searchInput = React.createRef();
-    }
+const SearchBar = (props) => {
+    const datePicker = useRef(null);
+    const searchInput = useRef(null);
 
-    createParameters = () => {
-        let dates = this.datePicker.getDates();
-        let [prefixes, tags, codes, asns] = this.searchInput._returnParsedSearch();
+    const createParameters = () => {
+        const dates = datePicker.current ? datePicker.current.getDates() : {
+            startDate: props.query.startTime,
+            endDate: props.query.endTime
+        };
+        const parsedSearch = searchInput.current ? searchInput.current._returnParsedSearch() : [[], [], [], []];
+        const [prefixes, tags, codes, asns] = parsedSearch;
+
         return {
             pfxs: prefixes,
             tags: tags,
@@ -55,48 +57,41 @@ class SearchBar extends React.Component {
             asns: asns,
             startDate: dates.startDate,
             endDate: dates.endDate
-        }
-    }
+        };
+    };
 
-    render() {
-        return (
-            <div>
-                <div className="row search-bar">
-                    <EventTypeSelector eventType={this.props.query.eventType}
-                                    onChange={this.props.onEventTypeChange}
+    return (
+        <div>
+            <div className="row search-bar">
+                <EventTypeSelector eventType={props.query.eventType}
+                                onChange={props.onEventTypeChange}
+                />
+
+                <EventCategorySelector eventCategory={props.query.eventCategory}
+                                onChange={props.onEventCategoryChange}
+                />
+            </div>
+            <div className="row search-bar">
+                    <RangePicker
+                        startDate={props.query.startTime}
+                        endDate={props.query.endTime}
+                        onApply={props.onTimeChange}
+                        ref={datePicker}
                     />
-
-                    <EventSuspicionSelector eventSuspicionLevel={this.props.query.suspicionLevel}
-                                    onChange={this.props.onEventSuspicionChange}
+                    <EventSearchBox
+                        pfxs={props.query.pfxs}
+                        asns={props.query.asns}
+                        tags={props.query.tags}
+                        codes={props.query.codes}
+                        ref={searchInput}
+                        onSearch={props.onSearch}
+                        handleSearch={() => {props.handleSearch(createParameters())}}
                     />
+                    <div />
+                    <div />
                 </div>
-                <div className="row search-bar">
-                        <RangePicker
-                            startDate={this.props.query.startTime}
-                            endDate={this.props.query.endTime}
-                            onApply={this.props.onTimeChange}
-                            ref={(r) => {this.datePicker = r}}
-                        />
-                        <EventSearchBox
-                            pfxs={this.props.query.pfxs}
-                            asns={this.props.query.asns}
-                            tags={this.props.query.tags}
-                            codes={this.props.query.codes}
-                            ref={(r) => {this.searchInput = r}}
-                            onSearch={this.props.onSearch}
-                            handleSearch={() => {this.props.handleSearch(this.createParameters())}}
-                        />
-                        <div> 
-                        </div>
-                        <div>
-
-                        </div>
-                    </div>
-                    
-
-                </div>
-        );
-    }
-}
+            </div>
+    );
+};
 
 export default SearchBar;
