@@ -55,6 +55,7 @@ function InferenceTag(props) {
     }
 
     let name = convertTagName(props.name);
+    let textColor = type[0] === "warning" ? "dark" : "light";
     let badgeStyle = {
         display: 'inline-block',
         width: '16em',
@@ -74,7 +75,7 @@ function InferenceTag(props) {
                     </Tooltip>
                 }
             >
-            <Badge bg={type[0]} style={badgeStyle}>
+            <Badge bg={type[0]} text={textColor} style={badgeStyle}>
                 <FontAwesomeIcon icon={faLightbulb} />
                 {" "}
                 {name}
