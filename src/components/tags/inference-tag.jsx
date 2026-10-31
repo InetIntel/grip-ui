@@ -32,7 +32,6 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import * as React from "react";
 import PropTypes from "prop-types";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import {convertTagName} from "../../utils/tags";
@@ -42,69 +41,66 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons'
 
 
-class InferenceTag extends React.Component{
-
-    static propTypes = {
-        name: PropTypes.string,
-        suspicion_level: PropTypes.number,
-        explanation: PropTypes.string,
-        render_level: PropTypes.bool,
-        render_explanation: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        render_level: true,
-        render_explanation: false,
-    };
-
-    _determine_label_type(){
-        let level = this.props.suspicion_level;
-        let res = ["secondary", "question-circle"];
-        if(level >= 80) {
-            res = ["danger", "thumbs-down"]
-        }
-        else if(level <= 20) {
-            res = ["success", "thumbs-up"]
-        }
-        return res;
+function InferenceTag(props) {
+    let labels = props.labels || [];
+    let type;
+    if (labels.includes("legitimate")) {
+        type = ["success", "thumbs-up"];
+    } else if (labels.includes("suspicious")) {
+        type = ["danger", "thumbs-down"];
+    } else if (labels.includes("misconfig")) {
+        type = ["warning", "exclamation-triangle"];
+    } else {
+        type = ["secondary", "question-circle"];
     }
 
-    render() {
-        let name = convertTagName(this.props.name);
-        let type = this._determine_label_type()
-        let badgeStyle = {
-            display: 'inline-block',
-            width: '10em',
-            whiteSpace: 'normal',
-            wordWrap: 'break-word',
-        };
+    let name = convertTagName(props.name);
+    let badgeStyle = {
+        display: 'inline-block',
+        width: '16em',
+        padding: '8px 12px',
+        whiteSpace: 'normal',
+        wordWrap: 'break-word',
+    };
 
-        return (
-            <div>
-                <OverlayTrigger
-                    key={name}
-                    placement={"top"}
-                    overlay={
-                        <Tooltip id={`tooltip-${name}`}>
-                            {this.props.explanation}
-                        </Tooltip>
-                    }
-                >
-                <Badge bg={type[0]} style={badgeStyle}>
-                    <FontAwesomeIcon icon={faLightbulb} />
-                    {" "}
-                    {name}
-                    {this.props.render_level && ` (${this.props.suspicion_level})` }
-                </Badge>
-                </OverlayTrigger>
-                {this.props.render_explanation &&
-                    <p><i>{this.props.explanation}</i></p>
+    return (
+        <div>
+            <OverlayTrigger
+                key={name}
+                placement={"top"}
+                overlay={
+                    <Tooltip id={`tooltip-${name}`}>
+                        {props.explanation}
+                    </Tooltip>
                 }
-
-            </div>
-        )
-    }
+            >
+            <Badge bg={type[0]} style={badgeStyle}>
+                <FontAwesomeIcon icon={faLightbulb} />
+                {" "}
+                {name}
+                {props.render_level && props.labels.length > 0 && ` (${props.labels.join(', ')})` }
+            </Badge>
+            </OverlayTrigger>
+            {props.render_explanation &&
+                <p><i>{props.explanation}</i></p>
+            }
+        </div>
+    );
 }
+
+InferenceTag.propTypes = {
+    name: PropTypes.string,
+    suspicion_level: PropTypes.number,
+    explanation: PropTypes.string,
+    render_level: PropTypes.bool,
+    render_explanation: PropTypes.bool,
+};
+
+InferenceTag.defaultProps = {
+    render_level: true,
+    render_explanation: false,
+    labels: [],
+};
 
 
 /**
@@ -113,32 +109,31 @@ class InferenceTag extends React.Component{
  * This component is responsible for both loading tags information from remote, and render tag combinations
  * based on their nature.
  */
-class InferenceTagsList extends React.Component {
-    static propTypes = {
-        render_level: PropTypes.bool,
-        render_explanation: PropTypes.bool,
-    };
-
-    static defaultProps = {
-        render_level: true,
-        render_explanation: false,
-    };
-
-    render() {
-        return (
-            <div className="inferences-list">
-                {this.props.inferences.map(function(inference){
-                    return <InferenceTag key={`inference-${inference.inference_id}`}
-                                         name={inference.inference_id}
-                                         suspicion_level={inference.suspicion_level}
-                                         explanation={inference.explanation}
-                                         render_level={this.props.render_level}
-                                         render_explanation={this.props.render_explanation}
-                    />
-                }.bind(this))}
-            </div>
-        )
-    }
+function InferenceTagsList(props) {
+    return (
+        <div className="inferences-list">
+            {props.inferences.map(inference => (
+                <InferenceTag key={`inference-${inference.inference_id}`}
+                               name={inference.inference_id}
+                               suspicion_level={inference.suspicion_level}
+                               explanation={inference.explanation}
+                               render_level={props.render_level}
+                               render_explanation={props.render_explanation}
+                               labels={inference.labels}
+                />
+            ))}
+        </div>
+    );
 }
+
+InferenceTagsList.propTypes = {
+    render_level: PropTypes.bool,
+    render_explanation: PropTypes.bool,
+};
+
+InferenceTagsList.defaultProps = {
+    render_level: true,
+    render_explanation: false,
+};
 
 export {InferenceTag, InferenceTagsList};

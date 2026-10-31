@@ -34,7 +34,7 @@
 
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Tooltip, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { convertTagName } from "../../utils/tags";
 import axios from "axios";
@@ -43,7 +43,7 @@ import Badge from "react-bootstrap/Badge";
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 const TYPE_VARIANTS = {
     suspicious: "warning",
@@ -73,7 +73,7 @@ const PropertyTag = ({ name: rawName, type: rawType = "na", definition }) => {
     const loc = parts.indexOf("events");
     const eventType = loc > 0 ? parts[loc + 1] : "all";
 
-    const search = `?tags=${rawName}&min_susp=0&max_susp=100&event_type=${eventType}`;
+    const search = `?tags=${rawName}&event_type=${eventType}`;
 
     return (
         <Link

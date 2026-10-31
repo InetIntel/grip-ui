@@ -34,6 +34,8 @@
 
 import React from "react";
 import DataTable from "react-data-table-component";
+import { useNavigate } from "react-router-dom";
+
 import { PropertyTagsList } from "./tags/property-tag";
 import { extract_tags_tr_worthiness } from "../utils/tags";
 import IPPrefix from "./ip-prefix";
@@ -269,6 +271,15 @@ class PfxEventsTable extends React.Component {
         return processed;
     }
 
+     handleRowClicked = (row) => {
+        let url = `/events/${this.props.eventType}/${this.props.eventId}/${row.fingerprint}`;
+        if (this.props.navigate) {
+            this.props.navigate(url);
+        } else {
+            window.open(url, '_self');
+        }
+    };
+
     render() {
         let data = this.preprocessData(this.props.data, this.props.tagsData);
         let columns = this.otherEventTypeColumns;
@@ -284,10 +295,19 @@ class PfxEventsTable extends React.Component {
                 striped={true}
                 highlightOnHover={true}
                 data={data}
+                pointerOnHover={true}
+                onRowClicked={this.handleRowClicked}
                 pagination={true}
             />
         );
     }
 }
 
-export default PfxEventsTable;
+function withNavigation(Component) {
+    return function WrappedComponent(props) {
+        const navigate = useNavigate();
+        return <Component {...props} navigate={navigate} />;
+    }
+}
+
+export default withNavigation(PfxEventsTable);
