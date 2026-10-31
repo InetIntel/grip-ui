@@ -67,8 +67,8 @@ const SearchBar = (props) => {
                                 onChange={props.onEventTypeChange}
                 />
 
-                <EventCategorySelector eventCategory={props.query.eventCategory}
-                                onChange={props.onEventCategoryChange}
+                <EventCategorySelector category={props.query.category}
+                                onChange={props.onCategoryChange}
                 />
             </div>
             <div className="row search-bar">

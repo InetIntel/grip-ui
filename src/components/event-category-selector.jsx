@@ -82,12 +82,12 @@ function EventCategorySelector({category, onChange}) {
 }
 
 EventCategorySelector.propTypes = {
-    eventType: PropTypes.string,
+    category: PropTypes.string,
     onChange: PropTypes.func
 };
 
 EventCategorySelector.defaultProps = {
-    eventType: 'suspicious',
+    category: 'incidents',
     onChange: () => {}
 };
 
