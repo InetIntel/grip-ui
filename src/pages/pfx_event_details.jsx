@@ -70,7 +70,7 @@ function PfxEventDetails() {
 
   const loadEventData = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/event/id/${eventId}`);
+      const response = await axios.get(`${BASE_URL}/event/id/${eventId}?nested=true`);
       setEventData(response.data);
       setLoadingEvent(false);
     } catch (error) {
@@ -81,7 +81,7 @@ function PfxEventDetails() {
   const loadPfxEventData = async () => {
     try {
       const response = await axios.get(
-        `${BASE_URL}/pfx_event/id/${eventId}/${fingerprint}`
+        `${BASE_URL}/pfx_event/id/${eventId}/${fingerprint}?nested=true`
       );
       let subpathsLocal = [];
       let superpathsLocal = [];
@@ -237,7 +237,7 @@ function PfxEventDetails() {
             <PfxEventDetailsTable
               pfxEvent={pfxEvent}
               tagsData={tagsData}
-              jsonUrl={`${BASE_URL}/pfx_event/id/${eventId}/${fingerprint}`}
+              jsonUrl={`${BASE_URL}/pfx_event/id/${eventId}/${fingerprint}?nested=true`}
               asinfo={eventData.asinfo}
               eventData={eventData}
             />

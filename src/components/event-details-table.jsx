@@ -178,7 +178,7 @@ class EventDetailsTable extends React.Component {
                                 {/*    </td>*/}
                                 {/*</tr>*/}
                                 <tr>
-                                    <th>Primary Inference (suspicion level):</th>
+                                    <th>Primary Inference (category):</th>
                                     <td>
                                         <InferenceTagsList inferences={[data.primary_inference]} render_explanation={true}/>
                                     </td>

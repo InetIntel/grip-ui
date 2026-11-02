@@ -32,27 +32,12 @@
  * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-/**
- * Translate suspicion level to types (e.g. suspicious, grey, benign, unknown)
- * @param suspicion_level
- */
-function suspicion_level_to_type(suspicion_level){
-    if(suspicion_level>=80){
-        return "suspicious";
-    } else if(suspicion_level>20){
-        return "grey";
-    } else if (suspicion_level>=0){
-        return "benign";
-    } else {
-        return "unknown";
-    }
-}
 
 function tr_to_type(tr_worthiness){
     if(tr_worthiness==="yes"){
         return "suspicious";
     } else if (tr_worthiness === "no"){
-        return "benign";
+        return "legitimate";
     } else {
         return "unknown";
     }
@@ -84,10 +69,13 @@ function convertTagName(name){
     if(name===undefined){
         return "undefined"
     }
-    return name.split("-").map(function(x){
+    return name.split("-").map(function(x, index){
+        if (index === 0 && ["irr", "rpki"].includes(x.toLowerCase())) {
+            return x.toUpperCase();
+        }
         return x.charAt(0).toUpperCase() + x.slice(1);
     }).join(" ")
 }
 
 
-export {suspicion_level_to_type, extract_tags_tr_worthiness, tr_to_type, convertTagName}
+export {extract_tags_tr_worthiness, tr_to_type, convertTagName}
