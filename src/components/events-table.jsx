@@ -99,7 +99,7 @@ const columns = [
     },
   },
   {
-    name: 'Classz',
+    name: 'Class',
     width: '150px',
     cell: row => {
       const labels = row.summary.inference_result.primary_inference.labels || [];
@@ -113,7 +113,7 @@ const columns = [
     },
   },
   {
-    name: 'Inferences',
+    name: 'Inference',
     width: '220px',
     cell: row => (
       <InferenceTagsList

@@ -125,6 +125,9 @@ const NestedTag = ({
     const textColor = badgeType === "warning" ? "dark" : "light";
     const tooltipId = `nested-tag-tooltip-${name.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
+    // Assuming all nested tags are prefixed with "[IRR] for now"
+    tagName = "[IRR] " + tagName;
+    
     return (
         <div className="nested-tag">
             <OverlayTrigger
@@ -150,9 +153,6 @@ const NestedTag = ({
                     {tags.map((tag) => {
                         let tagName = typeof tag === "string" ? tag : tag.name;
                         if (!tagName) return null;
-                        
-                        // Assuming all nested tags are prefixed with "[IRR] for now"
-                        tagName = "[IRR] " + tagName;
 
                         return (
                             <PropertyTag
