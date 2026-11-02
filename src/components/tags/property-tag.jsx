@@ -148,8 +148,11 @@ const NestedTag = ({
             {isExpanded && (
                 <div className="nested-tag-children" role="group" aria-label={`${convertTagName(name)} tags`}>
                     {tags.map((tag) => {
-                        const tagName = typeof tag === "string" ? tag : tag.name;
+                        let tagName = typeof tag === "string" ? tag : tag.name;
                         if (!tagName) return null;
+                        
+                        // Assuming all nested tags are prefixed with "[IRR] for now"
+                        tagName = "[IRR] " + tagName;
 
                         return (
                             <PropertyTag

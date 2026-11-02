@@ -69,7 +69,10 @@ function convertTagName(name){
     if(name===undefined){
         return "undefined"
     }
-    return name.split("-").map(function(x){
+    return name.split("-").map(function(x, index){
+        if (index === 0 && ["irr", "rpki"].includes(x.toLowerCase())) {
+            return x.toUpperCase();
+        }
         return x.charAt(0).toUpperCase() + x.slice(1);
     }).join(" ")
 }
