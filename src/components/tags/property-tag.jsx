@@ -126,7 +126,7 @@ const NestedTag = ({
     const tooltipId = `nested-tag-tooltip-${name.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 
     // Assuming all nested tags are prefixed with "[IRR] for now"
-    tagName = "[IRR] " + tagName;
+    name = "[IRR] " + name;
     
     return (
         <div className="nested-tag">
